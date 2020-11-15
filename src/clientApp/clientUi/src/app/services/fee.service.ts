@@ -11,7 +11,7 @@ import { MessageService } from '../services/message.service';
 })
 export class FeeService {
   
-  private infoUrl ="/api/fee";
+  private infoUrl ="https://localhost:5001/fee";
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*','Access-Control-Allow-Methods': 'GET'  })

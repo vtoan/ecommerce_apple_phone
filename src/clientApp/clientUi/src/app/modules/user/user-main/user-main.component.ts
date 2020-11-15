@@ -16,6 +16,7 @@ export class UserMainComponent implements OnInit {
   countItemCart:number =1;
   info:InfoStore;
 
+  
   constructor(
     private infoService:InfoService) {}
 

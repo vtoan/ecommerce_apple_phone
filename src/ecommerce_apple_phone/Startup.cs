@@ -26,9 +26,10 @@ namespace ecommerce_apple_phone {
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
-            services.AddControllersWithViews ();
 
             //======== Mail ========
             services.AddOptions ();
@@ -40,8 +41,20 @@ namespace ecommerce_apple_phone {
             //======== Models  ========
             services.AddModels (this.Configuration);
             //======== SPA  ========
-            services.AddSpaStaticFiles (configuration => {
-                configuration.RootPath = "clientUi/dist";
+            // services.AddSpaStaticFiles (configuration => {
+            //     configuration.RootPath = "clientUi/dist";
+            // });
+            // services.AddControllersWithViews ();
+
+            //======== CORS  ========
+            services.AddCors (options => {
+                options.AddPolicy (name: MyAllowSpecificOrigins,
+                    builder => {
+                        builder
+                            .WithOrigins ("http://localhost:4200")
+                            .AllowAnyHeader ()
+                            .AllowAnyMethod ();;
+                    });
             });
             //======== Other  ========
 
@@ -59,11 +72,13 @@ namespace ecommerce_apple_phone {
             app.UseHttpsRedirection ();
 
             app.UseStaticFiles ();
-            if (!env.IsDevelopment ()) {
-                app.UseSpaStaticFiles ();
-            }
+            // if (!env.IsDevelopment ()) {
+            //     app.UseSpaStaticFiles ();
+            // }
 
             app.UseRouting ();
+
+            app.UseCors (MyAllowSpecificOrigins);
 
             app.UseAuthorization ();
 
@@ -71,17 +86,17 @@ namespace ecommerce_apple_phone {
                 endpoints.MapControllers ();
             });
 
-            app.UseSpa (spa => {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            // app.UseSpa (spa => {
+            //     // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //     // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "clientUi";
+            //     spa.Options.SourcePath = "clientUi";
 
-                if (env.IsDevelopment ()) {
-                    // spa.UseAngularCliServer (npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer ("http://localhost:4200");
-                }
-            });
+            //     if (env.IsDevelopment ()) {
+            //         spa.UseAngularCliServer (npmScript: "start");
+            //         // spa.UseProxyToSpaDevelopmentServer ("http://localhost:4200");
+            //     }
+            // });
         }
     }
 }
