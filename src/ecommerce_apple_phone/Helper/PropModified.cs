@@ -22,16 +22,23 @@ namespace ecommerce_apple_phone.Helper {
             return true;
         }
 
-        public Dictionary<string, dynamic> GetOf (T target) {
+        public Dictionary<string, dynamic> GetOf (T target, string[] ignore = null) {
             modifiedProps = new Dictionary<string, dynamic> ();
             if (target == null) return modifiedProps;
             var srcProps = target.GetType ().GetProperties ();
             foreach (var p in srcProps) {
-                if (p.GetValue (target) != null) {
-                    if (p.Name != "Id")
-                        modifiedProps.Add (p.Name, p.GetValue (target));
-
-                }
+                //Check ignore prop
+                string propName = p.Name;
+                if (propName == "Id") propName = "";
+                if (ignore != null && ignore.Length > 0)
+                    foreach (var i in ignore)
+                        if (propName == i) {
+                            propName = "";
+                            break;
+                        }
+                if (propName == "") break;
+                if (p.GetValue (target) != null)
+                    modifiedProps.Add (p.Name, p.GetValue (target));
             }
             return modifiedProps;
         }

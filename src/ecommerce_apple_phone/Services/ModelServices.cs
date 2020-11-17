@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace ecommerce_apple_phone.Services {
     public static class ModelServices {
         public static IServiceCollection AddModels (
-            this IServiceCollection services, IConfiguration config) {
+            this IServiceCollection services, IConfiguration config) { //
             services.AddScoped<IFeeModel, FeeModel> ();
             return services;
         }

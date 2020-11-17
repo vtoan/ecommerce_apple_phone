@@ -9,40 +9,38 @@ using Microsoft.Extensions.Logging;
 namespace ecommerce_apple_phone.Controllers {
     [ApiController]
     [Route ("[controller]")]
-    public class FeeController : ControllerBase {
+    public class MethodPayController : ControllerBase {
 
-        private IFeeModel _feeModel;
+        private IMethodPay _methodPayModel;
 
-        public FeeController (IFeeModel feeModel) {
-            _feeModel = feeModel;
-        }
+        public MethodPayController () { }
 
         [HttpGet]
-        public ActionResult<List<FeeDTO>> Get () {
-            var re = _feeModel.GetListDTOs ();
+        public ActionResult<List<MethodPayDTO>> Get () {
+            var re = _methodPayModel.GetListDTOs ();
             if (re == null || re.Count == 0) return Problem (statusCode: 500, detail: "Data not exist");
             return re;
         }
 
         [HttpGet ("{id}")]
-        public ActionResult<FeeDTO> Get (int id) {
+        public ActionResult<MethodPayDTO> Get (int id) {
             if (id <= 0) return BadRequest (new { message = "ID is invalid" });
-            var re = _feeModel.GetDTO (id);
+            var re = _methodPayModel.GetDTO (id);
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
             return re;
         }
 
         [HttpPut ("{id}")]
-        public IActionResult Update (int id, FeeDTO fee) {
-            if (id <= 0 || id != fee.Id) return BadRequest (new { message = "ID is invalid" });
-            if (!_feeModel.UpdateDTO (id, fee)) return Problem (statusCode: 500, detail: "Can't update data");
+        public IActionResult Update (int id, MethodPayDTO methodPayDTO) {
+            if (id <= 0 || id != methodPayDTO.Id) return BadRequest (new { message = "ID is invalid" });
+            if (!_methodPayModel.UpdateDTO (id, methodPayDTO)) return Problem (statusCode: 500, detail: "Can't update data");
             return Ok ();
         }
 
         [HttpPost]
-        public IActionResult Add (FeeDTO fee) {
-            if (fee.Id != 0) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
-            var re = _feeModel.AddDTO (fee);
+        public IActionResult Add (MethodPayDTO methodPayDTO) {
+            if (methodPayDTO.Id != 0) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
+            var re = _methodPayModel.AddDTO (methodPayDTO);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
             return Ok ();
         }
@@ -50,7 +48,7 @@ namespace ecommerce_apple_phone.Controllers {
         [HttpDelete ("{id}")]
         public IActionResult Remove (int id) {
             if (id <= 0) return NotFound ();
-            if (!_feeModel.RemoveDTO (id)) return Problem (statusCode: 500, detail: "Can't remove data");
+            if (!_methodPayModel.RemoveDTO (id)) return Problem (statusCode: 500, detail: "Can't remove data");
             return Ok ();
         }
 

@@ -35,7 +35,7 @@ export class MessageComponent implements OnInit  {
 	private openSnackBar(mes:Message) {
 		this._snackBar.openFromComponent(NotifySnackBarComponent, {
 			data:mes,
-			duration: 500,
+			duration: 3500,
 			horizontalPosition: this.horizontalPosition,
 			verticalPosition: this.verticalPosition,
 		});

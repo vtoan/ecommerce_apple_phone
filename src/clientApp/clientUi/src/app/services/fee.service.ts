@@ -11,7 +11,7 @@ import { MessageService } from '../services/message.service';
 })
 export class FeeService {
   
-  private infoUrl ="https://localhost:5001/fee";
+  private infoUrl ="api/fee/1";
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*','Access-Control-Allow-Methods': 'GET'  })
@@ -34,7 +34,10 @@ export class FeeService {
      //
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      this.message.showFail(error.message,operation);
+      let erMsg = error.error.message;
+      if (!erMsg) erMsg = error.error.title;
+      this.message.showFail(error.status+" - "+ erMsg,operation);
+      console.log(error);
       return of(result as T);
     };
   }

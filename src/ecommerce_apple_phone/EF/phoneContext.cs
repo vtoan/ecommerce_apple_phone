@@ -40,8 +40,6 @@ namespace ecommerce_apple_phone.EF {
             //Import
             modelBuilder.Entity<ImportProduct> ().Property (p => p.DateCreated).HasColumnType ("smalldatetime");
             modelBuilder.Entity<ImportDetail> ().HasKey (od => new { od.ProductId, od.ImportId });
-            //Feedback
-            modelBuilder.Entity<Feedback> ().HasKey (od => new { od.ProductId, od.UserId });
             //Config Promotion
             modelBuilder.Entity<Promotion> ().Property (p => p.Status).HasDefaultValue (true);
             modelBuilder.Entity<Promotion> ().Property (p => p.ToDate).HasColumnType ("smalldatetime");
@@ -112,6 +110,8 @@ namespace ecommerce_apple_phone.EF {
         public int? CategoryId { get; set; }
         //Nav
         public Category Category { get; set; }
+
+        public Post Post { get; set; }
         public List<ProductDetail> ProductDetails { get; set; }
         public List<Feedback> Feedbacks { get; set; }
     }
@@ -126,8 +126,7 @@ namespace ecommerce_apple_phone.EF {
         public int SaleCount { get; set; }
 
         [StringLength (50)]
-        public string ImageDefault { get; set; }
-        public string ImageGallery { get; set; }
+        public string Images { get; set; }
         public int Quantity { get; set; }
         public bool? isShow { get; set; }
         public bool? isDel { get; set; }
@@ -154,7 +153,6 @@ namespace ecommerce_apple_phone.EF {
         //Nav
         public ImportProduct ImportProduct { get; set; }
         public Product Product { get; set; }
-
     }
 
     public class Category {
@@ -232,6 +230,7 @@ namespace ecommerce_apple_phone.EF {
 
     public class Post {
         [Key]
+        [ForeignKey ("Product")]
         [DatabaseGenerated (DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string PostContent { get; set; }
@@ -244,9 +243,13 @@ namespace ecommerce_apple_phone.EF {
 
         [MaxLength (350)]
         public string SeoDescription { get; set; }
+        //Nav
+        public Product Product { get; set; }
     }
 
     public class Feedback {
+        [Key]
+        public int Id { get; set; }
         public int ProductId { get; set; }
         public int UserId { get; set; }
         public string FeedbackContent { get; set; }
@@ -291,6 +294,8 @@ namespace ecommerce_apple_phone.EF {
         public byte Status { get; set; }
         public int? UserId { get; set; }
         public int MethodPayId { get; set; }
+        public int? PointUse { get; set; }
+        public int? Point { get; set; }
         //Nav property
         public List<OrderDetail> OrderDetails { get; set; }
     }

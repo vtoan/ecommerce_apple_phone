@@ -57,6 +57,9 @@ namespace ecommerce_apple_phone {
                     });
             });
             //======== Other  ========
+            services.AddMemoryCache ();
+
+            services.AddSingleton<ICacheHelper, CacheHelper> ();
 
             services.AddAutoMapper (typeof (MapperConfig).Assembly);
             services.AddControllers ();
