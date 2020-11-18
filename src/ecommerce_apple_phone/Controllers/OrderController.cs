@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
+using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,10 +16,16 @@ namespace ecommerce_apple_phone.Controllers {
         private IOrderModel _orderModel;
         private IPromotionModel _promModel;
 
-        public OrderController () { }
+        public OrderController (IOrderModel orderModel, IPromotionModel promotionModel) {
+            _orderModel = orderModel;
+            _promModel = promotionModel;
+        }
 
         [HttpPost ("confirm")]
-        public ActionResult<OrderDTO> Confirm ([FromServices] IFeeModel feeModel, OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTOs) {
+        public ActionResult<OrderDTO> Confirm ([FromServices] IFeeModel feeModel, OrderDTO orderDTO) {
+            if (orderDTO.OrderItems == null || orderDTO.OrderItems == "") return BadRequest ();
+            //Parse list order Item
+            List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>> (orderDTO.OrderItems);
             var pramOrder = _orderModel.GetPramOrder (orderDetailDTOs);
             //
             double promBill = 0;
@@ -43,9 +50,9 @@ namespace ecommerce_apple_phone.Controllers {
             //Get point
             var fees = feeModel.GetListDTOs ();
             if (fees != null || fees.Count > 0)
-                orderDTO.Fees = ParserObjToJson (fees);
+                orderDTO.Fees = DataHelper.ParserObjToJson (fees);
             orderDTO.Point = point;
-            orderDTO.Promotion = ParserObjToJson (new {
+            orderDTO.Promotion = DataHelper.ParserObjToJson (new {
                 bill = promBill,
                     methodPay = promMethod,
                     promPoint = promPoint
@@ -55,7 +62,11 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Add ([FromServices] IProductModel productModel, OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTOs) {
+        public IActionResult Add ([FromServices] IProductModel productModel, OrderDTO orderDTO) {
+            if (orderDTO.OrderItems == null || orderDTO.OrderItems == "") return BadRequest ();
+            //Parse list order Item
+            List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>> (orderDTO.OrderItems);
+            //
             if (orderDetailDTOs.Count < 0) return Problem (statusCode: 500, detail: "Data invalid");
             var payment = _orderModel.Payment (orderDTO);
             if (!payment) return Problem (statusCode: 500, detail: "Order is unpaid");
@@ -119,18 +130,5 @@ namespace ecommerce_apple_phone.Controllers {
             if (re == null || re.Count == 0) return Problem (statusCode: 500, detail: "Data not exist");
             return re;
         }
-
-        public T ParserJsonTo<T> (string target) {
-            return JsonSerializer.Deserialize<T> (target, new JsonSerializerOptions {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-        }
-
-        public string ParserObjToJson (object target) {
-            return JsonSerializer.Serialize (target, new JsonSerializerOptions {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-        }
-
     }
 }

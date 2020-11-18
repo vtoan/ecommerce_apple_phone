@@ -10,6 +10,16 @@ namespace ecommerce_apple_phone.Services {
         public static IServiceCollection AddModels (
             this IServiceCollection services, IConfiguration config) { //
             services.AddScoped<IFeeModel, FeeModel> ();
+            services.AddScoped<ICategoryModel, CategoryModel> ();
+            services.AddScoped<IInfoModel, InfoModel> ();
+            services.AddScoped<IProductModel, ProductModel> ();
+            services.AddScoped<IPostModel, PostModel> ();
+            services.AddScoped<IFeedbackModel, FeedbackModel> ();
+            services.AddScoped<IOrderModel, OrderModel> ();
+            services.AddScoped<IImportProductModel, ImportModel> ();
+            services.AddScoped<IMethodPayModel, MethodPayModel> ();
+            services.AddScoped<IPromotionModel, PromotionModel> ();
+            services.AddScoped<IUserModel, UserModel> ();
             return services;
         }
     }

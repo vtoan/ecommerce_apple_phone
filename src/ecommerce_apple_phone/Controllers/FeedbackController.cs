@@ -12,7 +12,9 @@ namespace ecommerce_apple_phone.Controllers {
     public class FeedbackController : ControllerBase {
 
         private IFeedbackModel _fbModel;
-        public FeedbackController () { }
+        public FeedbackController (IFeedbackModel feedbackModel) {
+            _fbModel = feedbackModel;
+        }
 
         [HttpGet ("{id}")]
         public ActionResult<List<FeedbackDTO>> Get (int id) {

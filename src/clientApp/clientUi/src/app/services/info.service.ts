@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders }  from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, } from 'rxjs/operators';
 //models
-import { InfoStore } from '../models/info';
+import { Info } from '../models/IModels';
 import { MessageService } from '../services/message.service';
 //service
 // import {HelpfulModule, } from 'src/app/helpful/helpful.module';
@@ -21,18 +21,18 @@ export class InfoService {
   };
 
   private mockData ={
-    nameStore:"sad",
-    logo:"sad",
-    email:"sad",
-    facebook:"sad",
-    messenger:"sad",
-    instagram:"sad",
-    phone:"sad",
-    address:"sad",
-    workTime:"sad",
-    seoImage:"sad",
-    seoTitle:"sad",
-    seoDescription:"sad",
+    NameStore:"sad",
+    Logo:"sad",
+    Email:"sad",
+    Facebook:"sad",
+    Messenger:"sad",
+    Instargram:"sad",
+    Phone:"sad",
+    Address:"sad",
+    WorkTime:"sad",
+    SeoImage:"sad",
+    SeoTitle:"sad",
+    SeoDescription:"sad",
   };
 
   constructor( 
@@ -40,7 +40,7 @@ export class InfoService {
     private message: MessageService ) { }
 
   //Method
-  get():Observable<InfoStore>{
+  get():Observable<Info>{
     console.log(this.message);
     this.message.showSuccess("s");
     return of(this.mockData);
@@ -51,11 +51,11 @@ export class InfoService {
     //     )
   }
 
-  update(info:InfoStore):Observable<any>{
+  update(info:Info):Observable<any>{
     return this.http
         .put(this.infoUrl, info, this.httpOptions)
         .pipe(
-            catchError(this.handleError<InfoStore>('Update data Info'))
+            catchError(this.handleError<Info>('Update data Info'))
         )
   }
   //

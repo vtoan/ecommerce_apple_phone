@@ -94,7 +94,7 @@ namespace ecommerce_apple_phone.Interfaces {
 
     }
 
-    public interface IMethodPay : IEntityModel<MethodPayDTO> { }
+    public interface IMethodPayModel : IEntityModel<MethodPayDTO> { }
 
     public interface IPromotionModel : IGetDTO<PromotionDTO>, IGetListDTOs<PromotionDTO>, IRemoveDTO {
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
+using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,9 @@ namespace ecommerce_apple_phone.Controllers {
 
         private IImportProductModel _importModel;
 
-        public ImportController () { }
+        public ImportController (IImportProductModel importProductModel) {
+            _importModel = importProductModel;
+        }
 
         [HttpGet ("report")]
         public ActionResult<List<ImportProductDTO>> Get (string start, string end) {
@@ -28,7 +31,11 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Add ([FromServices] IProductModel productModel, ImportProductDTO importProductDTO, List<ImportDetailDTO> importDetailDTOs) {
+        public IActionResult Add ([FromServices] IProductModel productModel, ImportProductDTO importProductDTO) {
+            if (importProductDTO.ImportItems == null || importProductDTO.ImportItems == "") return BadRequest ();
+            //Parse list order Item
+            List<ImportDetailDTO> importDetailDTOs = DataHelper.ParserJsonTo<List<ImportDetailDTO>> (importProductDTO.ImportItems);
+            //
             if (importDetailDTOs.Count == 0) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
             var re = _importModel.AddDTO (importProductDTO, importDetailDTOs);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");

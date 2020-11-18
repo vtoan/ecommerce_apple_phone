@@ -104,6 +104,7 @@ namespace ecommerce_apple_phone.DTO {
         public int? MethodPayId { get; set; }
         public int? PointUse { get; set; }
         public int? Point { get; set; }
+        public string OrderItems { get; set; }
     }
 
     public class OrderDetailDTO {
@@ -117,6 +118,7 @@ namespace ecommerce_apple_phone.DTO {
     public class ImportProductDTO {
         public int Id { get; set; }
         public DateTime? DateCreated { get; set; }
+        public string ImportItems { get; set; }
     }
 
     public class ImportDetailDTO {
@@ -133,6 +135,7 @@ namespace ecommerce_apple_phone.DTO {
         public DateTime? ToDate { get; set; }
         public bool? Status { get; set; }
         public byte? Type { get; set; }
+        public string ItemDetail { get; set; }
     }
 
     public class PromBillDTO {

@@ -16,13 +16,19 @@ namespace ecommerce_apple_phone.Controllers {
 
         private IInfoModel _infoModel;
 
-        public InfoController () { }
+        private ICacheHelper _cache;
 
-        [HttpGet ("{id}")]
-        public ActionResult<InfoDTO> Get (int id) {
-            if (id <= 0) return BadRequest (new { message = "ID is invalid" });
-            var re = _infoModel.GetDTO (id);
+        public InfoController (IInfoModel infoModel, ICacheHelper cache) {
+            _cache = cache;
+            _infoModel = infoModel;
+        }
+
+        [HttpGet ()]
+        public ActionResult<InfoDTO> Get () {
+            var re = _cache.Get<InfoDTO> (Helper.CacheKey.INFO);
+            if (re == null) re = _infoModel.GetDTO (1);
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
+            _cache.Set (re, Helper.CacheKey.INFO);
             return re;
         }
 

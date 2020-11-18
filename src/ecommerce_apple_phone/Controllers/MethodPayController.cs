@@ -11,9 +11,11 @@ namespace ecommerce_apple_phone.Controllers {
     [Route ("[controller]")]
     public class MethodPayController : ControllerBase {
 
-        private IMethodPay _methodPayModel;
+        private IMethodPayModel _methodPayModel;
 
-        public MethodPayController () { }
+        public MethodPayController (IMethodPayModel methodPayModel) {
+            _methodPayModel = methodPayModel;
+        }
 
         [HttpGet]
         public ActionResult<List<MethodPayDTO>> Get () {

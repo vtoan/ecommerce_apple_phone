@@ -3,56 +3,38 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ecommerce_apple_phone.Migrations
 {
-    public partial class Init2 : Migration
+    public partial class update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Products_Categories_CategoryId",
-                table: "Products");
-
-            migrationBuilder.AlterColumn<bool>(
-                name: "isShow",
-                table: "Products",
-                nullable: true,
-                defaultValue: true,
-                oldClrType: typeof(bool),
-                oldType: "bit",
-                oldDefaultValue: true);
-
-            migrationBuilder.AlterColumn<bool>(
-                name: "isDel",
-                table: "Products",
-                nullable: true,
-                defaultValue: false,
-                oldClrType: typeof(bool),
-                oldType: "bit",
-                oldDefaultValue: false);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "CategoryId",
-                table: "Products",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
             migrationBuilder.CreateTable(
-                name: "Feedbacks",
+                name: "Categories",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    FeedbackContent = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 30, nullable: true),
+                    SeoImage = table.Column<string>(maxLength: 50, nullable: true),
+                    SeoTitle = table.Column<string>(maxLength: 150, nullable: true),
+                    SeoDescription = table.Column<string>(maxLength: 350, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Feedbacks", x => new { x.ProductId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 30, nullable: true),
+                    Cost = table.Column<double>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fees", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,6 +51,30 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Infos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NameStore = table.Column<string>(maxLength: 50, nullable: true),
+                    Logo = table.Column<string>(maxLength: 50, nullable: true),
+                    Email = table.Column<string>(maxLength: 100, nullable: true),
+                    Facebook = table.Column<string>(maxLength: 100, nullable: true),
+                    Messenger = table.Column<string>(maxLength: 100, nullable: true),
+                    Instargram = table.Column<string>(maxLength: 100, nullable: true),
+                    Phone = table.Column<string>(maxLength: 100, nullable: true),
+                    Address = table.Column<string>(maxLength: 150, nullable: true),
+                    WorkTime = table.Column<string>(maxLength: 50, nullable: true),
+                    SeoImage = table.Column<string>(maxLength: 50, nullable: true),
+                    SeoTitle = table.Column<string>(maxLength: 250, nullable: true),
+                    SeoDescription = table.Column<string>(maxLength: 350, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Infos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MethodPays",
                 columns: table => new
                 {
@@ -79,48 +85,6 @@ namespace ecommerce_apple_phone.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MethodPays", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    PostContent = table.Column<string>(nullable: true),
-                    SeoImage = table.Column<string>(maxLength: 50, nullable: true),
-                    SeoTitle = table.Column<string>(maxLength: 150, nullable: true),
-                    SeoDescription = table.Column<string>(maxLength: 350, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<double>(nullable: false),
-                    Color = table.Column<string>(maxLength: 25, nullable: true),
-                    SaleCount = table.Column<int>(nullable: false, defaultValue: 0),
-                    ImageDefault = table.Column<string>(maxLength: 50, nullable: true),
-                    ImageGallery = table.Column<string>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false),
-                    isShow = table.Column<bool>(nullable: true, defaultValue: true),
-                    isDel = table.Column<bool>(nullable: true, defaultValue: false),
-                    ProductId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductDetails_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,30 +118,37 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ImportDetails",
+                name: "Products",
                 columns: table => new
                 {
-                    ImportId = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: true),
-                    Price = table.Column<double>(nullable: true),
-                    ImportProductId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    Screen = table.Column<string>(maxLength: 50, nullable: true),
+                    FontCamera = table.Column<string>(maxLength: 50, nullable: true),
+                    RearCamera = table.Column<string>(maxLength: 50, nullable: true),
+                    OperationSystem = table.Column<string>(maxLength: 50, nullable: true),
+                    Chipset = table.Column<string>(maxLength: 50, nullable: true),
+                    ROM = table.Column<string>(maxLength: 50, nullable: true),
+                    RAM = table.Column<string>(maxLength: 50, nullable: true),
+                    Connector = table.Column<string>(maxLength: 50, nullable: true),
+                    Parameter = table.Column<string>(maxLength: 50, nullable: true),
+                    Weight = table.Column<string>(maxLength: 50, nullable: true),
+                    Battery = table.Column<string>(maxLength: 50, nullable: true),
+                    FunctionOther = table.Column<string>(maxLength: 50, nullable: true),
+                    isShow = table.Column<bool>(nullable: true, defaultValue: true),
+                    isDel = table.Column<bool>(nullable: true, defaultValue: false),
+                    CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ImportDetails", x => new { x.ProductId, x.ImportId });
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ImportDetails_ImportProducts_ImportProductId",
-                        column: x => x.ImportProductId,
-                        principalTable: "ImportProducts",
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ImportDetails_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,7 +247,9 @@ namespace ecommerce_apple_phone.Migrations
                     Fees = table.Column<string>(maxLength: 150, nullable: true),
                     Status = table.Column<byte>(nullable: false, defaultValue: (byte)1),
                     UserId = table.Column<int>(nullable: true),
-                    MethodPayId = table.Column<int>(nullable: false)
+                    MethodPayId = table.Column<int>(nullable: false),
+                    PointUse = table.Column<int>(nullable: true),
+                    Point = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -287,6 +260,101 @@ namespace ecommerce_apple_phone.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    FeedbackContent = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImportDetails",
+                columns: table => new
+                {
+                    ImportId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: true),
+                    Price = table.Column<double>(nullable: true),
+                    ImportProductId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImportDetails", x => new { x.ProductId, x.ImportId });
+                    table.ForeignKey(
+                        name: "FK_ImportDetails_ImportProducts_ImportProductId",
+                        column: x => x.ImportProductId,
+                        principalTable: "ImportProducts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ImportDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    PostContent = table.Column<string>(nullable: true),
+                    SeoImage = table.Column<string>(maxLength: 50, nullable: true),
+                    SeoTitle = table.Column<string>(maxLength: 150, nullable: true),
+                    SeoDescription = table.Column<string>(maxLength: 350, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Products_Id",
+                        column: x => x.Id,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<double>(nullable: false),
+                    Color = table.Column<string>(maxLength: 25, nullable: true),
+                    SaleCount = table.Column<int>(nullable: false, defaultValue: 0),
+                    Images = table.Column<string>(maxLength: 50, nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
+                    isShow = table.Column<bool>(nullable: true, defaultValue: true),
+                    isDel = table.Column<bool>(nullable: true, defaultValue: false),
+                    ProductId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -317,6 +385,11 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_ProductId",
+                table: "Feedbacks",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ImportDetails_ImportProductId",
                 table: "ImportDetails",
                 column: "ImportProductId");
@@ -336,26 +409,25 @@ namespace ecommerce_apple_phone.Migrations
                 table: "ProductDetails",
                 column: "ProductId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Products_Categories_CategoryId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryId",
                 table: "Products",
-                column: "CategoryId",
-                principalTable: "Categories",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Products_Categories_CategoryId",
-                table: "Products");
-
             migrationBuilder.DropTable(
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
+                name: "Fees");
+
+            migrationBuilder.DropTable(
                 name: "ImportDetails");
+
+            migrationBuilder.DropTable(
+                name: "Infos");
 
             migrationBuilder.DropTable(
                 name: "MethodPays");
@@ -388,46 +460,16 @@ namespace ecommerce_apple_phone.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "isShow",
-                table: "Products",
-                type: "bit",
-                nullable: false,
-                defaultValue: true,
-                oldClrType: typeof(bool),
-                oldNullable: true,
-                oldDefaultValue: true);
-
-            migrationBuilder.AlterColumn<bool>(
-                name: "isDel",
-                table: "Products",
-                type: "bit",
-                nullable: false,
-                defaultValue: false,
-                oldClrType: typeof(bool),
-                oldNullable: true,
-                oldDefaultValue: false);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "CategoryId",
-                table: "Products",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldNullable: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Products_Categories_CategoryId",
-                table: "Products",
-                column: "CategoryId",
-                principalTable: "Categories",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

@@ -15,7 +15,9 @@ namespace ecommerce_apple_phone.Controllers {
     public class CategoryController : ControllerBase {
 
         private ICategoryModel _cateModel;
-        public CategoryController () { }
+        public CategoryController (ICategoryModel categoryModel) {
+            _cateModel = categoryModel;
+        }
 
         [HttpGet]
         public ActionResult<List<CategoryDTO>> Get () {

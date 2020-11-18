@@ -18,7 +18,12 @@ namespace ecommerce_apple_phone.Controllers {
         public IProductModel _productModel;
         public ICacheHelper _cache;
         public IPromotionModel _promotionModel;
-        public ProductController () { }
+        public ProductController (IProductModel productModel, ICacheHelper cache, IPromotionModel promotionModel) {
+            _productModel = productModel;
+            _cache = cache;
+            _promotionModel = promotionModel;
+        }
+
         #region Client
         [HttpGet]
         public ActionResult<List<ProductDTO>> GetListProduct () {
@@ -65,9 +70,16 @@ namespace ecommerce_apple_phone.Controllers {
 
         [HttpGet ("[action]")]
         public ActionResult<List<ProductDTO>> FindPromotion () { //
-            var re = GetListProducts ();
+            //Get in cache
+            var re = _cache.Get<List<ProductDTO>> (CacheKey.DISCOUNT_PRODUCT);
+            if (re != null || re.Count > 0) return re;
+            //Get in db
+            var products = GetListProducts ();
+            if (products == null) return Problem (statusCode: 500, detail: "Data not exist");
+            re = _productModel.FindPromotion (products);
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
-            return _productModel.FindPromotion (re);
+            _cache.Set (re, CacheKey.DISCOUNT_PRODUCT);
+            return re;
         }
 
         [HttpGet ("search")]

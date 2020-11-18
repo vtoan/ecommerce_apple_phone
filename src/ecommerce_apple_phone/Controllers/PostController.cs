@@ -17,7 +17,9 @@ namespace ecommerce_apple_phone.Controllers {
 
         private IPostModel _postModel;
 
-        public PostController () { }
+        public PostController (IPostModel postModel) {
+            _postModel = postModel;
+        }
 
         [HttpGet ("{id}")]
         public ActionResult<PostDTO> Get (int id) {

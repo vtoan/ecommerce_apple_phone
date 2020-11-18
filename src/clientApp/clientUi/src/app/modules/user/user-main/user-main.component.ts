@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 //models
-import {InfoStore} from 'src/app/models/info';
+import {Info} from 'src/app/models/IModels';
 //services
 import { InfoService } from 'src/app/services/info.service';
 
@@ -14,7 +14,7 @@ export class UserMainComponent implements OnInit {
   isShowMenu:boolean;
   isShowSearch:boolean;
   countItemCart:number =1;
-  info:InfoStore;
+  info:Info;
 
   
   constructor(
