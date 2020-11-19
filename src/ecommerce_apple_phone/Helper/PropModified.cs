@@ -36,7 +36,7 @@ namespace ecommerce_apple_phone.Helper {
                             propName = "";
                             break;
                         }
-                if (propName == "") break;
+                if (propName == "") continue;
                 if (p.GetValue (target) != null)
                     modifiedProps.Add (p.Name, p.GetValue (target));
             }
