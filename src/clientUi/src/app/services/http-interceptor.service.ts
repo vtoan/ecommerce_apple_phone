@@ -19,7 +19,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         var reqAc = req.clone(this.httpOptions);
-
+        console.log("Interceptor HTTP");
         return next.handle(reqAc);
     }
 }

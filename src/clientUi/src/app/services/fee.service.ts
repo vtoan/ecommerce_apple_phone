@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders }  from '@angular/common/http';
-import { Observable, of, Subscriber, throwError } from 'rxjs';
-import { catchError,retry ,finalize} from 'rxjs/operators';
+import { HttpClient }  from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError,retry } from 'rxjs/operators';
 //models
 import { Fee } from 'src/app/models/IModels';
 import { MessageService } from '../services/message.service';
@@ -58,7 +58,7 @@ export class FeeService {
     delete(id:number): Observable<any>{
         if(!id) {
             this.message.showFail("Id is null");
-            return of(null);
+            return throwError(null);
         }
         return this.http.delete(this.apiUrl+"/"+id)
         .pipe(

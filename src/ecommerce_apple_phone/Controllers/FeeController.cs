@@ -31,7 +31,8 @@ namespace ecommerce_apple_phone.Controllers {
             _cache.Set (re, CacheKey.PRODUCT);
             return re;
         }
-
+        
+        // =============  N use ============= 
         [HttpGet ("{id}")]
         public ActionResult<FeeDTO> Get (int id) {
             if (id <= 0) return BadRequest (new { message = "ID is invalid" });
