@@ -14,9 +14,10 @@ import { FeeService } from 'src/app/services/fee.service';
 })
 export class FeeComponent implements OnInit {
     //
+    isLoaded:boolean= false;
     submitTitle:string ="Thêm";
-    listFees:Fee[];
-    tableData ;
+    listFees:Fee[] =[];
+    tableData = new MatTableDataSource();
     //validate
     formValidate = this.fb.group({
         id:[0],
@@ -27,18 +28,17 @@ export class FeeComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder, 
-        private feeService :FeeService ) {
-            this.tableData = new MatTableDataSource();
-        }
+        private feeService :FeeService ) {}
 
     ngOnInit(): void {  
         this.feeService
         .getList()
         .subscribe(resp => {
-            this.listFees = resp;            
-            this.tableData.data = this.listFees;
+            this.isLoaded=true;
+            this.listFees = resp;
+            this.tableData.data = this.listFees;            
             this.tableData._updateChangeSubscription();
-        },er => this.listFees = [] )    
+        },er => this.isLoaded=true )    
     }
 
     //Event
@@ -92,8 +92,6 @@ export class FeeComponent implements OnInit {
 
     private update(fee:Fee){
         this.feeService.update(fee.id, fee).subscribe(resp => {
-            console.log("Update");
-            console.log(resp);
             //
             let idxMatch = this.listFees.findIndex(item => item.id == fee.id);
             this.listFees[idxMatch]=fee;

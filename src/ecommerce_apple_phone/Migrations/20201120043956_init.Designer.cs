@@ -10,8 +10,8 @@ using ecommerce_apple_phone.EF;
 namespace ecommerce_apple_phone.Migrations
 {
     [DbContext(typeof(PhoneContext))]
-    [Migration("20201118052928_update")]
-    partial class update
+    [Migration("20201120043956_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

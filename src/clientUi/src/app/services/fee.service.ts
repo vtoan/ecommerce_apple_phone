@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders }  from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError,retry } from 'rxjs/operators';
+import { Observable, of, Subscriber, throwError } from 'rxjs';
+import { catchError,retry ,finalize} from 'rxjs/operators';
 //models
 import { Fee } from 'src/app/models/IModels';
 import { MessageService } from '../services/message.service';
@@ -26,7 +26,8 @@ export class FeeService {
             .get<Fee>(this.apiUrl+"/"+id)
             .pipe(
                 retry(3),
-                catchError(this.handleError<Fee>('Get data', null)));
+                catchError(this.handleError<Fee>('Get data', null))
+            );
     }
 
 
@@ -43,7 +44,7 @@ export class FeeService {
     add(fee:Fee): Observable<Fee>{
         return this.http.post<Fee>(this.apiUrl, fee)
         .pipe(
-            catchError(this.handleError<Fee>('Add data',null))
+            catchError(this.handleError<Fee>('Add data',null)),
         )
     }
 
