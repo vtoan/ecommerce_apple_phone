@@ -23,7 +23,7 @@ interface Info {
     instargram :string;
     phone:string;
     address:string;
-    ưorkTime:string;
+    workTime:string;
    //SEO
     seoImage:string;
     seoTitle:string;

@@ -1,1 +1,81 @@
-<p>category works!</p>
+<div class="card">
+    <div class="card-header">
+        <h3 class="mb-4">Thông tin phân loại</h3>
+    </div>
+    <div class="card-content">    
+        <div class="row">
+            <div class="col-lg-8 pr-lg-5" style="padding-top: 0.8em;">
+                <p *ngIf="!isSelected" class="py-5 text-center">Chọn một phân loại</p>
+                <form #form [formGroup]="formValidate"(submit)="onSubmit()" *ngIf="isSelected"  >    
+                    <div class="mb-5">
+                        <input #itemId type="hidden" formControlName="id" >
+                        <p>
+                            <mat-form-field class="w-60" appearance="legacy">
+                                <mat-label>Tên phân loại</mat-label>
+                                <input  formControlName="name"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                                <mat-error *ngIf="formValidate.invalid">
+                                    Vui lòng nhập tên phân loại                      
+                                </mat-error>
+                            </mat-form-field>
+                        </p>
+            
+                        <p class="mb-3">
+                            <mat-form-field class="w-60" appearance="legacy">
+                                <mat-label>SEO Title</mat-label>
+                                <input class="py-1" formControlName="seoTitle" matInput  type="text" placeholder="Placeholder" required>
+                                <mat-error *ngIf="formValidate.invalid">
+                                    Vui lòng nhập SEO Title                            
+                                </mat-error>
+                            </mat-form-field>
+                        </p>
+                        <p class="mb-3">
+                            <mat-form-field class="w-60" appearance="legacy">
+                                <mat-label>SEO Description</mat-label>
+                                <textarea class="py-1" formControlName="seoDescription" matInput rows="3" placeholder="Placeholder" required></textarea>
+                                <mat-error *ngIf="formValidate.invalid">
+                                    Vui lòng nhập SEO Description                           
+                                </mat-error>
+                            </mat-form-field>
+                        </p>
+                        <!--Image input-->
+                        <div class="mb-3">
+                            <input #inputImage (change)="onChangeFile(inputImage)" class="py-1 border-none"  type="file" placeholder="Placeholder" required>
+                        </div>
+                    </div>      
+                    <div >
+                        <button [disabled]="formValidate.invalid" class="btn btn-sm bg-blue white px-lg-4 mr-3" type="submit"> Lưu </button>
+                        <button class="btn btn-sm bg-red white px-lg-4" type="button" (click)="onReset()" >Huỷ</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4">										
+                <table mat-table [dataSource]="tableData"  >
+                    <ng-container matColumnDef="Id">
+                        <th mat-header-cell *matHeaderCellDef>Id</th>
+                        <td mat-cell *matCellDef="let item">{{item.id}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef>Tên phân loại</th>
+                        <td mat-cell *matCellDef="let item">{{item.name}}</td>
+                    </ng-container>            
+                    <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef style="width:150px"></th>
+                        <td mat-cell *matCellDef="let item" class="text-center">
+                            <span (click)="onShowDetail(item.id)" class="material-icons btn-icon blue pr-3 pr-lg-5">
+                                edit
+                            </span>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="['Id', 'Name','Action']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['Id', 'Name','Action'];" ></tr>
+                </table>  
+                <p *ngIf="isLoaded &&listCates.length ==0" class="text-center py-5 empty">Không có dữ liệu</p> 
+                <div class="py-5">
+                    <app-loader *ngIf="!isLoaded"></app-loader>
+                </div>
+            </div>
+        </div>	
+    </div>
+</div>
+
+

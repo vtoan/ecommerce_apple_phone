@@ -55,8 +55,6 @@ export class FeeComponent implements OnInit {
 
     onDelete(id:number){
         this.feeService.delete(id).subscribe(resp =>{
-            console.log("Delete");
-            console.log(resp);
             //
             let idxMatch = this.listFees.findIndex(item => item.id ==id);
             this.listFees.splice(idxMatch,1);  
@@ -69,7 +67,6 @@ export class FeeComponent implements OnInit {
         let fee:Fee =Object.assign({},rawVal);        
         if(rawVal.suffix =="precent") fee.cost = fee.cost/100;  
         //
-        this.onReset();
         fee.id ? this.update(fee) : this.create(fee); 
     }
 
@@ -82,11 +79,11 @@ export class FeeComponent implements OnInit {
     //Private
     private create(fee:Fee){
         fee.id=0;
-        this.feeService.add(fee)
-            .subscribe(resp => {
-            console.log(resp);
+        this.feeService.add(fee).subscribe(resp => {
             this.listFees.push(resp) 
             this.tableData._updateChangeSubscription();
+            //
+            this.onReset();
         }, er =>console.log(er));
     }
 
@@ -96,6 +93,8 @@ export class FeeComponent implements OnInit {
             let idxMatch = this.listFees.findIndex(item => item.id == fee.id);
             this.listFees[idxMatch]=fee;
             this.tableData._updateChangeSubscription();
+            //
+            this.onReset();
         },er =>console.log(er));
     }
   

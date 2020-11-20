@@ -4,7 +4,9 @@ import { Observable, of } from 'rxjs';
 import { catchError, } from 'rxjs/operators';
 //models
 import { Info } from '../models/IModels';
-import { MessageService } from '../services/message.service';
+import { HttpInterceptorService } from '../services/http-interceptor.service';
+
+
 //service
 // import {HelpfulModule, } from 'src/app/helpful/helpful.module';
 
@@ -14,55 +16,29 @@ import { MessageService } from '../services/message.service';
 })
 export class InfoService {
 
-  private infoUrl ="/s";
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
-  private mockData ={
-    nameStore:"sad",
-    logo:"sad",
-    email:"sad",
-    facebook:"sad",
-    messenger:"sad",
-    instargram:"sad",
-    phone:"sad",
-    address:"sad",
-    ưorkTime:"sad",
-    seoImage:"sad",
-    seoTitle:"sad",
-    seoDescription:"sad",
-  };
-
+  private infoUrl ="api/info";
   constructor( 
     private http:HttpClient,
-    private message: MessageService ) { }
+    private interceptor: HttpInterceptorService 
+    ) { }
 
   //Method
+
+  getUrlContent = () => [this.infoUrl +"/logo", this.infoUrl+"/image-seo"]
+
   get():Observable<Info>{
-    console.log(this.message);
-    this.message.showSuccess("s");
-    return of(this.mockData);
-    // return this.http
-    //     .get<InfoStore>(this.infoUrl)
-    //     .pipe(
-    //         catchError(this.handleError<InfoStore>('Get data Info', this.mockData))
-    //     )
+    return this.http
+        .get<Info>(this.infoUrl)
+        .pipe(
+            catchError(this.interceptor.handleError<Info>('Get data Info'))
+        )
   }
 
   update(info:Info):Observable<any>{
     return this.http
-        .put(this.infoUrl, info, this.httpOptions)
+        .put(this.infoUrl, info)
         .pipe(
-            catchError(this.handleError<Info>('Update data Info'))
+            catchError(this.interceptor.handleError<Info>('Update data Info'))
         )
-  }
-  //
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.message.showFail(error.message,operation);
-      return of(result as T);
-    };
   }
 }

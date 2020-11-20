@@ -1,1 +1,122 @@
-<p>info works!</p>
+<div class="card">
+    <div class="card-header">
+        <h3 class="mb-4">Thông tin cửa hàng</h3>
+    </div>
+    <div class="card-content">    
+        <form #form [formGroup]="formValidate"(submit)="onSubmit()" *ngIf="isLoaded"  >    
+            <div class="row mb-5">
+                <div class="col-lg-8">
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Tên cửa hàng</mat-label>
+                            <input  formControlName="nameStore" class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                   
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+
+    
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Email</mat-label>
+                            <input  formControlName="email"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                     
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+    
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Link facebook</mat-label>
+                            <input  formControlName="facebook"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                     
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+    
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Link messenger</mat-label>
+                            <input  formControlName="messenger"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                    
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+    
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Số điện thoại cửa hàng</mat-label>
+                            <input  formControlName="phone"  class="py-1" matInput  type="tel" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                  
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+    
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Địa chỉ cửa hàng</mat-label>
+                            <input  formControlName="address"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                  
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+    
+                    <p>
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>Thời gian làm việc</mat-label>
+                            <input  formControlName="workTime"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                  
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+    
+                    <h3 class="mb-4">Thông tin SEO</h3>
+                    <p class="mb-3">
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>SEO Title</mat-label>
+                            <input class="py-1" formControlName="seoTitle" matInput  type="text" placeholder="Placeholder" required>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                         
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+                    <p class="mb-3">
+                        <mat-form-field class="w-80" appearance="legacy">
+                            <mat-label>SEO Description</mat-label>
+                            <textarea class="py-1" formControlName="seoDescription" matInput rows="3" placeholder="Placeholder" required></textarea>
+                            <mat-error *ngIf="formValidate.invalid">
+                                Không được để trống                          
+                            </mat-error>
+                        </mat-form-field>
+                    </p>
+                    <!--Image input-->
+                    <div class="mb-3">
+                        <input #inputImage (change)="onChangeFile(inputImage)" class="py-1 border-none"  type="file" placeholder="Placeholder" required>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                     <!--Image input-->
+                     <div class="mb-3">
+                         <span>Logo</span>
+                        <input #inputLogo (change)="onChangeLogo(inputLogo)" class="py-1 border-none"  type="file" placeholder="Placeholder" required>
+                    </div>
+                </div>
+            </div>
+            <div >
+                <button [disabled]="formValidate.invalid" class="btn btn-sm bg-blue white px-lg-4 mr-3" type="submit"> Lưu </button>
+            </div>
+        </form>
+        <div class="py-5">
+            <app-loader *ngIf="!isLoaded"></app-loader>
+        </div>
+    </div>
+</div>
+
+
