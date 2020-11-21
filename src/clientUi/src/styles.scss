@@ -543,7 +543,7 @@ header {
 .product {
     padding-bottom: 3em;
     animation-name: fadeIn;
-    animation-duration: 1.3s;
+    animation-duration: 0.3s;
 }
 
 .product .product-img {
@@ -553,23 +553,32 @@ header {
 .product .product-content {
     text-align: center;
     cursor: pointer;
+    width: 100%;
 }
 
-.product.sale .product-img::before {
-    content: "SALE";
-    display: block;
+.product .product-sale,
+.product del {
+    display: none;
+}
+
+.product.sale .product-sale,
+.product.sale del {
+    display: inline-block;
+}
+
+.product.sale .product-img .product-sale {
     position: absolute;
-    left: -37%;
-    top: 5%;
+    left: 3%;
+    top: 3%;
     font-size: 1.125em;
     font-weight: bold;
     padding: 0.35em 0.75em;
     color: $color-white;
     background-color: $color-red;
-    transform: rotate(-45deg);
     z-index: 100;
-    width: 100%;
+    min-width: 50px;
     text-align: center;
+    border-radius: 5px;
 }
 
 @keyframes fadeIn {
@@ -623,7 +632,7 @@ header {
         font-weight: 900;
         position: absolute;
         border-top-left-radius: 25%;
-        transition: all 0.15s ease-in-out, border-radius 1ms linear;
+        transition: all 0.15s ease-in-out, border-radius 0.15s linear;
         font-family: "Line Awesome Free";
         background-color: $color-black;
         padding: 0.35em 0.125em 0.125em 0.45em;
@@ -641,7 +650,6 @@ header {
         padding: 0.4em 4em;
     }
 }
-
 /*============= ?dropdown =============*/
 .dropdown {
     width: 175px;

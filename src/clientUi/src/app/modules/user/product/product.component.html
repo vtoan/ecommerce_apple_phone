@@ -1,0 +1,16 @@
+<div class="product" [ngClass]="item.discount==0 ? '':'sale'">
+    <div class="product-img img-content">
+        <span class="product-sale"> - {{ item.discount | currency:' ':true:'0.0':'fr'  }} {{ item.discount % 1 == 0  ? "đ" :"%" }} </span>
+        <div class="img">
+            <img src="{{item.images[0]}}"  loading="lazy">
+        </div>
+        <a class="add-cart text-center d-none d-lg-block" (click)="onAddCart(item)" >Add to Cart</a>
+    </div>
+    <a (click)="onShowDetail(item)" class="product-content">
+        <h4 class="pb-2 normal"> {{item.name + item.rOM}}</h4>
+        <div class="text-center">
+            <p class="text-4 red bold d-block d-lg-inline-block m-0"> {{ item.price | currency:'VND':'symbol':'3.0-0':'fr'}}</p>
+            <del class="normal"> {{item.price  }} đ</del>
+        </div>
+    </a>
+</div>               
