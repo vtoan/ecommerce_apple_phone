@@ -1,4 +1,10 @@
 /*============= ?loading=============*/
+.container-loader{
+    position: relative;
+    padding: 3em 0;
+    height: inherit;
+}
+
 .loader {
     display: inline-block;
     position: absolute;

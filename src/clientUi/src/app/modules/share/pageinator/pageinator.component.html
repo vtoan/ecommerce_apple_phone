@@ -1,0 +1,4 @@
+<!--Pagnation-->
+<div class="pagnation contents section">
+    <span *ngFor="let item of pages" [ngClass]="selected==item ? 'muted': ''" class="btn page-item" (click)="change.emit(item);selected=item" >{{item}}</span>
+</div> 

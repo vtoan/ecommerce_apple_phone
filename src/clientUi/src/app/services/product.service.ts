@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient }  from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError,retry } from 'rxjs/operators';
 //models
 import { Product,ProductDetail, ProductAttr } from 'src/app/models/IModels';
@@ -30,19 +30,19 @@ export class ProductService {
     }
 
     getListBestSeller(): Observable<Product[]>{
-        return
+        return of(null);
     }
 
-    getListByCate(): Observable<Product[]>{
-        return
+    getListByCate(idCate:number): Observable<Product[]>{
+        return of(null);
     }
 
     getListDiscount(): Observable<Product[]>{
-        return
+        return of(null);
     }
 
-    search(): Observable<Product[]>{
-        return
+    search(query:string): Observable<Product[]>{
+        return of(null);
     }
     // product detail
 

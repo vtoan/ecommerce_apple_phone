@@ -1,5 +1,24 @@
-<div class="row">
-    <div *ngFor="let p of listProduct"  class="col-6 col-lg-3">
-        <app-product [product]="p" ></app-product>
+<div class="container">
+    <div *ngIf="isFilter" class="filter contents mb-4">
+        <div class="row align-content-center">
+            <!-- <div id="orderby" class="d-flex">
+                <a class="nav-item active" data-index="0" title="Phổ biến" >phổ biển</a>
+                <a class="nav-item" data-index="1" title="Giá cao">giá cao</a>
+                <a class="nav-item" data-index="2" title="Giá thấp">giá thấp</a>
+            </div> -->
+            <div class="ml-lg-auto pl-2 pl-lg-0">
+                <app-dropdown [listItem]="optOrder" (choose)="onChangeOrder($event)" ></app-dropdown>
+            </div>
+        </div>
     </div>
+    <div class="contents">
+        <div id="product-container">
+            <div class="row">
+                <div *ngFor="let p of listData"  class="col-6 col-lg-3">
+                    <app-product [product]="p" (onAddCart)="onAddCart($event)" (onShowDetail)="onShowDetail($event)" ></app-product>
+                </div>
+            </div>        
+        </div>
+    </div>    
+    <app-pageinator *ngIf="isPage"  [length]="pageNumber" (change)="onChangePage($event)" ></app-pageinator>
 </div>

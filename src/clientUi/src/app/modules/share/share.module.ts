@@ -5,13 +5,19 @@ import { LoaderComponent  } from './loader/loader.component';
 import { MessageComponent } from './message/message.component';
 import { NotifySnackBarComponent } from './notify-snack-bar/notify-snack-bar.component';
 import { SliderComponent } from './slider/slider.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { PageinatorComponent } from './pageinator/pageinator.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
     LoaderComponent,
     MessageComponent,
     NotifySnackBarComponent,
-    SliderComponent
+    SliderComponent,
+    DropdownComponent,
+    PageinatorComponent,
+    BreadcrumbComponent
   ],
   entryComponents:[
     MessageComponent,
@@ -24,7 +30,10 @@ import { SliderComponent } from './slider/slider.component';
     LoaderComponent,
     MessageComponent,
     NotifySnackBarComponent,
-    SliderComponent
+    SliderComponent,
+    DropdownComponent,
+    PageinatorComponent,
+    BreadcrumbComponent
   ]
 })
 export class ShareModule { }

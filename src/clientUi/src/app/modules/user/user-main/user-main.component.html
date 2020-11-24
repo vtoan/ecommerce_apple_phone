@@ -2,29 +2,31 @@
     <div class="row align-items-center">
         <!--Nav Mobile-->
         <div class="col-3 d-lg-none">
-            <a id="menu" (click)="isShowMenu= !isShowMenu" class="nav-item" href="#"><i class="icon las la-bars"></i></a>
+            <a id="menu" (click)="isShowMenu= !isShowMenu" class="nav-item" href="javascript:void(0)"><i class="icon las la-bars"></i></a>
         </div>
         <!--Title-->
         <div class="col-6 col-lg-2 text-center text-lg-left">
-            <h3 class="py-3">hommer house</h3>
+            <h3 class="py-3">
+                <a routerLink="/home">hommer house</a>
+            </h3>
         </div>
         <!--Nav Desktop-->
         <div class="col-6 col-lg-8 d-none d-lg-block">
             <nav class="nav-container">
-                <a class="nav-item" href="#">khuyến mãi</a>
-                <a class="nav-item" href="#">iphone</a>
-                <a class="nav-item" href="#">apple watch</a>
-                <a class="nav-item" href="#">phụ kiện</a>
-                <a class="nav-item" href="#">kiểm tra đơn hàng</a>
+                <a class="nav-item" routerLink="/discount">khuyến mãi</a>
+                <a class="nav-item" routerLink="/phone">iphone</a>
+                <a class="nav-item" routerLink="/watch">apple watch</a>
+                <a class="nav-item" routerLink="/other">phụ kiện</a>
+                <a class="nav-item" routerLink="/check-order">kiểm tra đơn hàng</a>
             </nav>
         </div>
         <!--Cart shopping-->
         <div class="col-3 col-lg-2 d-lg-block">
             <div class="d-flex justify-content-end">
-                <a class="nav-item nav-icon d-none d-lg-block" (click)="isShowSearch= !isShowSearch" href="#">
+                <a class="nav-item nav-icon d-none d-lg-block" (click)="isShowSearch= !isShowSearch" href="javascript:void(0)">
                     <i id="search" class="icon las la-search" ></i>
                 </a>
-                <a class="nav-item nav-icon" href="#">
+                <a class="nav-item nav-icon" routerLink="/cart">
                     <div class="cart-shopping">
                         <i class="icon las la-shopping-cart"></i>
                         <span id="cart-items" class="white bg-red">{{countItemCart}}</span>
@@ -36,13 +38,13 @@
     <!--Side Menu mobile-->
     <div class="nav-mobile d-lg-none" [ngClass] ="isShowMenu ? 'show-item' : 'hide-item'">
         <nav class="nav-container flex-column bg-white">
-            <a class="nav-item" href="#">trang chủ</a>
+            <a class="nav-item" routerLink="/home">trang chủ</a>
             <a class="nav-item" (click)="isShowSearch = !isShowSearch ; isShowMenu= !isShowMenu"  href="#">tìm kiếm</a>
-            <a class="nav-item" href="#">khuyến mãi</a>
-            <a class="nav-item" href="#">iphone</a>
-            <a class="nav-item" href="#">apple watch</a>
-            <a class="nav-item" href="#">phụ kiện</a>
-            <a class="nav-item" href="#">kiểm tra đơn hàng</a>
+            <a class="nav-item" routerLink="/discount">khuyến mãi</a>
+            <a class="nav-item" routerLink="/phone">iphone</a>
+            <a class="nav-item" routerLink="/watch">apple watch</a>
+            <a class="nav-item" routerLink="/other">phụ kiện</a>
+            <a class="nav-item" routerLink="/check-order">kiểm tra đơn hàng</a>
             <i class="btn-classic red big-icon icon las la-times" (click)="isShowMenu= !isShowMenu"></i>
         </nav>
         <span class="overlay bg-black" (click)="isShowMenu= !isShowMenu" ></span>
@@ -55,9 +57,11 @@
         </div>
     </div>
 </header>
-<main style="height: 500px;">
+
+<main style="min-height: 500px;">
     <router-outlet></router-outlet>
 </main>
+
 <footer>
     <!--Policy-->
     <div class="container policy mb-2">

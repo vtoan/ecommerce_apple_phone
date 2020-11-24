@@ -161,3 +161,22 @@ main {
         }
     }
 }
+
+/*========== cart-icon ==========*/
+.cart-shopping {
+    position: relative;
+}
+
+.cart-shopping > #cart-items {
+    top: -40%;
+    right: -40%;
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
+    height: 19px;
+}
+
