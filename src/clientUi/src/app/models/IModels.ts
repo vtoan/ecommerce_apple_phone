@@ -39,14 +39,16 @@ interface Product {
     price:number;
     saleCount:number;
     discount:number;
+    color:string;
+    quantity:number;
 }
 
 interface ProductAttr {
-    id:number;
+    // id:number;
     color:string;
-    saleCount:number;
-    price:number;
-    images:string;
+    // saleCount:number;
+    // price:number;
+    // images:string;
     quantity:number;
 }
 
@@ -91,6 +93,7 @@ interface Order {
     questName:string;
     questPhone:string;
     questProvince:string;
+    questDistrict:string;
     questEmail:string;
     questAddress:string;
     note:string;

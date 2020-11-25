@@ -35,7 +35,9 @@ export class ListProductComponent implements OnInit {
 				categoryId:1,
 				price:3480 *index,
 				saleCount:100,
-				discount:0.1,
+                discount:0.1,
+                quantity:10,
+                color:"REd"
 			})
 			
 		}

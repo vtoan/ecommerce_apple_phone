@@ -67,12 +67,12 @@ export class ProductService {
     }
 
     // product attribute
-    getListAttr(): Observable<ProductAttr[]>{
+    getListAttr(): Observable<Product[]>{
         return
     }
 
-    getAttr(id:number): Observable<ProductAttr>{
-        return
+    getAttr(id:number): Observable<Product>{
+        return of(null)
     }
 
     addAttr(idCate:number, product:ProductDetail): Observable<ProductDetail>{

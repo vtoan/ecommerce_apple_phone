@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+
 //sub-module
 import { UserRoutingModule } from './user-routing.module';
 import { ShareModule } from '../share/share.module';
@@ -18,14 +21,18 @@ import { CheckOrderComponent } from './check-order/check-order.component';
 import { WatchComponent } from './watch/watch.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { SearchProductComponent } from './search-product/search-product.component';
+import { CartItemComponent } from './cart-item/cart-item.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 @NgModule({
-  declarations: [UserMainComponent, ErrorComponent, HomeComponent, ListProductComponent, CartComponent, ProductComponent, DiscountComponent, PhoneComponent, OtherComponent, CheckOrderComponent, WatchComponent, ProductDetailComponent, SearchProductComponent],
+  declarations: [UserMainComponent, ErrorComponent, HomeComponent, ListProductComponent, CartComponent, ProductComponent, DiscountComponent, PhoneComponent, OtherComponent, CheckOrderComponent, WatchComponent, ProductDetailComponent, SearchProductComponent, CartItemComponent, OrderDetailComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
     ShareModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers:[
   ]

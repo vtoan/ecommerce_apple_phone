@@ -11,7 +11,7 @@ export class CartService {
     private cart: Cart = {
         item: [],
     };
-    subject = new Subject<number>();
+    subject = new Subject<OrderDetail[]>();
 
     constructor(private cookie: CookieService) {}
 
@@ -34,13 +34,15 @@ export class CartService {
 
     reduceQuantity(id: number): void {
         let idx = this.cart.item.findIndex((item) => item.productId == id);
-        if (idx != -1) this.cart.item[idx].quantity--;
+        if (idx == -1) return;
+        this.cart.item[idx].quantity--;
         this.notifyChange();
     }
 
     remove(id: number): void {
         let idx = this.cart.item.findIndex((item) => item.productId == id);
-        if (idx != -1) this.cart.item.splice(idx, 1);
+        if (idx == -1) return;
+        this.cart.item.splice(idx, 1);
         this.notifyChange();
     }
 
@@ -53,14 +55,39 @@ export class CartService {
         this.notifyChange();
     }
 
-    getLength(): number {
-        return this.cart.item.reduce((accur, val) => (accur += val.quantity), 0)
+    getQuantity(id?: number) {
+        if (!id) {
+            if (!this.cart.item || this.cart.item.length == 0) return 0;
+            return this.cart.item.reduce(
+                (accur, val) => (accur += val.quantity),
+                0
+            );
+        }
+        let idx = this.cart.item.findIndex((item) => item.productId == id);
+        if (idx == -1) return 0;
+        return this.cart.item[idx].quantity;
     }
 
     retriveCart(): void {
-        let rawVal = this.cookie.get("cart-items");
-        if (rawVal && rawVal.length > 0) this.cart = JSON.parse(rawVal);
-        this.notifyChange();
+        // let rawVal = this.cookie.get("cart-items");
+        // if (rawVal && rawVal.length > 0) this.cart = JSON.parse(rawVal);
+        // this.notifyChange();
+        this.cart.item = [
+            {
+                orderId: 0,
+                productId: 1,
+                quantity: 2,
+                price: 0,
+                discount: 0,
+            },
+            {
+                orderId: 0,
+                productId: 3,
+                quantity: 1,
+                price: 0,
+                discount: 0,
+            },
+        ];
     }
 
     saveCart(): void {
@@ -69,9 +96,7 @@ export class CartService {
     }
 
     notifyChange(): void {
-        this.subject.next(
-            this.getLength()
-        );
+        this.subject.next(this.cart.item);
     }
 }
 

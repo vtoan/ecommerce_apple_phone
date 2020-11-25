@@ -15,7 +15,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
     // ===== prop ======
     isShowMenu: boolean;
     isShowSearch: boolean;
-    countItemCart: number = 1;
+    countItemCart: number = 0;
     info: Info = {
         nameStore: "sad",
         logo: "sad",
@@ -40,11 +40,6 @@ export class UserMainComponent implements OnInit, OnDestroy {
     // ===== method ======
     ngOnInit() {
         //
-        this.cartService.subject.subscribe((val) => {
-            this.countItemCart = val;
-            console.log(val);
-        });
-        //
         this.cartService.retriveCart();
         //
         this.infoService.get().subscribe(
@@ -53,6 +48,15 @@ export class UserMainComponent implements OnInit, OnDestroy {
             },
             (err) => console.log(err)
         );
+
+        //
+        this.countItemCart = this.cartService.getQuantity();
+        this.cartService.subject.subscribe((val) => {
+            this.countItemCart = val.reduce(
+                (accur, val) => (accur += val.quantity),
+                0
+            );
+        });
     }
 
     search(e, query) {

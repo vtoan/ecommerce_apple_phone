@@ -13,6 +13,7 @@ import { CheckOrderComponent } from "./check-order/check-order.component";
 import { CartComponent } from "./cart/cart.component";
 import { ProductDetailComponent } from "./product-detail/product-detail.component";
 import { SearchProductComponent } from "./search-product/search-product.component";
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 //
 const routes: Routes = [
     {
@@ -25,10 +26,11 @@ const routes: Routes = [
             { path: "other", component: OtherComponent },
             { path: "watch", component: WatchComponent },
             { path: "check-order", component: CheckOrderComponent },
+            { path: "order-detail", component: OrderDetailComponent },
             { path: "cart", component: CartComponent },
             { path: "product-detail/:id", component: ProductDetailComponent },
             { path: "search/:query", component: SearchProductComponent },
-            { path: "**", redirectTo:"home", pathMatch:"full" },
+            { path: "**", component:ErrorComponent},
         ],
     },
     { path: "", redirectTo: "home", pathMatch: "full" },
