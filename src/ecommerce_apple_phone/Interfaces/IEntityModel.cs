@@ -56,10 +56,10 @@ namespace ecommerce_apple_phone.Interfaces {
         bool RemoveDTO (int id);
         bool UpdateStatusDTO (int productId, int status);
         //Attribute Product
-        List<ProductAttrDTO> GetListAttrDTOs (int productId);
-        ProductAttrDTO GetAttrDTO (int attrId);
-        ProductAttrDTO AddAttrDTOs (int attrId, ProductAttrDTO productAttrDTO);
-        bool UpdateAttrDTO (int attrId, ProductAttrDTO productAttrDTO);
+        List<ProductDTO> GetListAttrDTOs (int productId);
+        ProductDTO GetAttrDTO (int attrId);
+        ProductDTO AddAttrDTOs (int attrId, ProductDTO productDTO);
+        bool UpdateAttrDTO (int attrId, ProductDTO productDTO);
         bool RemoveAttrDTO (int attrId);
         bool UpdateStatusAttrDTO (int attrId, int status);
     }

@@ -42,12 +42,17 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost ("image-seo")]
-        public ActionResult UpdateImageSEO ([FromServices] IWebHostEnvironment environment, IFormFile file) {
-            if (file != null) {
-                string urlRes = "/image_seo";
-                string filePath = Path.Combine (Path.Combine (environment.WebRootPath, urlRes), file.Name);
-                using (var fileStream = new FileStream (filePath, FileMode.Create)) {
-                    file.CopyTo (fileStream);
+        public ActionResult UpdateImageSEO ([FromServices] IWebHostEnvironment environment, IFormFile image) {
+            if (image != null) {
+                //Check folder
+                string urlRes = "image_seo";
+                string folderPath = Path.Combine (environment.WebRootPath, urlRes);
+                if (!Directory.Exists (folderPath))
+                    Directory.CreateDirectory (folderPath);
+                //Save file
+                string filePath = Path.Combine (folderPath, image.FileName);
+                using (var fileStream = new FileStream (filePath, FileMode.OpenOrCreate)) {
+                    image.CopyTo (fileStream);
                 }
                 return Ok ();
             }

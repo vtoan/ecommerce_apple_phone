@@ -1,0 +1,10 @@
+<div class="dropdown" [ngClass]="isShow ? 'active' : ''" (click)="isShow=!isShow" >
+    <div class="select">
+        <span>{{ defName  }}</span>
+        <i class="las la-angle-down"></i>
+    </div>
+    <input id="filter" type="hidden" name="filter">
+        <ul class="dropdown-menu bg-white" [ngClass]="isShow ? 'd-block' : ''">
+        <li *ngFor="let item of listItem; let i=index" (click)="choose.emit(i);defName =item" > {{item}} </li>  
+    </ul> 
+</div>

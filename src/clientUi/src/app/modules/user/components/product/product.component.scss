@@ -1,0 +1,112 @@
+@import 'src/color.scss';
+/*============= product =============*/
+.product {
+    padding-bottom: 3em;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+}
+
+.product .product-img {
+    margin-bottom: 1em;
+}
+
+.product .product-content {
+    cursor: pointer;
+    width: 100%;
+}
+
+.product .product-sale,
+.product del {
+    display: none;
+}
+
+.product.sale .product-sale,
+.product.sale del {
+    display: inline-block;
+}
+
+.product.sale .product-img .product-sale {
+    position: absolute;
+    left: 3%;
+    top: 3%;
+    font-size: 1.125em;
+    font-weight: bold;
+    padding: 0.35em 0.75em;
+    color: $color-white;
+    background-color: $color-red;
+    z-index: 100;
+    min-width: 50px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media only screen and (min-width: 62em) {
+    .product {
+        padding-bottom: 4em;
+    }
+
+    .product-text {
+        padding: 0 6em;
+    }
+
+    .product-text p {
+        font-size: 1.25em;
+    }
+
+    .product.sale .product-img::before {
+        padding: 0.5em 1em !important;
+    }
+
+    .product .product-img .add-cart {
+        position: absolute;
+        color: $color-white;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.8em 2em;
+        margin-left: 3em;
+        transition: all 0.16s;
+        opacity: 0;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+    .product .product-img::after {
+        content: "\f217";
+        display: block;
+        right: 0;
+        bottom: 0;
+        width: 1.9em;
+        color: $color-white;
+        font-size: 20px;
+        font-weight: 900;
+        position: absolute;
+        border-top-left-radius: 25%;
+        transition: all 0.15s ease-in-out, border-radius 0.15s linear;
+        font-family: "Line Awesome Free";
+        background-color: $color-black;
+        padding: 0.35em 0.125em 0.125em 0.45em;
+        z-index: 98;
+    }
+
+    .product .product-img:hover .add-cart {
+        opacity: 1;
+        z-index: 99;
+    }
+
+    .product .product-img:hover::after {
+        border-radius: 0;
+        width: 100%;
+        padding: 0.4em 4em;
+    }
+}

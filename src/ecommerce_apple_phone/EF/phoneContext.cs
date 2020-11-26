@@ -65,43 +65,43 @@ namespace ecommerce_apple_phone.EF {
         [Key]
         public int Id { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Name { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Screen { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string FontCamera { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string RearCamera { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string OperationSystem { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Chipset { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string ROM { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string RAM { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Connector { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Parameter { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Weight { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Battery { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string FunctionOther { get; set; }
         public bool? isShow { get; set; }
         public bool? isDel { get; set; }
@@ -274,8 +274,10 @@ namespace ecommerce_apple_phone.EF {
         [StringLength (50)]
         public string QuestPhone { get; set; }
 
-        [StringLength (25)]
+        [StringLength (50)]
         public string QuestProvince { get; set; }
+        [StringLength (50)]
+        public string QuestDistrict { get; set; }
 
         [StringLength (35)]
         public string QuestEmail { get; set; }
