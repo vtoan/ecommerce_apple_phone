@@ -29,24 +29,13 @@ export class FeeService {
     }
 
     getList(): Observable<Fee[]> {
-        return of([
-            {
-                id: 1,
-                name: "Ship",
-                cost: 30000,
-            },
-            {
-                id: 2,
-                name: "Tax",
-                cost: 0.1,
-            },
-        ]);
-        // return this.http
-        // .get<Fee[]>(this.apiUrl)
-        // .pipe(
-        //     retry(3),
-        //     catchError(this.interceptor.handleError<Fee[]>('Get list data',[]))
-        // )
+        
+        return this.http
+        .get<Fee[]>(this.apiUrl)
+        .pipe(
+            retry(3),
+            catchError(this.interceptor.handleError<Fee[]>('Get list data',[]))
+        )
     }
 
     add(fee: Fee): Observable<Fee> {

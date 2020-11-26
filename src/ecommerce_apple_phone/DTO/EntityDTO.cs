@@ -42,16 +42,18 @@ namespace ecommerce_apple_phone.DTO {
         public double? Price { get; set; }
         public int? SaleCount { get; set; }
         public double? Discount { get; set; }
-    }
-
-    public class ProductAttrDTO {
-        public int Id { get; set; }
         public string Color { get; set; }
-        public int? SaleCount { get; set; }
-        public double? Price { get; set; }
-        public string Images { get; set; }
         public int? Quantity { get; set; }
     }
+
+    // public class ProductAttrDTO {
+    //     public int Id { get; set; }
+    //     public string Color { get; set; }
+    //     public int? SaleCount { get; set; }
+    //     public double? Price { get; set; }
+    //     public string Images { get; set; }
+    //     public int? Quantity { get; set; }
+    // }
 
     public class ProductDetailDTO {
         public string Screen { get; set; }
@@ -94,6 +96,7 @@ namespace ecommerce_apple_phone.DTO {
         public string QuestName { get; set; }
         public string QuestPhone { get; set; }
         public string QuestProvince { get; set; }
+        public string QuestDistrict { get; set; }
         public string QuestEmail { get; set; }
         public string QuestAddress { get; set; }
         public string Note { get; set; }

@@ -44,6 +44,7 @@ export class InfoComponent implements OnInit {
         .subscribe(resp => {
             this.isLoaded=true;
             this.info = resp;
+            this.formValidate.patchValue(resp);
         },er => this.isLoaded=true )  
     }
 

@@ -28,7 +28,7 @@ export class CheckOrderComponent implements OnInit {
     checkOrder(query: string) {
         this.img.nativeElement.style="display:none;";
         this.isRequest = true;
-        this.orderService.getById(this.queryOrder.value).subscribe(
+        this.orderService.get(this.queryOrder.value).subscribe(
             (val) => {
                 this.order = val;
             },

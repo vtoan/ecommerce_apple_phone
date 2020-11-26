@@ -139,7 +139,7 @@ namespace ecommerce_apple_phone.Controllers {
         // =============== Sub attibute product ===============
         #region Attribute Product
         [HttpGet ("attr/{id}")]
-        public ActionResult<List<ProductAttrDTO>> GetListAttr (int id) {
+        public ActionResult<List<ProductDTO>> GetListAttr (int id) {
             if (id <= 0) return BadRequest ();
             var re = _productModel.GetListAttrDTOs (id);
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
@@ -147,8 +147,8 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost ("attr/{id}")]
-        public ActionResult AddProductAttr (int id, ProductAttrDTO ProductAttrDTO) {
-            var modified = new PropModified<ProductAttrDTO> (ProductAttrDTO);
+        public ActionResult AddProductAttr (int id, ProductDTO ProductAttrDTO) {
+            var modified = new PropModified<ProductDTO> (ProductAttrDTO);
             if (!modified.isChanged || id <= 0) return BadRequest ();
             var re = _productModel.AddAttrDTOs (id, ProductAttrDTO);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
@@ -156,8 +156,8 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPut ("attr/{id}")]
-        public ActionResult UpdateProductAttr (int id, ProductAttrDTO productAttrDTO) {
-            var modified = new PropModified<ProductAttrDTO> (productAttrDTO);
+        public ActionResult UpdateProductAttr (int id, ProductDTO productAttrDTO) {
+            var modified = new PropModified<ProductDTO> (productAttrDTO);
             if (!modified.isChanged || id <= 0) return BadRequest ();
             var re = _productModel.UpdateAttrDTO (id, productAttrDTO);
             if (!re) return Problem (statusCode: 500, detail: "Can't update data");

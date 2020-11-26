@@ -14,7 +14,7 @@ import { MessageService } from '../services/message.service';
 export class HttpInterceptorService implements HttpInterceptor {
 
     httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET' })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, PUT' })
     };
 
     constructor(
@@ -29,7 +29,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     handleError<T>(operation = 'operation', result?) {
         return (error: any): Observable<T> => {
-            let erMsg = error.error.detail;
+            let erMsg = error.error ?  error.error.detail : null;
             if (!erMsg) erMsg =  error.statusText +"\n"+ error.url;
             this.message.showFail(error.status+" - "+ erMsg,operation);
             console.log(error);
