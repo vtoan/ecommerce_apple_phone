@@ -9,8 +9,8 @@ using ecommerce_apple_phone.Interfaces;
 namespace ecommerce_apple_phone.Models {
     public abstract class BaseModel<T, V> where V : class {
 
-        private PhoneContext _context;
-        private IMapper _mapper;
+        protected PhoneContext _context;
+        protected IMapper _mapper;
 
         public BaseModel (PhoneContext context, IMapper mapper) {
             _context = context;
@@ -44,10 +44,10 @@ namespace ecommerce_apple_phone.Models {
             return db.Remove (id);
         }
 
-        public bool UpdateDTO (int idSrc, T objVM) {
+        public bool UpdateDTO (int idSrc, T objVM, string[] ignore = null) {
             if (idSrc < 0 || objVM == null) return false;
             V obj = ObjectMapperTo<T, V> (objVM);
-            PropModified<V> modifieds = new PropModified<V> (obj);
+            PropModified<V> modifieds = new PropModified<V> (obj, ignore);
             if (!modifieds.isChanged) return false;
             //
             using (EntityDAO<V> db = new EntityDAO<V> (_context))

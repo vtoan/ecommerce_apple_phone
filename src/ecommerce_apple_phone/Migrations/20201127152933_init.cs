@@ -172,25 +172,6 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PromMethodPays",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    Discount = table.Column<double>(nullable: true),
-                    MethodPayId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PromMethodPays", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PromMethodPays_Promotions_Id",
-                        column: x => x.Id,
-                        principalTable: "Promotions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PromPoints",
                 columns: table => new
                 {
@@ -216,8 +197,7 @@ namespace ecommerce_apple_phone.Migrations
                     Id = table.Column<int>(nullable: false),
                     Discount = table.Column<double>(nullable: true),
                     ProductInProms = table.Column<string>(maxLength: 250, nullable: true),
-                    CategoryId = table.Column<int>(nullable: true),
-                    BandId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -341,11 +321,11 @@ namespace ecommerce_apple_phone.Migrations
                     Price = table.Column<double>(nullable: false),
                     Color = table.Column<string>(maxLength: 25, nullable: true),
                     SaleCount = table.Column<int>(nullable: false, defaultValue: 0),
-                    Images = table.Column<string>(maxLength: 50, nullable: true),
+                    Images = table.Column<string>(nullable: true),
                     Quantity = table.Column<int>(nullable: false),
                     isShow = table.Column<bool>(nullable: true, defaultValue: true),
                     isDel = table.Column<bool>(nullable: true, defaultValue: false),
-                    ProductId = table.Column<int>(nullable: false)
+                    ProductId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -355,7 +335,7 @@ namespace ecommerce_apple_phone.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -444,9 +424,6 @@ namespace ecommerce_apple_phone.Migrations
 
             migrationBuilder.DropTable(
                 name: "PromBills");
-
-            migrationBuilder.DropTable(
-                name: "PromMethodPays");
 
             migrationBuilder.DropTable(
                 name: "PromPoints");

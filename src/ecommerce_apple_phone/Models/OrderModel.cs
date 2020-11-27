@@ -21,10 +21,6 @@ namespace ecommerce_apple_phone.Models {
             throw new NotImplementedException ();
         }
 
-        public double FindPromMethodPay (int methodPay, List<PromMethodPayDTO> promMethodPayDTOs) {
-            throw new NotImplementedException ();
-        }
-
         public double FindPromPoint (int pointUse, List<PromPointDTO> promPointDTOs) {
             throw new NotImplementedException ();
         }

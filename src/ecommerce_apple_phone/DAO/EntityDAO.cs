@@ -7,7 +7,7 @@ using ecommerce_apple_phone.Helper;
 namespace ecommerce_apple_phone.DAO {
     public class EntityDAO<T> : IDisposable where T : class {
 
-        private PhoneContext _context;
+        protected PhoneContext _context;
 
         public EntityDAO (PhoneContext context) {
             _context = context;

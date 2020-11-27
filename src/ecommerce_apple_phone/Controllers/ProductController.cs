@@ -35,10 +35,7 @@ namespace ecommerce_apple_phone.Controllers {
         [HttpGet ("[action]/{stringId}")]
         public ActionResult<List<ProductDTO>> FindByIds (string stringId) {
             if (stringId == null || stringId.Length <= 0) return BadRequest ();
-            int[] arIds = stringId.Split (",")
-                .Where (item => item != "")
-                .Select (item => Int32
-                    .Parse (item)).ToArray ();
+            string[] arIds = stringId.Split (",");
             //
             var re = GetListProducts ();
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
@@ -121,9 +118,9 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPut ("status/{id}")]
-        public ActionResult UpdateStatus (int id, int status) {
-            if (status <= 0 || id <= 0) return BadRequest ();
-            var re = _productModel.UpdateStatusAttrDTO (id, status);
+        public ActionResult UpdateStatus (int id, bool status) {
+            if (id <= 0) return BadRequest ();
+            var re = _productModel.UpdateStatusDTO (id, status);
             if (!re) return Problem (statusCode: 500, detail: "Can't update status data");
             return Ok ();
         }
@@ -165,8 +162,8 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPut ("attr/status/{id}")]
-        public ActionResult UpdateStatusAttr (int id, int status) {
-            if (status <= 0 || id <= 0) return BadRequest ();
+        public ActionResult UpdateStatusAttr (int id, bool status) {
+            if (id <= 0) return BadRequest ();
             var re = _productModel.UpdateStatusAttrDTO (id, status);
             if (!re) return Problem (statusCode: 500, detail: "Can't update status data");
             return Ok ();
@@ -182,16 +179,10 @@ namespace ecommerce_apple_phone.Controllers {
         #endregion
         // ===============  ===============
         [HttpPost ("image")]
-        public ActionResult UpdateImageSEO ([FromServices] IWebHostEnvironment environment, IFormFile file) {
-            if (file != null) {
-                string urlRes = "/products";
-                string filePath = Path.Combine (Path.Combine (environment.WebRootPath, urlRes), file.Name);
-                using (var fileStream = new FileStream (filePath, FileMode.Create)) {
-                    file.CopyTo (fileStream);
-                }
-                return Ok ();
-            }
-            return BadRequest ();
+        public ActionResult UpdateImageSEO ([FromServices] IUploadService upload, IFormFile file) {
+            if(file==null) return BadRequest();
+            if(!upload.UploadFile(file,"product")) return  Problem (statusCode: 500, detail: "Can't upload file");
+            return Ok();
         }
 
         [NonAction]

@@ -26,7 +26,7 @@ namespace ecommerce_apple_phone {
 
         public IConfiguration Configuration { get; }
 
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        // readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
@@ -38,8 +38,7 @@ namespace ecommerce_apple_phone {
             //======== DbContext  ========
             services.AddDbContext<PhoneContext> (
                 options => options.UseSqlServer (Configuration.GetConnectionString ("Default")));
-            //======== Models  ========
-            services.AddModels (this.Configuration);
+            
             //======== SPA  ========
             // services.AddSpaStaticFiles (configuration => {
             //     configuration.RootPath = "clientUi/dist";
@@ -47,23 +46,23 @@ namespace ecommerce_apple_phone {
             // services.AddControllersWithViews ();
 
             //======== CORS  ========
-            services.AddCors (options => {
-                options.AddPolicy (name: MyAllowSpecificOrigins,
-                    builder => {
-                        builder
-                            .WithOrigins ("http://localhost:4200")
-                            .AllowAnyHeader ()
-                            .AllowAnyMethod ();;
-                    });
-            });
+            // services.AddCors (options => {
+            //     options.AddPolicy (name: MyAllowSpecificOrigins,
+            //         builder => {
+            //             builder
+            //                 .WithOrigins ("http://localhost:4200")
+            //                 .AllowAnyHeader ()
+            //                 .AllowAnyMethod ();;
+            //         });
+            // });
             //======== Other  ========
             services.AddMemoryCache ();
-
-            services.AddSingleton<ICacheHelper, CacheHelper> ();
-
             services.AddAutoMapper (typeof (MapperConfig).Assembly);
             services.AddControllers ();
-            services.AddSingleton<IMailSenderService, EmailSender> ();
+            //======== Models  ========
+            services.AddModels (this.Configuration);
+            //======== SUb Serivce  ========
+            services.AddSubServices(this.Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,7 +80,7 @@ namespace ecommerce_apple_phone {
 
             app.UseRouting ();
 
-            app.UseCors (MyAllowSpecificOrigins);
+            // app.UseCors (MyAllowSpecificOrigins);
 
             app.UseAuthorization ();
 

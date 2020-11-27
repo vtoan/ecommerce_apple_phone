@@ -6,8 +6,13 @@ namespace ecommerce_apple_phone.Helper {
 
         public bool isChanged { get; }
 
-        public PropModified (T target) {
-            GetOf (target);
+        public PropModified (object target,string[] ignore = null) {
+            GetOf (target,ignore);
+            isChanged = modifiedProps.Count == 0 ? false : true;
+        }
+
+        public PropModified (T target,string[] ignore = null) {
+            GetOf (target,ignore);
             isChanged = modifiedProps.Count == 0 ? false : true;
         }
 
@@ -22,7 +27,7 @@ namespace ecommerce_apple_phone.Helper {
             return true;
         }
 
-        public Dictionary<string, dynamic> GetOf (T target, string[] ignore = null) {
+        public Dictionary<string, dynamic> GetOf (object target, string[] ignore = null) {
             modifiedProps = new Dictionary<string, dynamic> ();
             if (target == null) return modifiedProps;
             var srcProps = target.GetType ().GetProperties ();

@@ -31,13 +31,6 @@ namespace ecommerce_apple_phone.Controllers {
             return re;
         }
 
-        [HttpGet ("method-pay")]
-        public ActionResult<List<PromMethodPayDTO>> GetPromMethodPay () {
-            var re = _promModel.GetListDTOsPromMethodPay ();
-            if (re == null || re.Count == 0) return Problem (statusCode: 500, detail: "Data not exist");
-            return re;
-        }
-
         [HttpGet ("point")]
         public ActionResult<List<PromPointDTO>> GetPromPoint () {
             var re = _promModel.GetListDTOsPromPoint ();

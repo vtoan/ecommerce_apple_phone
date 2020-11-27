@@ -16,10 +16,6 @@ namespace ecommerce_apple_phone.Models {
             throw new System.NotImplementedException ();
         }
 
-        public List<PromMethodPayDTO> GetListDTOsPromMethodPay () {
-            throw new System.NotImplementedException ();
-        }
-
         public List<PromPointDTO> GetListDTOsPromPoint () {
             throw new System.NotImplementedException ();
         }

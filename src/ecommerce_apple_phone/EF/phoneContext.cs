@@ -26,7 +26,6 @@ namespace ecommerce_apple_phone.EF {
         public DbSet<PromProduct> PromProducts { get; set; }
         public DbSet<PromBill> PromBills { get; set; }
         public DbSet<PromPoint> PromPoints { get; set; }
-        public DbSet<PromMethodPay> PromMethodPays { get; set; }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder) {
             base.OnModelCreating (modelBuilder);
@@ -124,15 +123,13 @@ namespace ecommerce_apple_phone.EF {
         [StringLength (25)]
         public string Color { get; set; }
         public int SaleCount { get; set; }
-
-        [StringLength (50)]
         public string Images { get; set; }
         public int Quantity { get; set; }
         public bool? isShow { get; set; }
         public bool? isDel { get; set; }
 
         [ForeignKey ("Product")]
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
         //
         public Product Product { get; set; }
     }
@@ -326,6 +323,7 @@ namespace ecommerce_apple_phone.EF {
         //Nav property
         public PromProduct PromProduct { get; set; }
         public PromBill PromBill { get; set; }
+        public PromPoint PromPoint { get; set; }
     }
 
     public class PromBill {
@@ -350,7 +348,6 @@ namespace ecommerce_apple_phone.EF {
         [StringLength (250)]
         public string ProductInProms { get; set; }
         public int? CategoryId { get; set; }
-        public int? BandId { get; set; }
         //Nav property
         public Promotion Promotion { get; set; }
     }
@@ -365,16 +362,4 @@ namespace ecommerce_apple_phone.EF {
         //Nav property
         public Promotion Promotion { get; set; }
     }
-
-    public class PromMethodPay {
-        [Key]
-        [ForeignKey ("Promotion")]
-        [DatabaseGenerated (DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
-        public double? Discount { get; set; }
-        public int? MethodPayId { get; set; }
-        //Nav property
-        public Promotion Promotion { get; set; }
-    }
-
 }

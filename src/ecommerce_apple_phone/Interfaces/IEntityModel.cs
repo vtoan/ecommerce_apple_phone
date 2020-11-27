@@ -15,7 +15,7 @@ namespace ecommerce_apple_phone.Interfaces {
 
     public interface IAddDTO<T> { T AddDTO (T newObj); }
 
-    public interface IUpdateDTO<T> { bool UpdateDTO (int idSrc, T objVM); }
+    public interface IUpdateDTO<T> { bool UpdateDTO (int idSrc, T objVM, string[] ignore = null); }
 
     public interface IRemoveDTO { bool RemoveDTO (int id); }
 
@@ -44,24 +44,24 @@ namespace ecommerce_apple_phone.Interfaces {
         bool UpdateForImport (List<ImportDetailDTO> importDetailDTOs);
         void AttachDiscount (ref List<ProductDTO> productDTOs, List<PromProductDTO> promProductDTOs);
         List<ProductDTO> FindByString (List<ProductDTO> productDTOs, string query);
-        List<ProductDTO> FindByIds (List<ProductDTO> productDTOs, int[] arIds);
+        List<ProductDTO> FindByIds (List<ProductDTO> productDTOs, string[] arIds);
         List<ProductDTO> FindBestSeller (List<ProductDTO> productDTOs);
         List<ProductDTO> FindByCate (List<ProductDTO> productDTOs, int cateId);
         List<ProductDTO> FindPromotion (List<ProductDTO> productDTOs);
-        List<ProductDTO> GetListDTOs ();
         //Product
         ProductDetailDTO GetDetailDTO (int id);
-        ProductDTO AddDTOs (int cateId, ProductDetailDTO productDetailDTO);
+        ProductDetailDTO AddDTOs (int cateId, ProductDetailDTO productDetailDTO);
         bool UpdateDTO (int productId, ProductDetailDTO productDetailDTO);
         bool RemoveDTO (int id);
-        bool UpdateStatusDTO (int productId, int status);
+        bool UpdateStatusDTO (int productId, bool status);
         //Attribute Product
-        List<ProductDTO> GetListAttrDTOs (int productId);
+        List<ProductDTO> GetListDTOs (bool admin =false);
+        List<ProductDTO> GetListAttrDTOs (int productId , bool admin =false);
         ProductDTO GetAttrDTO (int attrId);
         ProductDTO AddAttrDTOs (int attrId, ProductDTO productDTO);
         bool UpdateAttrDTO (int attrId, ProductDTO productDTO);
         bool RemoveAttrDTO (int attrId);
-        bool UpdateStatusAttrDTO (int attrId, int status);
+        bool UpdateStatusAttrDTO (int attrId, bool status);
     }
 
     public interface IPostModel : IGetDTO<PostDTO>, IAddDTO<PostDTO>, IUpdateDTO<PostDTO>, IRemoveDTO { }
@@ -83,7 +83,6 @@ namespace ecommerce_apple_phone.Interfaces {
         int GetdPoint (double totalAmout, List<PromPointDTO> promPointDTOs);
         // 
         double FindPromBill (double totalAmout, int totalItem, List<PromBillDTO> promBillDTOs);
-        double FindPromMethodPay (int methodPay, List<PromMethodPayDTO> promMethodPayDTOs);
         double FindPromPoint (int pointUse, List<PromPointDTO> promPointDTOs);
     }
 
@@ -102,7 +101,6 @@ namespace ecommerce_apple_phone.Interfaces {
         bool UpdateDTO (int id, PromotionDTO promotionDTO, object promDetail);
         List<PromProductDTO> GetListDTOsPromProduct ();
         List<PromBillDTO> GetListDTOsPromBill ();
-        List<PromMethodPayDTO> GetListDTOsPromMethodPay ();
         List<PromPointDTO> GetListDTOsPromPoint ();
     }
 

@@ -10,7 +10,7 @@ using ecommerce_apple_phone.EF;
 namespace ecommerce_apple_phone.Migrations
 {
     [DbContext(typeof(PhoneContext))]
-    [Migration("20201126115222_init")]
+    [Migration("20201127152933_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -416,13 +416,12 @@ namespace ecommerce_apple_phone.Migrations
                         .HasMaxLength(25);
 
                     b.Property<string>("Images")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -469,22 +468,6 @@ namespace ecommerce_apple_phone.Migrations
                     b.ToTable("PromBills");
                 });
 
-            modelBuilder.Entity("ecommerce_apple_phone.EF.PromMethodPay", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("MethodPayId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PromMethodPays");
-                });
-
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromPoint", b =>
                 {
                     b.Property<int>("Id")
@@ -504,9 +487,6 @@ namespace ecommerce_apple_phone.Migrations
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromProduct", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BandId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
@@ -633,9 +613,7 @@ namespace ecommerce_apple_phone.Migrations
                 {
                     b.HasOne("ecommerce_apple_phone.EF.Product", "Product")
                         .WithMany("ProductDetails")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromBill", b =>
@@ -647,20 +625,11 @@ namespace ecommerce_apple_phone.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ecommerce_apple_phone.EF.PromMethodPay", b =>
-                {
-                    b.HasOne("ecommerce_apple_phone.EF.Promotion", "Promotion")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromPoint", b =>
                 {
                     b.HasOne("ecommerce_apple_phone.EF.Promotion", "Promotion")
-                        .WithMany()
-                        .HasForeignKey("Id")
+                        .WithOne("PromPoint")
+                        .HasForeignKey("ecommerce_apple_phone.EF.PromPoint", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

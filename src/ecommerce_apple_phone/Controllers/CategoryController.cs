@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Interfaces;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-namespace ecommerce_apple_phone.Controllers {
+namespace ecommerce_apple_phone.Controllers
+{
     [ApiController]
     [Route ("[controller]")]
     public class CategoryController : ControllerBase {
@@ -42,21 +37,10 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost ("image-seo")]
-        public ActionResult UpdateImageSEO ([FromServices] IWebHostEnvironment environment, IFormFile image) {
-            if (image != null) {
-                //Check folder
-                string urlRes = "image_seo";
-                string folderPath = Path.Combine (environment.WebRootPath, urlRes);
-                if (!Directory.Exists (folderPath))
-                    Directory.CreateDirectory (folderPath);
-                //Save file
-                string filePath = Path.Combine (folderPath, image.FileName);
-                using (var fileStream = new FileStream (filePath, FileMode.OpenOrCreate)) {
-                    image.CopyTo (fileStream);
-                }
-                return Ok ();
-            }
-            return BadRequest ();
+        public ActionResult UpdateImageSEO ([FromServices]  IUploadService upload, IFormFile file) {
+            if(file==null) return BadRequest();
+            if(!upload.UploadFile(file,"image_seo")) return  Problem (statusCode: 500, detail: "Can't upload file");
+            return Ok();
         }
 
     }

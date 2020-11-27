@@ -34,7 +34,7 @@ namespace ecommerce_apple_phone.DTO {
     }
 
     public class ProductDTO {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string ROM { get; set; }
         public string Images { get; set; }
@@ -153,7 +153,7 @@ namespace ecommerce_apple_phone.DTO {
         public double? Discount { get; set; }
         public string ProductInProms { get; set; }
         public int? CategoryId { get; set; }
-        public int? BandId { get; set; }
+        // public int? BandId { get; set; }
     }
 
     public class PromPointDTO {
@@ -161,11 +161,4 @@ namespace ecommerce_apple_phone.DTO {
         public double? DiscountIn { get; set; }
         public double? DiscountOut { get; set; }
     }
-
-    public class PromMethodPayDTO {
-        public int Id { get; set; }
-        public double? Discount { get; set; }
-        public int? MethodPayId { get; set; }
-    }
-
 }

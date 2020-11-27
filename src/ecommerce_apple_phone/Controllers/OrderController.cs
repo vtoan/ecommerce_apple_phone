@@ -36,10 +36,6 @@ namespace ecommerce_apple_phone.Controllers {
             var bills = _promModel.GetListDTOsPromBill ();
             if (bills != null || bills.Count > 0)
                 promBill = _orderModel.FindPromBill (pramOrder.Item2, pramOrder.Item1, bills);
-            //method
-            var methods = _promModel.GetListDTOsPromMethodPay ();
-            if (methods != null || methods.Count > 0 || orderDTO.MethodPayId != 0)
-                promMethod = _orderModel.FindPromMethodPay ((int) orderDTO.MethodPayId, methods);
             //point
             var points = _promModel.GetListDTOsPromPoint ();
             if (points != null || points.Count > 0) {
