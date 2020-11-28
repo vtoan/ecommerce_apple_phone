@@ -32,7 +32,7 @@ namespace ecommerce_apple_phone.Controllers {
             return re;
         }
 
-        [HttpGet ("[action]/{stringId}")]
+        [HttpGet ("get-ids/{stringId}")]
         public ActionResult<List<ProductDTO>> FindByIds (string stringId) {
             if (stringId == null || stringId.Length <= 0) return BadRequest ();
             string[] arIds = stringId.Split (",");
@@ -42,11 +42,11 @@ namespace ecommerce_apple_phone.Controllers {
             return _productModel.FindByIds (re, arIds);
         }
 
-        [HttpGet ("[action]")]
+        [HttpGet ("best-seller")]
         public ActionResult<List<ProductDTO>> FindBestSeller () {
             //Get in cache
             var re = _cache.Get<List<ProductDTO>> (CacheKey.SELLER_PRODUCT);
-            if (re != null || re.Count > 0) return re;
+            if (re != null || re?.Count > 0) return re;
             //Get in db
             var products = GetListProducts ();
             if (products == null) return Problem (statusCode: 500, detail: "Data not exist");
@@ -56,20 +56,20 @@ namespace ecommerce_apple_phone.Controllers {
             return re;
         }
 
-        [HttpGet ("[action]/{cateId}")]
-        public ActionResult<List<ProductDTO>> FindByCate (int cataId) {
-            if (cataId <= 0) return BadRequest ();
+        [HttpGet ("cate/{cateId}")]
+        public ActionResult<List<ProductDTO>> FindByCate (int cateId) {
+            if (cateId <= 0) return BadRequest ();
             //
             var re = GetListProducts ();
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
-            return _productModel.FindByCate (re, cataId);
+            return _productModel.FindByCate (re, cateId);
         }
 
-        [HttpGet ("[action]")]
+        [HttpGet ("promotion")]
         public ActionResult<List<ProductDTO>> FindPromotion () { //
             //Get in cache
             var re = _cache.Get<List<ProductDTO>> (CacheKey.DISCOUNT_PRODUCT);
-            if (re != null || re.Count > 0) return re;
+            if (re != null || re?.Count > 0) return re;
             //Get in db
             var products = GetListProducts ();
             if (products == null) return Problem (statusCode: 500, detail: "Data not exist");
@@ -79,7 +79,7 @@ namespace ecommerce_apple_phone.Controllers {
             return re;
         }
 
-        [HttpGet ("search")]
+        [HttpGet ("search/{query}")]
         public ActionResult<List<ProductDTO>> FindProduct (string query) {
             if (query == null || query == "") return BadRequest ();
             //
@@ -136,18 +136,28 @@ namespace ecommerce_apple_phone.Controllers {
         // =============== Sub attibute product ===============
         #region Attribute Product
         [HttpGet ("attr/{id}")]
-        public ActionResult<List<ProductDTO>> GetListAttr (int id) {
-            if (id <= 0) return BadRequest ();
-            var re = _productModel.GetListAttrDTOs (id);
+        public ActionResult<ProductDTO> GetAttr (string id) {
+            if (id!=null || id!="") return BadRequest ();
+            string[]itemId= id.Split("-");
+            var re = _productModel.GetAttrDTO (Int32.Parse(itemId[1]));
+            if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
+            return re;
+        }
+
+        [HttpGet ("list-attr/{id}")]
+        public ActionResult<List<ProductDTO>> GetListAttr (string id) {
+            if (id!=null || id!="") return BadRequest ();
+            string[]itemId= id.Split("-");
+            var re = _productModel.GetListAttrDTOs (Int32.Parse(itemId[1]));
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
             return re;
         }
 
         [HttpPost ("attr/{id}")]
-        public ActionResult AddProductAttr (int id, ProductDTO ProductAttrDTO) {
+        public ActionResult AddProductAttr (int productId, ProductDTO ProductAttrDTO) {
             var modified = new PropModified<ProductDTO> (ProductAttrDTO);
-            if (!modified.isChanged || id <= 0) return BadRequest ();
-            var re = _productModel.AddAttrDTOs (id, ProductAttrDTO);
+            if (!modified.isChanged || productId <= 0) return BadRequest ();
+            var re = _productModel.AddAttrDTOs (productId, ProductAttrDTO);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
             return Ok ();
         }
@@ -181,17 +191,18 @@ namespace ecommerce_apple_phone.Controllers {
         [HttpPost ("image")]
         public ActionResult UpdateImageSEO ([FromServices] IUploadService upload, IFormFile file) {
             if(file==null) return BadRequest();
-            if(!upload.UploadFile(file,"product")) return  Problem (statusCode: 500, detail: "Can't upload file");
+            if(!upload.UploadFile(file,"products")) return  Problem (statusCode: 500, detail: "Can't upload file");
             return Ok();
         }
 
         [NonAction]
         private List<ProductDTO> GetListProducts () {
             var re = _cache.Get<List<ProductDTO>> (CacheKey.PRODUCT);
-            if (re == null || re.Count == 0) re = _productModel.GetListDTOs ();
-            if (re != null && re.Count > 0) {
+            if (re != null || re?.Count > 0)  return re;
+            re = _productModel.GetListDTOs ();
+            if (re != null && re?.Count > 0) {
                 List<PromProductDTO> proms = _promotionModel.GetListDTOsPromProduct ();
-                if (proms != null || proms.Count > 0)
+                if (proms != null || proms?.Count > 0)
                     _productModel.AttachDiscount (ref re, proms);
                 _cache.Set (re, CacheKey.PRODUCT);
             }

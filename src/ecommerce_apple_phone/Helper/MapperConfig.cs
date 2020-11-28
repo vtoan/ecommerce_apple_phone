@@ -22,7 +22,8 @@ namespace ecommerce_apple_phone.Helper {
             CreateMap<ProductDetail, ProductDTO>()
                 .ForMember(des => des.Name, act => act.MapFrom(src => src.Product.Name))
                 .ForMember(des => des.ROM, act => act.MapFrom(src => src.Product.ROM))
-                .ForMember(des => des.Id, act => act.MapFrom(src => src.ProductId +"-"+ src.Id));
+                .ForMember(des => des.Id, act => act.MapFrom(src => src.ProductId +"-"+ src.Id))
+                .ForMember(des => des.CategoryId, act => act.MapFrom(src => src.Product.CategoryId));
             CreateMap<ProductDTO, ProductDetail>()
                 .ForMember(des => des.Id, act => act.MapFrom(src => getPropID(src.Id,1)))
                 .ForMember(des => des.ProductId, act => act.MapFrom(src => getPropID(src.Id,0)));

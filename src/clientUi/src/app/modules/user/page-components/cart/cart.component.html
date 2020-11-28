@@ -83,8 +83,8 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Chọn Tỉnh/TP</mat-label>
                                     <mat-select #input (valueChange)="onProvinceChange(input.value)" formControlName="questProvince" >
-                                        <mat-option *ngFor="let food of listProvince" [value]="food">
-                                            {{food}}
+                                        <mat-option *ngFor="let province of listProvince" [value]="province.code">
+                                            {{province.name}}
                                         </mat-option>
                                     </mat-select>
                               </mat-form-field>
@@ -93,8 +93,8 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Quận/Huyện</mat-label>
                                     <mat-select  formControlName="questDistrict" >
-                                        <mat-option *ngFor="let food of listdDistrict" [value]="food">
-                                            {{food}}
+                                        <mat-option *ngFor="let district of listdDistrict" [value]="district.code">
+                                            {{district.name}}
                                         </mat-option>
                                     </mat-select>
                               </mat-form-field>

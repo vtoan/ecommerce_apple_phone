@@ -25,7 +25,7 @@ namespace ecommerce_apple_phone.DAO
                 .Include(item => item.Product)
                 .ToList();
         }
-
+        
         public  List<ProductDetail> GetListUser(int id)
         {
             return _context.ProductDetails

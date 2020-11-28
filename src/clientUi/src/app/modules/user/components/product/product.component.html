@@ -1,4 +1,4 @@
-<div class="product" [ngClass]="item.discount==0 ? '':'sale'">
+<div class="product" [ngClass]="item.discount==0 || item.discount==null ? '':'sale'">
     <div class="product-img img-content">
         <span *ngIf="item.discount %1==0" class="product-sale"> - {{  item.discount | currency:'VND':'symbol':'1.0-0':'fr'}}</span>
         <span *ngIf="item.discount %1!=0" class="product-sale"> - {{  item.discount * 100}} % </span>

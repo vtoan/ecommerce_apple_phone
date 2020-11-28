@@ -26,7 +26,7 @@ namespace ecommerce_apple_phone {
 
         public IConfiguration Configuration { get; }
 
-        // readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
@@ -45,16 +45,16 @@ namespace ecommerce_apple_phone {
             // });
             // services.AddControllersWithViews ();
 
-            //======== CORS  ========
-            // services.AddCors (options => {
-            //     options.AddPolicy (name: MyAllowSpecificOrigins,
-            //         builder => {
-            //             builder
-            //                 .WithOrigins ("http://localhost:4200")
-            //                 .AllowAnyHeader ()
-            //                 .AllowAnyMethod ();;
-            //         });
-            // });
+            // ======== CORS  ========
+            services.AddCors (options => {
+                options.AddPolicy (name: MyAllowSpecificOrigins,
+                    builder => {
+                        builder
+                            .WithOrigins ("http://localhost:4200")
+                            .AllowAnyHeader ()
+                            .AllowAnyMethod ();;
+                    });
+            });
             //======== Other  ========
             services.AddMemoryCache ();
             services.AddAutoMapper (typeof (MapperConfig).Assembly);
@@ -80,7 +80,7 @@ namespace ecommerce_apple_phone {
 
             app.UseRouting ();
 
-            // app.UseCors (MyAllowSpecificOrigins);
+            app.UseCors (MyAllowSpecificOrigins);
 
             app.UseAuthorization ();
 

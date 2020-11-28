@@ -15,6 +15,7 @@ export class CheckOrderComponent implements OnInit {
     //
     title = "Check Order";
     isRequest: boolean = false;
+    isRequesed:boolean = false;
     //
     order: Order;
     queryOrder = new FormControl("", Validators.required);
@@ -33,7 +34,7 @@ export class CheckOrderComponent implements OnInit {
                 this.order = val;
             },
             (err) => (this.order = null),
-            () => (this.isRequest = false)
+            () => (this.isRequest =  this.isRequesed = false)
         );
     }
 }

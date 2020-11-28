@@ -87,7 +87,7 @@ export class CartComponent implements OnInit {
         //get province
         this.orderService.getListProvice().subscribe(
             (val) => {
-                this.listProvince = val;
+                this.listProvince = Object.values(val);
             },
             (err) => this.errService.redirectError("Can't get list province")
         );
@@ -101,7 +101,6 @@ export class CartComponent implements OnInit {
                 (accur, val) => (accur += val.quantity),
                 0
             );
-            console.log(val);
             this.calAmount(val);
         });
         this.calAmount(this.listItem);
@@ -126,7 +125,7 @@ export class CartComponent implements OnInit {
     onProvinceChange(id) {
         this.orderService.getListDistrict(id).subscribe(
             (val) => {
-                this.listdDistrict = val;
+                this.listdDistrict = Object.values(val);
             },
             (err) => this.errService.redirectError("Can't get district")
         );
@@ -180,14 +179,16 @@ export class CartComponent implements OnInit {
             (this.promtionVal % 1 == 0
                 ? this.promtionVal
                 : this.totalAmountVal * this.promtionVal);
-        let totalFee = this.listFees.reduce(
-            (accur, val) =>
-                (accur +=
-                    val.cost % 1 == 0
-                        ? val.cost
-                        : this.totalAmountVal * val.cost),
-            0
-        );
+        console.log(this.listFees);
+        let totalFee =0;
+        // let totalFee = this.listFees.reduce(
+        //     (accur, val) =>
+        //         (accur +=
+        //             val.cost % 1 == 0
+        //                 ? val.cost
+        //                 : this.totalAmountVal * val.cost),
+        //     0
+        // );
         this.totalPayVal += totalFee;
     }
 }

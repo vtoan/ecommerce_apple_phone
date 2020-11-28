@@ -14,9 +14,9 @@ import { ProductService } from 'src/app/services/product.service';
     styleUrls: ["./cart-item.component.scss"],
 })
 export class CartItemComponent implements OnInit {
-    @Input() itemId: number;
+    @Input() itemId: string;
     @Input() isChange: boolean = true;
-    @Output() remove = new EventEmitter<number>();
+    @Output() remove = new EventEmitter<string>();
 
     product:Product;
     promotion: number = 0;
@@ -25,31 +25,14 @@ export class CartItemComponent implements OnInit {
     constructor(
         private cartService : CartService,
         private prodService : ProductService
-    ) {
-        this.product = {
-            id: 123,
-            name: "Asdasda",
-            rOM: "XDEMAS",
-            images: ".SDAD",
-            categoryId: 123,
-            price: 12554543,
-            saleCount: 123,
-            discount: 123,
-            color: "Red",
-            quantity: 123,
-        };
-    }
+    ) {}
 
     ngOnInit() {
-        this.prodService.getAttr(this.product.id).subscribe(val =>{
+        this.prodService.getAttr(this.itemId).subscribe(val =>{
             this.product =val;
+            this.getInfo();
         })
-        //
-        if(!this.product) return
-        this.quantity = this.cartService.getQuantity(this.product.id);
-        this.promotion = this.product.discount;
-        if (this.product.discount % 1 != 0)
-            this.promotion = this.product.price * this.product.discount;
+        
     }
 
     onAddition(){
@@ -64,5 +47,14 @@ export class CartItemComponent implements OnInit {
 
     onRemove(){
         this.remove.emit(this.product.id);
+    }
+
+    private getInfo(){
+        //
+        if(!this.product) return
+        this.quantity = this.cartService.getQuantity(this.product.id);
+        this.promotion = this.product.discount;
+        if (this.product.discount % 1 != 0)
+            this.promotion = this.product.price * this.product.discount;
     }
 }

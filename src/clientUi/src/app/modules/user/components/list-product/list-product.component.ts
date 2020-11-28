@@ -15,7 +15,7 @@ export class ListProductComponent implements OnInit {
 	@Input()isFilter:boolean =true;
 	@Input()products:Product[]=[];
 	// ========= prop =========
-	pageSize:number= 12;
+	pageSize:number= 8;
 	dataLength:number =0;
 	pageNumber:number=0;
 	//
@@ -25,23 +25,7 @@ export class ListProductComponent implements OnInit {
 	constructor(
 		private cartService: CartService,
 		private meesageService :MessageService
-	) {
-		for (let index = 0; index < 26; index++) {
-			this.products.push({
-				id:index,
-				name:"asd",
-				rOM:"64 GB",
-				images:"",
-				categoryId:1,
-				price:3480 *index,
-				saleCount:100,
-                discount:0.1,
-                quantity:10,
-                color:"REd"
-			})
-			
-		}
-	}
+	) {}
 	// ========= event =========
 	ngOnInit() {
 		this.dataLength = this.products.length;

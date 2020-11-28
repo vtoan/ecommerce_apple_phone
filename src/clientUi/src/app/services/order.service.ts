@@ -54,7 +54,7 @@ export class OrderService {
 
     getListProvice(): Observable<any> {
         return this.http
-            .get("asset/province.json")
+            .get("api/asset/province.json")
             .pipe(
                 retry(3),
                 catchError(
@@ -65,7 +65,7 @@ export class OrderService {
 
     getListDistrict(id: number): Observable<any> {
         return this.http
-        .get("asset/district/"+id+".json")
+        .get("api/asset/district/"+id+".json")
         .pipe(
             retry(3),
             catchError(

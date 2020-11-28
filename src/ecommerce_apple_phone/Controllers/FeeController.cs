@@ -28,7 +28,7 @@ namespace ecommerce_apple_phone.Controllers {
             if (re == null || re.Count == 0) re = _feeModel.GetListDTOs ();
             //Get in db
             if (re == null || re.Count == 0) return Problem (statusCode: 500, detail: "Data not exist");
-            _cache.Set (re, CacheKey.PRODUCT);
+            _cache.Set (re, CacheKey.FEE);
             return re;
         }
         

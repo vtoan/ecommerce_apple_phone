@@ -31,7 +31,7 @@ interface Info {
 }
 
 interface Product {
-    id:number;
+    id:string;
     name:string;
     rOM:string;
     images:string;
@@ -43,14 +43,6 @@ interface Product {
     quantity:number;
 }
 
-interface ProductAttr {
-    // id:number;
-    color:string;
-    // saleCount:number;
-    // price:number;
-    // images:string;
-    quantity:number;
-}
 
 interface ProductDetail {
     screen:string;
@@ -109,7 +101,7 @@ interface Order {
 
 interface OrderDetail {
     orderId:number;
-    productId:number;
+    productId:string;
     quantity:number;
     price:number;
     discount:number;
@@ -170,7 +162,6 @@ export {
     Category,
     Info,
     Product,
-    ProductAttr,
     ProductDetail,
     Post,
     Feedback,

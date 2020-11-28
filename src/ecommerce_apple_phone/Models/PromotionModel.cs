@@ -13,15 +13,15 @@ namespace ecommerce_apple_phone.Models {
         }
 
         public List<PromBillDTO> GetListDTOsPromBill () {
-            throw new System.NotImplementedException ();
+            return null;
         }
 
         public List<PromPointDTO> GetListDTOsPromPoint () {
-            throw new System.NotImplementedException ();
+            return null;
         }
 
         public List<PromProductDTO> GetListDTOsPromProduct () {
-            throw new System.NotImplementedException ();
+            return null;
         }
 
         public bool UpdateDTO (int id, PromotionDTO promotionDTO, object promDetail) {

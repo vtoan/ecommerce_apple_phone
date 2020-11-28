@@ -68,7 +68,7 @@ namespace ecommerce_apple_phone.Models
         public bool RemoveAttrDTO(int attrId)
         {
              if(attrId <=0 ) return false;
-            PropModified<ProductDetail> modified = new PropModified<ProductDetail>(new { isDel = true });
+            PropModified<ProductDetail> modified = new PropModified<ProductDetail>(new { isDel = true  });
             using (ProductDAO db = new ProductDAO(_context))
                 return db.Update(attrId, modified);
         }
@@ -151,6 +151,7 @@ namespace ecommerce_apple_phone.Models
 
         public void AttachDiscount(ref List<ProductDTO> productDTOs, List<PromProductDTO> promProductDTOs)
         {
+            if(promProductDTOs.Count==0) return;
             Dictionary<int, double> LsProd = new Dictionary<int, double>();
             Dictionary<int, double> LsCate = new Dictionary<int, double>();
             foreach (var prom in promProductDTOs)
@@ -202,17 +203,25 @@ namespace ecommerce_apple_phone.Models
 
         public List<ProductDTO> FindByIds(List<ProductDTO> productDTOs, string[] arIds)
         {
-            return productDTOs.Where(item => arIds.Contains(item.Id)).ToList();
+            List<ProductDTO> re = new List<ProductDTO>();
+             foreach (var item in arIds)
+             {
+                int itemId = Int32.Parse(item.Split("-")[0]);
+                var product = GetListAttrDTOs(itemId);
+                var productAttr= product.Where(p => p.Id ==item).FirstOrDefault();
+                if(productAttr!=null) re.Add(productAttr);
+             }
+             return re;
         }
 
         public List<ProductDTO> FindByString(List<ProductDTO> productDTOs, string query)
         {
-            return productDTOs.Where(item => item.Name.Contains(query)).ToList();
+            return productDTOs.Where(item => item.Name.ToLower().Contains(query)).ToList();
         }
 
         public List<ProductDTO> FindPromotion(List<ProductDTO> productDTOs)
         {
-            return productDTOs.Where(item => item.Discount != 0).ToList();
+            return productDTOs.Where(item => item.Discount !=null).ToList();
         }
 
 

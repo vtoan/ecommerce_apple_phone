@@ -32,14 +32,14 @@ export class CartService {
         this.notifyChange();
     }
 
-    reduceQuantity(id: number): void {
+    reduceQuantity(id: string): void {
         let idx = this.cart.item.findIndex((item) => item.productId == id);
         if (idx == -1) return;
         this.cart.item[idx].quantity--;
         this.notifyChange();
     }
 
-    remove(id: number): void {
+    remove(id: string): void {
         let idx = this.cart.item.findIndex((item) => item.productId == id);
         if (idx == -1) return;
         this.cart.item.splice(idx, 1);
@@ -55,7 +55,7 @@ export class CartService {
         this.notifyChange();
     }
 
-    getQuantity(id?: number) {
+    getQuantity(id?: string) {
         if (!id) {
             if (!this.cart.item || this.cart.item.length == 0) return 0;
             return this.cart.item.reduce(
@@ -69,25 +69,9 @@ export class CartService {
     }
 
     retriveCart(): void {
-        // let rawVal = this.cookie.get("cart-items");
-        // if (rawVal && rawVal.length > 0) this.cart = JSON.parse(rawVal);
-        // this.notifyChange();
-        this.cart.item = [
-            {
-                orderId: 0,
-                productId: 1,
-                quantity: 2,
-                price: 0,
-                discount: 0,
-            },
-            {
-                orderId: 0,
-                productId: 3,
-                quantity: 1,
-                price: 0,
-                discount: 0,
-            },
-        ];
+        let rawVal = this.cookie.get("cart-items");
+        if (rawVal && rawVal.length > 0) this.cart = JSON.parse(rawVal);
+        this.notifyChange();
     }
 
     saveCart(): void {

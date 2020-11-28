@@ -17,7 +17,7 @@ export class WatchComponent implements OnInit {
 
     ngOnInit() {
         this.listProducts = [];
-        this.productService.getListByCate(1).subscribe(
+        this.productService.getListByCate(2).subscribe(
             (resp) => {
                 if (resp != null || resp) this.listProducts = resp;
             },
