@@ -12,6 +12,7 @@ namespace ecommerce_apple_phone.Controllers
         private ICategoryModel _cateModel;
         public CategoryController (ICategoryModel categoryModel) {
             _cateModel = categoryModel;
+            
         }
 
         [HttpGet]

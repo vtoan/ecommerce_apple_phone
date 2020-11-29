@@ -30,12 +30,12 @@ namespace ecommerce_apple_phone.EF {
         protected override void OnModelCreating (ModelBuilder modelBuilder) {
             base.OnModelCreating (modelBuilder);
             //Product
-            modelBuilder.Entity<Product> ().Property (p => p.isShow).HasDefaultValue (true);
-            modelBuilder.Entity<Product> ().Property (p => p.isDel).HasDefaultValue (false);
-            //
-            modelBuilder.Entity<ProductDetail> ().Property (p => p.SaleCount).HasDefaultValue (0);
             modelBuilder.Entity<ProductDetail> ().Property (p => p.isShow).HasDefaultValue (true);
             modelBuilder.Entity<ProductDetail> ().Property (p => p.isDel).HasDefaultValue (false);
+            //
+            modelBuilder.Entity<Product> ().Property (p => p.SaleCount).HasDefaultValue (0);
+            modelBuilder.Entity<Product> ().Property (p => p.isShow).HasDefaultValue (true);
+            modelBuilder.Entity<Product> ().Property (p => p.isDel).HasDefaultValue (false);
             //Import
             modelBuilder.Entity<ImportProduct> ().Property (p => p.DateCreated).HasColumnType ("smalldatetime");
             modelBuilder.Entity<ImportDetail> ().HasKey (od => new { od.ProductId, od.ImportId });
@@ -55,12 +55,11 @@ namespace ecommerce_apple_phone.EF {
         [Key]
         public int Id { get; set; }
         public string Email { get; set; }
-
         //Nav
         public List<Order> Orders { get; set; }
     }
 
-    public class Product {
+    public class ProductDetail {
         [Key]
         public int Id { get; set; }
 
@@ -111,11 +110,11 @@ namespace ecommerce_apple_phone.EF {
         public Category Category { get; set; }
 
         public Post Post { get; set; }
-        public List<ProductDetail> ProductDetails { get; set; }
+        public List<Product> Products { get; set; }
         public List<Feedback> Feedbacks { get; set; }
     }
 
-    public class ProductDetail {
+    public class Product {
         [Key]
         public int Id { get; set; }
         public double Price { get; set; }
@@ -128,10 +127,10 @@ namespace ecommerce_apple_phone.EF {
         public bool? isShow { get; set; }
         public bool? isDel { get; set; }
 
-        [ForeignKey ("Product")]
-        public int? ProductId { get; set; }
+        [ForeignKey ("ProductDetail")]
+        public int? ProductDetailId { get; set; }
         //
-        public Product Product { get; set; }
+        public ProductDetail ProductDetail { get; set; }
     }
 
     public class ImportProduct {
@@ -168,7 +167,7 @@ namespace ecommerce_apple_phone.EF {
         [MaxLength (350)]
         public string SeoDescription { get; set; }
         //Nav property
-        public List<Product> Products { get; set; }
+        public List<ProductDetail> ProductDetails { get; set; }
     }
 
     public class Fee {
@@ -227,7 +226,7 @@ namespace ecommerce_apple_phone.EF {
 
     public class Post {
         [Key]
-        [ForeignKey ("Product")]
+        [ForeignKey ("ProductDetail")]
         [DatabaseGenerated (DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string PostContent { get; set; }
@@ -241,13 +240,13 @@ namespace ecommerce_apple_phone.EF {
         [MaxLength (350)]
         public string SeoDescription { get; set; }
         //Nav
-        public Product Product { get; set; }
+        public ProductDetail ProductDetail { get; set; }
     }
 
     public class Feedback {
         [Key]
         public int Id { get; set; }
-        public int ProductId { get; set; }
+        public int ProductDetailId { get; set; }
         public int UserId { get; set; }
         public string FeedbackContent { get; set; }
     }

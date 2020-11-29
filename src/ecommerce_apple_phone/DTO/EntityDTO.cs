@@ -41,7 +41,7 @@ namespace ecommerce_apple_phone.DTO {
         public int? CategoryId { get; set; }
         public double? Price { get; set; }
         public int? SaleCount { get; set; }
-        public double? Discount { get; set; }
+        public double Discount { get; set; }
         public string Color { get; set; }
         public int? Quantity { get; set; }
     }

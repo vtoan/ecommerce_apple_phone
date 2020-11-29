@@ -7,62 +7,42 @@ using ecommerce_apple_phone.Helper;
 
 namespace ecommerce_apple_phone.DAO
 {
-    public class ProductDAO : EntityDAO<ProductDetail>
+    public class ProductDAO : EntityDAO<Product>
     {
-        public ProductDAO(PhoneContext context) : base(context)
+        public ProductDAO(PhoneContext context) : base(context){}
+
+        public Product Get(int id, bool isAdmin = false)
         {
+            if(!CheckConnection()) return null;
+            //
+            var query =  _context.Products.Where(item => item.Id == id && item.isDel == false);
+            if(!isAdmin) query =query.Where(item => item.isShow == true);
+            //
+            return query.Include(item => item.ProductDetail).FirstOrDefault();
         }
 
-        public override ProductDetail Get(int id)
+        public List<Product> GetList(int id, bool isAdmin = false) // get all attribute of product
         {
-            return _context.ProductDetails.Where(item => item.Id == id && item.isDel == false).Include(item => item.Product).First();
+            if(!CheckConnection()) return null;
+            //
+            var  query = _context.Products.Where(item => item.ProductDetailId == id && item.isDel == false);
+            if(!isAdmin) query = query.Where(item => item.isShow == true);  
+            //
+            var lsProduct = query.Include(item => item.ProductDetail).ToList();
+            return lsProduct;
         }
 
-        public override List<ProductDetail> GetList()
+        public List<Product> GetListUnique(bool isAdmin =false) // product take first attribute
         {
-            return _context.ProductDetails
-                .Where(item => item.isDel == false)
-                .Include(item => item.Product)
-                .ToList();
-        }
-        
-        public  List<ProductDetail> GetListUser(int id)
-        {
-            return _context.ProductDetails
-                .Where(item => item.ProductId==id && item.isDel == false && item.isShow == true)
-                .Include(item => item.Product)
-                .ToList();
-        }
-
-        public List<ProductDetail> GetListUser()
-        {
-            var prod = _context.Products.Where(item => item.isDel == false && item.isShow == true).Include(item => item.ProductDetails).ToList();
-            List<ProductDetail> pds = new List<ProductDetail>();
-            foreach (var item in prod)
-            {
-                if(item.ProductDetails.Count >0)
-                pds.Add(item.ProductDetails.First());
-            }
-            return pds;
-        }
-
-        public  List<ProductDetail> GetListAdmin(int id)
-        {
-            return _context.ProductDetails
-                .Where(item => item.ProductId==id && item.isDel == false)
-                .Include(item => item.Product)
-                .ToList();
-        }
-
-        public List<ProductDetail> GetListAdmin()
-        {
-            var prod = _context.Products.Where(item => item.isDel == false).Include(item => item.ProductDetails).ToList();
-            List<ProductDetail> pds = new List<ProductDetail>();
-            foreach (var item in prod)
-            {
-                if(item.ProductDetails.Count >0)
-                pds.Add(item.ProductDetails.First());
-            }
+            if(!CheckConnection()) return null;
+            //
+            var query = _context.ProductDetails.Where(item => item.isDel == false);
+            if(!isAdmin) query = query.Where(item => item.isShow == true);  
+            //
+            var lsProduct = query.Include(item => item.Products).ToList();
+            List<Product> pds = new List<Product>();
+            foreach (var item in lsProduct)
+                if (item.Products.Count > 0) pds.Add(item.Products.First());
             return pds;
         }
     }

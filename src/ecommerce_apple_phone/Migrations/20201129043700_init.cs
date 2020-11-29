@@ -118,7 +118,7 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "ProductDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -142,9 +142,9 @@ namespace ecommerce_apple_phone.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
+                        name: "FK_ProductDetails_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
@@ -249,7 +249,7 @@ namespace ecommerce_apple_phone.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(nullable: false),
+                    ProductDetailId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     FeedbackContent = table.Column<string>(nullable: true)
                 },
@@ -257,11 +257,58 @@ namespace ecommerce_apple_phone.Migrations
                 {
                     table.PrimaryKey("PK_Feedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Feedbacks_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_Feedbacks_ProductDetails_ProductDetailId",
+                        column: x => x.ProductDetailId,
+                        principalTable: "ProductDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    PostContent = table.Column<string>(nullable: true),
+                    SeoImage = table.Column<string>(maxLength: 50, nullable: true),
+                    SeoTitle = table.Column<string>(maxLength: 150, nullable: true),
+                    SeoDescription = table.Column<string>(maxLength: 350, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_ProductDetails_Id",
+                        column: x => x.Id,
+                        principalTable: "ProductDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<double>(nullable: false),
+                    Color = table.Column<string>(maxLength: 25, nullable: true),
+                    SaleCount = table.Column<int>(nullable: false, defaultValue: 0),
+                    Images = table.Column<string>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
+                    isShow = table.Column<bool>(nullable: true, defaultValue: true),
+                    isDel = table.Column<bool>(nullable: true, defaultValue: false),
+                    ProductDetailId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_ProductDetails_ProductDetailId",
+                        column: x => x.ProductDetailId,
+                        principalTable: "ProductDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -292,53 +339,6 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    PostContent = table.Column<string>(nullable: true),
-                    SeoImage = table.Column<string>(maxLength: 50, nullable: true),
-                    SeoTitle = table.Column<string>(maxLength: 150, nullable: true),
-                    SeoDescription = table.Column<string>(maxLength: 350, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Posts_Products_Id",
-                        column: x => x.Id,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<double>(nullable: false),
-                    Color = table.Column<string>(maxLength: 25, nullable: true),
-                    SaleCount = table.Column<int>(nullable: false, defaultValue: 0),
-                    Images = table.Column<string>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false),
-                    isShow = table.Column<bool>(nullable: true, defaultValue: true),
-                    isDel = table.Column<bool>(nullable: true, defaultValue: false),
-                    ProductId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductDetails_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
                 {
@@ -366,9 +366,9 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_ProductId",
+                name: "IX_Feedbacks_ProductDetailId",
                 table: "Feedbacks",
-                column: "ProductId");
+                column: "ProductDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImportDetails_ImportProductId",
@@ -386,14 +386,14 @@ namespace ecommerce_apple_phone.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductDetails_ProductId",
+                name: "IX_ProductDetails_CategoryId",
                 table: "ProductDetails",
-                column: "ProductId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
+                name: "IX_Products_ProductDetailId",
                 table: "Products",
-                column: "CategoryId");
+                column: "ProductDetailId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -420,9 +420,6 @@ namespace ecommerce_apple_phone.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "ProductDetails");
-
-            migrationBuilder.DropTable(
                 name: "PromBills");
 
             migrationBuilder.DropTable(
@@ -445,6 +442,9 @@ namespace ecommerce_apple_phone.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "ProductDetails");
 
             migrationBuilder.DropTable(
                 name: "Categories");

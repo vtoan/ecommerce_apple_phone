@@ -32,7 +32,7 @@ VALUES('Iphone','image_seo/iphone.png'), ('Watch','image_seo/watch.png'),('Other
 INSERT INTO MethodPays ([Name])
 VALUES ('Cash'),('Paypal')
 
-INSERT INTO Products (
+INSERT INTO ProductDetails (
     [Name]
       ,[Screen]
       ,[FontCamera]
@@ -97,7 +97,7 @@ VALUES('Iphone 12 Pro Max',N'Super Retina XDR OLED 6.7” FullHD+ ,16 triệu m�
 'Full',1
 )
 
-INSERT INTO Products (
+INSERT INTO ProductDetails (
     [Name]
       ,[Screen]
       ,[FontCamera]
@@ -142,7 +142,7 @@ VALUES('Apple Watch SE',N'Super Retina XDR OLED 6.7” FullHD+ ,16 triệu màu'
 'Full',2
 )
 
-INSERT INTO Products (
+INSERT INTO ProductDetails (
     [Name]
       ,[Screen]
       ,[FontCamera]
@@ -176,13 +176,13 @@ VALUES('Ipop',N'Super Retina XDR OLED 6.7” FullHD+ ,16 triệu màu',N'12 MP f
 )
 
 
-INSERT INTO ProductDetails (
+INSERT INTO Products (
     [Price]
       ,[Color]
       ,[SaleCount]
       ,[Images]
       ,[Quantity]
-      ,[ProductId]
+      ,[ProductDetailId]
 )
 VALUES 
 (25000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
@@ -214,13 +214,13 @@ VALUES
 (3000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 11),
 (2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 12)
 
-INSERT INTO ProductDetails (
+INSERT INTO Products (
     [Price]
       ,[Color]
       ,[SaleCount]
       ,[Images]
       ,[Quantity]
-      ,[ProductId]
+      ,[ProductDetailId]
 )
 VALUES 
 (25000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 13),
@@ -231,13 +231,13 @@ VALUES
 (12000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 18),
 (5000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 19)
 
-INSERT INTO ProductDetails (
+INSERT INTO Products (
     [Price]
       ,[Color]
       ,[SaleCount]
       ,[Images]
       ,[Quantity]
-      ,[ProductId]
+      ,[ProductDetailId]
 )
 VALUES 
 (6000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 20),
@@ -245,4 +245,4 @@ VALUES
 (2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 22),
 (3000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 23)
 
--- Insert rows into table 'TableName'
+-- Insert rows into table 'TableName' ProductDetails

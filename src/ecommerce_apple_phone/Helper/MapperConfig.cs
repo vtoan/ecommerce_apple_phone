@@ -19,17 +19,17 @@ namespace ecommerce_apple_phone.Helper {
             CreateMap<MethodPay, MethodPayDTO>();
             CreateMap<MethodPayDTO, MethodPay>();
             //Product
-            CreateMap<ProductDetail, ProductDTO>()
-                .ForMember(des => des.Name, act => act.MapFrom(src => src.Product.Name))
-                .ForMember(des => des.ROM, act => act.MapFrom(src => src.Product.ROM))
-                .ForMember(des => des.Id, act => act.MapFrom(src => src.ProductId +"-"+ src.Id))
-                .ForMember(des => des.CategoryId, act => act.MapFrom(src => src.Product.CategoryId));
-            CreateMap<ProductDTO, ProductDetail>()
+            CreateMap<Product, ProductDTO>()
+                .ForMember(des => des.Name, act => act.MapFrom(src => src.ProductDetail.Name))
+                .ForMember(des => des.ROM, act => act.MapFrom(src => src.ProductDetail.ROM))
+                .ForMember(des => des.Id, act => act.MapFrom(src => src.ProductDetailId +"-"+ src.Id))
+                .ForMember(des => des.CategoryId, act => act.MapFrom(src => src.ProductDetail.CategoryId));
+            CreateMap<ProductDTO, Product>()
                 .ForMember(des => des.Id, act => act.MapFrom(src => getPropID(src.Id,1)))
-                .ForMember(des => des.ProductId, act => act.MapFrom(src => getPropID(src.Id,0)));
+                .ForMember(des => des.ProductDetailId, act => act.MapFrom(src => getPropID(src.Id,0)));
             
-            CreateMap<Product, ProductDetailDTO>();
-            CreateMap<ProductDetailDTO, Product>();
+            CreateMap<ProductDetail, ProductDetailDTO>();
+            CreateMap<ProductDetailDTO, ProductDetail>();
             //
         }
 
