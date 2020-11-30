@@ -12,7 +12,8 @@ namespace ecommerce_apple_phone.Services
             this IServiceCollection services, IConfiguration config){ //
             services.AddSingleton<ICacheHelper, CacheHelper>();
             services.AddScoped<IUploadService, Upload>();
-            services.AddSingleton<IMailSenderService, EmailSender>();
+            services.AddScoped<IMailSenderService, EmailSender>();
+            services.AddScoped<IPaymentService, Payment>();
             return services;
         }
     }

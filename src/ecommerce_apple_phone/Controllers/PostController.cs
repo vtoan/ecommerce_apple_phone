@@ -22,24 +22,27 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpGet ("{id}")]
-        public ActionResult<PostDTO> Get (int id) {
-            if (id <= 0) return BadRequest (new { message = "ID is invalid" });
-            var re = _postModel.GetDTO (id);
+        public ActionResult<PostDTO> Get(string id) {
+            if (DataHelper.IsEmptyString(id)) return BadRequest (new { message = "ID is invalid" });
+            var itemId = DataHelper.GetDetailId(id);
+            if (itemId == 0) return BadRequest();
+            var re = _postModel.GetDTO (itemId);
             if (re == null) return Problem (statusCode: 500, detail: "Data not exist");
             return re;
         }
 
         [HttpPut ("{id}")]
-        public IActionResult Update (int id, PostDTO postDTO) {
-            if (id <= 0 || id != postDTO.Id) return BadRequest (new { message = "ID is invalid" });
+        public IActionResult Update (string id, PostDTO postDTO) {
+            if (DataHelper.IsEmptyString(id)) return BadRequest (new { message = "ID is invalid" });
+            var itemId = DataHelper.GetDetailId(id);           
             var modified = new PropModified<PostDTO> (postDTO);
             if (!modified.isChanged) return BadRequest ();
-            if (!_postModel.UpdateDTO (id, postDTO)) return Problem (statusCode: 500, detail: "Can't update data");
+            if (!_postModel.UpdateDTO (itemId, postDTO)) return Problem (statusCode: 500, detail: "Can't update data");
             return Ok ();
         }
 
         [HttpPost]
-        public IActionResult Add ([FromServices] IProductModel productModel, PostDTO postDTO) {
+        public IActionResult Add ([FromServices] IProductModel productModel,[FromForm] PostDTO postDTO) {
             if (postDTO.Id <= 0 || productModel.GetDetailDTO (postDTO.Id) == null) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
             var re = _postModel.AddDTO (postDTO);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
@@ -47,23 +50,19 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpDelete ("{id}")]
-        public IActionResult Remove (int id) {
-            if (id <= 0) return NotFound ();
-            if (!_postModel.RemoveDTO (id)) return Problem (statusCode: 500, detail: "Can't remove data");
+        public IActionResult Remove (string id) {
+            if (DataHelper.IsEmptyString(id)) return BadRequest (new { message = "ID is invalid" });
+            var itemId = DataHelper.GetDetailId(id);     
+            if (itemId == 0) return BadRequest ();
+            if (!_postModel.RemoveDTO (itemId)) return Problem (statusCode: 500, detail: "Can't remove data");
             return Ok ();
         }
 
         [HttpPost ("image-seo")]
-        public ActionResult UpdateImageSEO ([FromServices] IWebHostEnvironment environment, IFormFile file) {
-            if (file != null) {
-                string urlRes = "/image_seo";
-                string filePath = Path.Combine (Path.Combine (environment.WebRootPath, urlRes), file.Name);
-                using (var fileStream = new FileStream (filePath, FileMode.Create)) {
-                    file.CopyTo (fileStream);
-                }
-                return Ok ();
-            }
-            return BadRequest ();
+        public ActionResult UpdateImageSEO ([FromServices]  IUploadService upload, IFormFile file) {
+            if(file==null) return BadRequest();
+            if(!upload.UploadFile(file,"image_seo")) return  Problem (statusCode: 500, detail: "Can't upload file");
+            return Ok();
         }
 
     }

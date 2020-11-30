@@ -43,15 +43,16 @@ namespace ecommerce_apple_phone.Controllers {
         // ========================== 
 
         [HttpPut ("{id}")]
-        public ActionResult Update (int id, FeeDTO fee) {
-            if (id <= 0 || id != fee.Id) return BadRequest (new { message = "ID is invalid" });
+        public ActionResult Update (int id,[FromForm] FeeDTO fee) {
+            
+            if (id <= 0 || !ModelState.IsValid || id != fee.Id) return BadRequest (new { message = "ID is invalid" });
             if (!_feeModel.UpdateDTO (id, fee)) return Problem (statusCode: 500, detail: "Can't update data");
             return Ok ();
         }
 
         [HttpPost]
         public ActionResult<FeeDTO> Add (FeeDTO fee) {
-            if (fee.Id != 0) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
+            if (fee.Id != 0 || !ModelState.IsValid) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
             var re = _feeModel.AddDTO (fee);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
             return re;

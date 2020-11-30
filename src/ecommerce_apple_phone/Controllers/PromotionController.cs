@@ -38,6 +38,13 @@ namespace ecommerce_apple_phone.Controllers {
             return re;
         }
 
+        [HttpGet ("product")]
+        public ActionResult<List<PromProductDTO>> GetPromProduct () {
+            var re = _promModel.GetListDTOsPromProduct ();
+            if (re == null || re.Count == 0) return Problem (statusCode: 500, detail: "Data not exist");
+            return re;
+        }
+
         [HttpGet ("{id}")]
         public ActionResult<PromotionDTO> Get (int id) {
             if (id <= 0) return BadRequest (new { message = "ID is invalid" });
@@ -47,14 +54,14 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPut ("{id}")]
-        public IActionResult Update (int id, PromotionDTO promotionDTO) {
+        public IActionResult Update (int id, [FromForm] PromotionDTO promotionDTO) {
             if (id <= 0 || id != promotionDTO.Id) return BadRequest (new { message = "ID is invalid" });
             if (!_promModel.UpdateDTO (id, promotionDTO, promotionDTO.ItemDetail)) return Problem (statusCode: 500, detail: "Can't update data");
             return Ok ();
         }
 
         [HttpPost]
-        public IActionResult Add (PromotionDTO promotionDTO) {
+        public IActionResult Add ([FromForm] PromotionDTO promotionDTO) {
             if (promotionDTO.Id != 0) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
             var re = _promModel.AddDTO (promotionDTO, promotionDTO.ItemDetail);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-namespace ecommerce_apple_phone.Controllers {
+ namespace ecommerce_apple_phone.Controllers
+{
     [ApiController]
     [Route ("[controller]")]
     public class ImportController : ControllerBase {
@@ -20,7 +18,7 @@ namespace ecommerce_apple_phone.Controllers {
 
         [HttpGet ("report")]
         public ActionResult<List<ImportProductDTO>> Get (string start, string end) {
-            if (start == null || end == null) return BadRequest (new { message = "Date is requried" });
+            if (DataHelper.IsEmptyString(start)||DataHelper.IsEmptyString(end)) return BadRequest (new { message = "Date is requried" });
             DateTime startDate;
             if (!DateTime.TryParse (start, out startDate)) return BadRequest (new { message = "Start date is requried" });
             DateTime endDate;
@@ -31,7 +29,7 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Add ([FromServices] IProductModel productModel, ImportProductDTO importProductDTO) {
+        public IActionResult Add ([FromServices] IProductModel productModel, [FromForm] ImportProductDTO importProductDTO) {
             if (importProductDTO.ImportItems == null || importProductDTO.ImportItems == "") return BadRequest ();
             //Parse list order Item
             List<ImportDetailDTO> importDetailDTOs = DataHelper.ParserJsonTo<List<ImportDetailDTO>> (importProductDTO.ImportItems);

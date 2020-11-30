@@ -31,8 +31,8 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut ("{id}")]
-        public IActionResult Update (int id, CategoryDTO categoryDTO) {
-            if (id <= 0 || id != categoryDTO.Id) return BadRequest (new { message = "ID is invalid" });
+        public IActionResult Update (int id,[FromForm] CategoryDTO categoryDTO) {
+            if (id <= 0 || !ModelState.IsValid ||id != categoryDTO.Id) return BadRequest (new { message = "ID is invalid" });
             if (!_cateModel.UpdateDTO (id, categoryDTO)) return Problem (statusCode: 500, detail: "Can't update data");
             return Ok ();
         }

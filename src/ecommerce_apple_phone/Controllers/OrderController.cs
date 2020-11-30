@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-namespace ecommerce_apple_phone.Controllers {
+namespace ecommerce_apple_phone.Controllers
+{
     [ApiController]
     [Route ("[controller]")]
     public class OrderController : ControllerBase {
@@ -22,7 +19,10 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost ("confirm")]
-        public ActionResult<OrderDTO> Confirm ([FromServices] IFeeModel feeModel, OrderDTO orderDTO) {
+        public ActionResult<OrderDTO> Confirm (
+            [FromServices] IFeeModel feeModel, 
+            OrderDTO orderDTO) 
+            {
             if (orderDTO.OrderItems == null || orderDTO.OrderItems == "") return BadRequest ();
             //Parse list order Item
             List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>> (orderDTO.OrderItems);
@@ -58,14 +58,19 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Add ([FromServices] IProductModel productModel, OrderDTO orderDTO) {
+        public IActionResult Add (
+            [FromServices] IProductModel productModel, 
+            [FromServices] IPaymentService payment,
+            OrderDTO orderDTO) {
             if (orderDTO.OrderItems == null || orderDTO.OrderItems == "") return BadRequest ();
             //Parse list order Item
             List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>> (orderDTO.OrderItems);
-            //
             if (orderDetailDTOs.Count < 0) return Problem (statusCode: 500, detail: "Data invalid");
-            var payment = _orderModel.Payment (orderDTO);
-            if (!payment) return Problem (statusCode: 500, detail: "Order is unpaid");
+            //Payment
+            if(orderDTO.MethodPayId!=null) {
+                bool re = payment.OnPayment((int)orderDTO.MethodPayId, orderDTO);
+                if(re == false) return Problem();
+            }
             var od = _orderModel.AddDTO (orderDTO, orderDetailDTOs);
             if (od == null) Problem (statusCode: 500, detail: "Can't add data");
             productModel.UpdateForOrder (orderDetailDTOs);
@@ -82,7 +87,7 @@ namespace ecommerce_apple_phone.Controllers {
 
         [HttpGet ("/search")]
         public ActionResult<List<OrderDTO>> FindOrder (string query) {
-            if (query == null || query == "") return BadRequest ();
+            if (DataHelper.IsEmptyString(query)) return BadRequest ();
             //
             var re = _orderModel.Find (query);
             if (re == null || re.Count == 0) return Problem (statusCode: 500, detail: "Data not exist");
@@ -91,7 +96,7 @@ namespace ecommerce_apple_phone.Controllers {
 
         [HttpGet ("/report")]
         public ActionResult<List<OrderDTO>> GetReport (string start, string end) {
-            if (start == null || end == null) return BadRequest (new { message = "Date is requried" });
+            if (DataHelper.IsEmptyString(start)|| DataHelper.IsEmptyString(end)) return BadRequest (new { message = "Date is requried" });
             DateTime startDate;
             if (!DateTime.TryParse (start, out startDate)) return BadRequest (new { message = "Start date is requried" });
             DateTime endDate;
@@ -112,9 +117,9 @@ namespace ecommerce_apple_phone.Controllers {
         }
 
         [HttpPut ("{id}")]
-        public ActionResult UpdateStatus (int id, int status) {
-            if (status <= 0 || id <= 0) return BadRequest ();
-            var re = _orderModel.UpdateStatus (id, status);
+        public ActionResult UpdateStatus (int id, [FromForm] int? status) {
+            if (status == null|| id <= 0) return BadRequest ();
+            var re = _orderModel.UpdateStatus (id, (int)status);
             if (!re) return Problem (statusCode: 500, detail: "Can't update status data");
             return Ok ();
         }

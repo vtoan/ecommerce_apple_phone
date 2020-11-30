@@ -46,15 +46,6 @@ namespace ecommerce_apple_phone.DTO {
         public int? Quantity { get; set; }
     }
 
-    // public class ProductAttrDTO {
-    //     public int Id { get; set; }
-    //     public string Color { get; set; }
-    //     public int? SaleCount { get; set; }
-    //     public double? Price { get; set; }
-    //     public string Images { get; set; }
-    //     public int? Quantity { get; set; }
-    // }
-
     public class ProductDetailDTO {
         public string Screen { get; set; }
         public string FontCamera { get; set; }
@@ -80,7 +71,9 @@ namespace ecommerce_apple_phone.DTO {
     }
 
     public class FeedbackDTO {
-        public int ProductId { get; set; }
+
+        public int Id {get;set;}
+        public int ProductDetailId { get; set; }
         public int UserId { get; set; }
         public string FeedbackContent { get; set; }
     }

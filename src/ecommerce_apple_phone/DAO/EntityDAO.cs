@@ -73,9 +73,6 @@ namespace ecommerce_apple_phone.DAO
                 Console.WriteLine(ex.Message);
                 return false;
             }
-
-
-
         }
     }
 }

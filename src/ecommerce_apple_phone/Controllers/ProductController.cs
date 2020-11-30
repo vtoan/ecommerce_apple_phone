@@ -34,7 +34,7 @@ namespace ecommerce_apple_phone.Controllers
         [HttpGet("get-ids/{id}")]
         public ActionResult<List<ProductDTO>> FindByIds(string id)
         {
-            if (IsEmptyString(id)) return BadRequest();
+            if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
             var re = GetListProducts();
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
@@ -68,7 +68,7 @@ namespace ecommerce_apple_phone.Controllers
 
         [HttpGet("promotion")]
         public ActionResult<List<ProductDTO>> FindPromotion()
-        { //
+        {
             //Get in cache
             var re = _cache.Get<List<ProductDTO>>(CacheKey.DISCOUNT_PRODUCT);
             if (re != null || re?.Count > 0) return re;
@@ -84,20 +84,19 @@ namespace ecommerce_apple_phone.Controllers
         [HttpGet("search/{query}")]
         public ActionResult<List<ProductDTO>> FindProduct(string query)
         {
-            if (IsEmptyString(query)) return BadRequest();
+            if (DataHelper.IsEmptyString(query)) return BadRequest();
             //
             var re = GetListProducts();
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return _productModel.FindByString(re, query);
         }
 
-
         [HttpGet("{id}/list-attr")]
         public ActionResult<List<ProductDTO>> GetListAttr(string id)
         {
-            if (IsEmptyString(id)) return BadRequest();
+            if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = GetDetailId(id);
+            var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.GetListAttrDTOs(itemId);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
@@ -111,9 +110,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpGet("{id}")]
         public ActionResult<ProductDetailDTO> GetDetail(string id)
         {
-            if (IsEmptyString(id)) return BadRequest();
+            if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = GetDetailId(id);
+            var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.GetDetailDTO(itemId);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
@@ -147,9 +146,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpPut("{id}/status")]
         public ActionResult UpdateStatusDetail(string id,[FromForm(Name="status")] bool? status)
         {
-            if (IsEmptyString(id) || status == null) return BadRequest();
+            if (DataHelper.IsEmptyString(id) || status == null) return BadRequest();
             //
-            var itemId = GetDetailId(id);
+            var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.UpdateStatusDTO(itemId,(bool)status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
@@ -159,9 +158,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpDelete("{id}")]
         public ActionResult RemoveProductDetail(string id)
         {
-            if (IsEmptyString(id)) return BadRequest();
+            if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = GetDetailId(id);
+            var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.RemoveDTO(itemId);
             if (!re) return Problem(statusCode: 500, detail: "Can't remove data");
@@ -173,9 +172,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpGet("attr/{id}")]
         public ActionResult<ProductDTO> GetAttr(string id)
         {
-            if (IsEmptyString(id)) return BadRequest();
+            if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = GetAttrlId(id);
+            var itemId = DataHelper.GetAttrlId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.GetAttrDTO(itemId);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
@@ -197,9 +196,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpPut("attr/{id}")]
         public ActionResult UpdateAttr(string id,[FromForm] ProductDTO productAttrDTO)
         {
-            if (IsEmptyString(id) || !ModelState.IsValid) return BadRequest();
+            if (DataHelper.IsEmptyString(id) || !ModelState.IsValid) return BadRequest();
             //
-            var itemId = GetAttrlId(id);
+            var itemId = DataHelper.GetAttrlId(id);
             if (itemId == 0) return BadRequest();
             var modified = new PropModified<ProductDTO>(productAttrDTO);
             if (!modified.isChanged) return BadRequest();
@@ -211,9 +210,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpPut("attr/status/{id}")]
         public ActionResult UpdateStatusAttr(string id,[FromForm(Name="status")] bool? status)
         {
-            if (IsEmptyString(id)||status==null) return BadRequest();
+            if (DataHelper.IsEmptyString(id)||status==null) return BadRequest();
             //
-            var itemId = GetDetailId(id);
+            var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.UpdateStatusAttrDTO(itemId,(bool) status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
@@ -223,9 +222,9 @@ namespace ecommerce_apple_phone.Controllers
         [HttpDelete("attr/{id}")]
         public ActionResult RemoveAttr(string id)
         {
-            if (IsEmptyString(id)) return BadRequest();
+            if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = GetDetailId(id);
+            var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.RemoveAttrDTO(itemId);
             if (!re) return Problem(statusCode: 500, detail: "Can't remove data");
@@ -256,45 +255,5 @@ namespace ecommerce_apple_phone.Controllers
             }
             return re;
         }
-
-        [NonAction]
-        private int[] ParserProdId(string id)
-        {
-            try
-            {
-                int[] itemId = id.Split("-").Select(item => Int32.Parse(item)).ToArray();
-                return itemId;
-            }catch(Exception ex){
-                System.Console.WriteLine(ex.Data);
-                return default(int[]);
-            }
-        }
-
-        [NonAction]
-        private int GetDetailId(string id)
-        {
-            var itemId = ParserProdId(id);
-            if (itemId == null || itemId?.Length <= 0) return 0;
-            return itemId[0];
-        }
-
-        [NonAction]
-        private int GetAttrlId(string id)
-        {
-            var itemId = ParserProdId(id);
-            if (itemId == null  ||itemId?.Length <= 2) return 0;
-            return itemId[1];
-        }
-
-        [NonAction]
-        private bool IsEmptyString(string id)
-        {
-            return String.IsNullOrEmpty(id) || String.IsNullOrWhiteSpace(id);
-        }
-
-
-
-
-
     }
 }

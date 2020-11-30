@@ -71,7 +71,6 @@ namespace ecommerce_apple_phone.Interfaces {
     }
 
     public interface IOrderModel : IGetDTO<OrderDTO> {
-        bool Payment (OrderDTO orderDTO);
         OrderDTO AddDTO (OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTOs);
         bool UpdateStatus (int id, int status);
         List<OrderDTO> GetListDTOs (DateTime start, DateTime end);
