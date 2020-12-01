@@ -28,10 +28,11 @@ namespace ecommerce_apple_phone.Controllers
         [HttpPut()]
         public IActionResult Update (InfoDTO infoDTO) {
             if (!_infoModel.UpdateDTO (1, infoDTO)) return Problem (statusCode: 500, detail: "Can't update data");
+            _cache.DataUpdated(Helper.CacheKey.INFO);
             return Ok ();
         }
 
-        [HttpPost ("image-seo")]
+        [HttpPost ("image_seo")]
         public ActionResult UpdateImageSEO ([FromServices] IUploadService upload, IFormFile file) {
             if (file == null)  return BadRequest ();
             if(!upload.UploadFile(file, "image_seo")) return Problem (statusCode: 500, detail: "Can't upload file");   

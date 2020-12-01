@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material.module';
+
 //component
 import { LoaderComponent  } from './components/loader/loader.component';
 import { MessageComponent } from './components/message/message.component';
@@ -10,6 +12,7 @@ import { PageinatorComponent } from './components/pageinator/pageinator.componen
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 //directive
 import { PaserValueComponent } from './components/paser-value/paser-value.component';
+import { InputImageComponent } from './components/input-image/input-image.component';
 
 @NgModule({
   declarations: [
@@ -20,14 +23,16 @@ import { PaserValueComponent } from './components/paser-value/paser-value.compon
     DropdownComponent,
     PageinatorComponent,
     BreadcrumbComponent,
-    PaserValueComponent
+    PaserValueComponent,
+    InputImageComponent
   ],
   entryComponents:[
     MessageComponent,
     NotifySnackBarComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule,
   ],
   exports:[
     LoaderComponent,
@@ -38,6 +43,7 @@ import { PaserValueComponent } from './components/paser-value/paser-value.compon
     PageinatorComponent,
     BreadcrumbComponent,
     PaserValueComponent,
+    InputImageComponent
   ]
 })
 export class ShareModule { }

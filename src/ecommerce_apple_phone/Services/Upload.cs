@@ -25,7 +25,7 @@ namespace ecommerce_apple_phone.Services
                 if (!Directory.Exists (folderPath))
                     Directory.CreateDirectory (folderPath);
                 //Save file
-                string filePath = Path.Combine (folderPath, file.Name);
+                string filePath = Path.Combine (folderPath, file.FileName);
                 using (var fileStream = new FileStream (filePath, FileMode.OpenOrCreate)) {
                     file.CopyTo (fileStream);
                 }

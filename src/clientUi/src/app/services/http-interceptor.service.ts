@@ -41,4 +41,8 @@ export class HttpInterceptorService implements HttpInterceptor {
         this.message.showFail(err,operation);
         return throwError(result);
     }
+
+    suscees(){
+        this.message.showSuccess("OK");
+    }
 }

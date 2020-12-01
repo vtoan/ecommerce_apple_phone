@@ -12,7 +12,7 @@ namespace ecommerce_apple_phone.Helper {
         FEE
     }
     public class CacheHelper : ICacheHelper {
-        private Dictionary<string, bool> DataChanged = new Dictionary<string, bool> () { { "PRODUCT", false }, { "DISCOUNT_PRODUCT", false }, { "SELLER_PRODUCT", false }, { "INFO", false }, { "FEE", false },
+        private static Dictionary<string, bool> DataChanged = new Dictionary<string, bool> () { { "PRODUCT", false }, { "DISCOUNT_PRODUCT", false }, { "SELLER_PRODUCT", false }, { "INFO", false }, { "FEE", false },
         };
 
         private IMemoryCache _cache;
@@ -29,6 +29,7 @@ namespace ecommerce_apple_phone.Helper {
 
         public T Get<T> (CacheKey keyChanged) {
             string key = keyChanged.ToString ();
+            if(DataChanged.GetValueOrDefault(key)) return default(T);
             var result = _cache.Get (key);
             return result == null ? default (T) : (T) result;
         }
@@ -45,7 +46,7 @@ namespace ecommerce_apple_phone.Helper {
             string key = keyChanged.ToString ();
             bool status;
             if (DataChanged.TryGetValue (key, out status))
-                DataChanged.TryAdd (key, true);
+                DataChanged[key]=true;
         }
     }
 }

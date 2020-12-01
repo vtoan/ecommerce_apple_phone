@@ -6,6 +6,7 @@ import { MatTableDataSource} from '@angular/material/table';
 import { Fee } from 'src/app/models/IModels';
 //service
 import { FeeService } from 'src/app/services/fee.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-fee',
@@ -15,8 +16,11 @@ import { FeeService } from 'src/app/services/fee.service';
 export class FeeComponent implements OnInit {
     //
     isLoaded:boolean= false;
+    itemSelected:Fee;
     submitTitle:string ="Thêm";
-    listFees:Fee[] =[];
+    //
+
+    listFees:Fee[] = null;
     tableData = new MatTableDataSource();
     //validate
     formValidate = this.fb.group({
@@ -28,7 +32,9 @@ export class FeeComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder, 
-        private feeService :FeeService ) {}
+        private feeService :FeeService ,
+        private message :MessageService
+        ) {}
 
     ngOnInit(): void {  
         this.feeService
@@ -43,8 +49,10 @@ export class FeeComponent implements OnInit {
 
     //Event
     onShowDetail(id:number){
+        this.onReset();
         let fee = this.listFees.find(item => item.id == id);
         this.submitTitle ="Lưu";
+        this.itemSelected = fee;
         //attch to from
         this.formValidate.patchValue(fee);
         //get unit
@@ -59,10 +67,14 @@ export class FeeComponent implements OnInit {
             let idxMatch = this.listFees.findIndex(item => item.id ==id);
             this.listFees.splice(idxMatch,1);  
             this.tableData._updateChangeSubscription();
+            //
+            this.message.showSuccess("Delete");
         }, er =>console.log(er))
     }
 
-    onSubmit() {
+    onSubmit(e) {
+        if (this.formValidate.invalid) return;
+        e.preventDefault();
         let rawVal= this.formValidate.value;
         let fee:Fee =Object.assign({},rawVal);        
         if(rawVal.suffix =="precent") fee.cost = fee.cost/100;  
@@ -74,6 +86,7 @@ export class FeeComponent implements OnInit {
         this.submitTitle ="Thêm";
         this.formValidate.reset();
         this.formValidate.get('suffix').setValue('currency');
+        this.itemSelected = null;
     }
 
     //Private
@@ -83,19 +96,23 @@ export class FeeComponent implements OnInit {
             this.listFees.push(resp) 
             this.tableData._updateChangeSubscription();
             //
+            this.message.showSuccess("Create");
             this.onReset();
         }, er =>console.log(er));
     }
 
     private update(fee:Fee){
+        this.itemSelected = fee;
+        this.isLoaded =false;
         this.feeService.update(fee.id, fee).subscribe(resp => {
             //
             let idxMatch = this.listFees.findIndex(item => item.id == fee.id);
             this.listFees[idxMatch]=fee;
             this.tableData._updateChangeSubscription();
             //
+            this.message.showSuccess("Update");
             this.onReset();
-        },er =>console.log(er));
+        },er =>console.log(er),()=>this.isLoaded =true);
     }
   
     private determineUnit(val:number):[number, string] {

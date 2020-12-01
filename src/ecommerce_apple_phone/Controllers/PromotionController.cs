@@ -75,5 +75,12 @@ namespace ecommerce_apple_phone.Controllers {
             return Ok ();
         }
 
+        [HttpPut ("change/{promOld}/{promNew}")]
+        public IActionResult ChangeProm (int promOld, int promNew,int productId) {
+            if (productId <= 0 || promOld <=0 || promNew <=0 ) return BadRequest (new { message = "ID is invalid" });
+            if (!_promModel.ChangePromotion (promOld, promNew, productId)) return Problem (statusCode: 500, detail: "Can't update data");
+            return Ok ();
+        }
+
     }
 }

@@ -15,13 +15,16 @@ import { InfoComponent } from './info/info.component';
 import { OrderComponent } from './order/order.component';
 import { ProductComponent } from './product/product.component';
 import { PromotionComponent } from './promotion/promotion.component';
+import { PostComponent } from './post/post.component';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 
 @NgModule({
   declarations: [
     MainComponent, 
     FeeComponent, 
-    DashboardComponent, CategoryComponent, InfoComponent, OrderComponent, ProductComponent, PromotionComponent,
+    DashboardComponent, CategoryComponent, InfoComponent, OrderComponent, ProductComponent, PromotionComponent, PostComponent, FeedbackComponent, ProductDetailComponent,
   ],
   imports: [
     CommonModule,

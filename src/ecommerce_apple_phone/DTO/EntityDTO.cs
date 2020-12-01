@@ -44,6 +44,7 @@ namespace ecommerce_apple_phone.DTO {
         public double Discount { get; set; }
         public string Color { get; set; }
         public int? Quantity { get; set; }
+        public bool isShow {get;set;}
     }
 
     public class ProductDetailDTO {

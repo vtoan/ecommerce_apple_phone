@@ -41,6 +41,7 @@ interface Product {
     discount:number;
     color:string;
     quantity:number;
+    isShow:boolean;
 }
 
 

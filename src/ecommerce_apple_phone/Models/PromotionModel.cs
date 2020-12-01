@@ -102,5 +102,10 @@ namespace ecommerce_apple_phone.Models
             else if (promDetail is PromPointDTO) return ObjectMapperTo<PromPointDTO, PromPoint>((PromPointDTO)promDetail);
             else return null;
         }
+
+        public bool ChangePromotion(int PromOld, int PromNew, int ProdId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

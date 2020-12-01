@@ -96,8 +96,8 @@ export class ProductService {
         return
     }
 
-    updateStatus(id:number, status:number): boolean{
-        return
+    updateStatus(id:string, status:boolean): Observable<boolean>{
+        return of(true)
     }
 
     remove(id:number): boolean{

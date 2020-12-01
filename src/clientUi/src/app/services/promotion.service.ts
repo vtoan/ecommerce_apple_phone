@@ -63,4 +63,37 @@ export class PromotionService {
             },
         ])
     }
+
+    getListOfProduct():Observable<Promotion[]>{
+        return of([
+            {
+                id: 1,
+                name: "Khuyen mai",
+                fromDate: new Date(),
+                toDate: new Date(),
+                status: true,
+                type: 1,
+                itemDetail: "Khuyen mai",
+            },
+    
+            {
+                id: 1,
+                name: "Khuyen mai 40%",
+                fromDate: new Date(),
+                toDate: new Date(),
+                status: true,
+                type: 1,
+                itemDetail: "Khuyen mai",
+            },
+            {
+                id: 1,
+                name: "Khuyen mai 50%",
+                fromDate: new Date(),
+                toDate: new Date(),
+                status: true,
+                type: 1,
+                itemDetail: "Khuyen mai 50%",
+            },
+        ])
+    }
 }

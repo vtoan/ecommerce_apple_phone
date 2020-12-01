@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { catchError, retry } from "rxjs/operators";
+import { catchError, retry, tap } from "rxjs/operators";
 //models
 import { Fee } from "src/app/models/IModels";
 import { HttpInterceptorService } from "../services/http-interceptor.service";
@@ -18,6 +18,7 @@ export class FeeService {
     ) {}
 
     get(id: number): Observable<Fee> {
+        
         if (!id)
             return this.interceptor.clientError("Get data", "Id is null", null);
         return this.http

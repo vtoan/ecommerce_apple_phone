@@ -31,13 +31,13 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut ("{id}")]
-        public IActionResult Update (int id,[FromForm] CategoryDTO categoryDTO) {
+        public IActionResult Update (int id,[FromBody] CategoryDTO categoryDTO) {
             if (id <= 0 || !ModelState.IsValid ||id != categoryDTO.Id) return BadRequest (new { message = "ID is invalid" });
             if (!_cateModel.UpdateDTO (id, categoryDTO)) return Problem (statusCode: 500, detail: "Can't update data");
             return Ok ();
         }
 
-        [HttpPost ("image-seo")]
+        [HttpPost ("image_seo")]
         public ActionResult UpdateImageSEO ([FromServices]  IUploadService upload, IFormFile file) {
             if(file==null) return BadRequest();
             if(!upload.UploadFile(file,"image_seo")) return  Problem (statusCode: 500, detail: "Can't upload file");

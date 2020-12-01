@@ -101,6 +101,7 @@ namespace ecommerce_apple_phone.Interfaces {
         List<PromProductDTO> GetListDTOsPromProduct ();
         List<PromBillDTO> GetListDTOsPromBill ();
         List<PromPointDTO> GetListDTOsPromPoint ();
+        bool ChangePromotion (int PromOld, int PromNew, int ProdId);
     }
 
     public interface IUserModel : IGetDTO<User> {

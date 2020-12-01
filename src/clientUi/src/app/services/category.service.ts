@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient }  from '@angular/common/http';
+import { HttpClient, HttpParams }  from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError,retry } from 'rxjs/operators';
 //models
@@ -17,7 +17,9 @@ export class CategoryService {
         private http:HttpClient,
         private interceptor: HttpInterceptorService) { }
     
-    getUrlContent = ():string => this.apiUrl +"/image-seo";
+    getUrlRes = ():string => "image_seo";
+
+    getUrlUpload = ():string => this.apiUrl +"/image_seo";
 
     getList(): Observable<Category[]>{
             return this.http
@@ -29,7 +31,7 @@ export class CategoryService {
     }
 
     update(id:number, cate:Category): Observable<any>{
-        return this.http.put(this.apiUrl+"/"+id,  cate)
+        return this.http.put(this.apiUrl+"/"+id, cate)
         .pipe(
             catchError(this.interceptor.handleError('Update data',false))
         )

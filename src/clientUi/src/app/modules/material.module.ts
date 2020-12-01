@@ -8,6 +8,10 @@ import {MatTableModule} from '@angular/material/table'
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 @NgModule({
     exports: [
@@ -18,7 +22,10 @@ import {MatButtonModule} from '@angular/material/button';
         MatInputModule,
         MatTableModule,
         MatSelectModule,
-        MatButtonModule
+        MatButtonModule,
+        MatTabsModule,
+        MatSlideToggleModule,
+        MatPaginatorModule,
     ]
   })
   export class MaterialModule {}

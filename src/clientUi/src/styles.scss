@@ -177,13 +177,17 @@ h4,
     padding-top: 130%;
 }
 
+.img-sm{
+    padding-top: 100% !important;
+}
+
 .img-content .img {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    // background-color: aquamarine;
+    background-color: whitesmoke;
 }
 
 .img-content img {
