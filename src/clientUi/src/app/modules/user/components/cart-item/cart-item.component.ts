@@ -6,6 +6,7 @@ import { Product } from "src/app/models/IModels";
 //service
 import { CartService } from 'src/app/modules/user/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
+import { FileService } from 'src/app/services/file.service';
 
 
 @Component({
@@ -21,15 +22,18 @@ export class CartItemComponent implements OnInit {
     product:Product;
     promotion: number = 0;
     quantity: number = 0;
+    resImage:any[];
 
     constructor(
         private cartService : CartService,
-        private prodService : ProductService
+        private prodService : ProductService,
+        public fileService: FileService
     ) {}
 
     ngOnInit() {
         this.prodService.getAttr(this.itemId).subscribe(val =>{
             this.product =val;
+            this.resImage=Object.values(JSON.parse(val.images));
             this.getInfo();
         })
         

@@ -43,7 +43,7 @@ namespace ecommerce_apple_phone.Helper {
         public  static int GetAttrlId(string id)
         {
             var itemId = ParserProdId(id);
-            if (itemId == null  ||itemId?.Length <= 2) return 0;
+            if (itemId == null  ||itemId?.Length < 2) return 0;
             return itemId[1];
         }
     }

@@ -33,7 +33,7 @@ interface Info {
 interface Product {
     id:string;
     name:string;
-    rOM:string;
+    rom:string;
     images:string;
     categoryId:number;
     price:number;
@@ -50,11 +50,11 @@ interface ProductDetail {
     rearCamera:string;
     operationSystem:string;
     chipset:string;
-    rOM:string;
-    rAM:string;
+    rom:string;
+    ram:string;
     connector:string;
     parameter:string;
-    ưeight:string;
+    weight:string;
     battery:string;
     functionOther:string;
 }

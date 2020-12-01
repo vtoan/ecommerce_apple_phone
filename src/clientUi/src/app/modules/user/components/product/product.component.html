@@ -3,12 +3,12 @@
         <span *ngIf="item.discount %1==0" class="product-sale"> - {{  item.discount | currency:'VND':'symbol':'1.0-0':'fr'}}</span>
         <span *ngIf="item.discount %1!=0" class="product-sale"> - {{  item.discount * 100}} % </span>
         <div class="img">
-            <img src="{{item.images[0]}}"  loading="lazy">
+            <img src="{{fileService.rootPath}}/{{resImage[0]}}"  loading="lazy">
         </div>
         <a class="add-cart text-center d-none d-lg-block" (click)="onAddCart.emit(item)" >Add to Cart</a>
     </div>
     <a routerLink="/product-detail/{{item.id}}" class="product-content text-left">
-        <h4 class="pb-2 normal"> {{item.name}} - {{item.rOM}}</h4>
+        <h4 class="pb-2 normal"> {{item.name}} - {{item.rom}}</h4>
         <div>
             <p class="text-4 red bold d-block d-lg-inline-block m-0 pr-2"> {{ (item.price-promotion) | currency:'VND':'symbol':'1.0-0':'fr'}}</p>
             <del class="normal"> {{item.price  }} đ</del>

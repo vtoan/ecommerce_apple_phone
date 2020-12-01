@@ -31,7 +31,7 @@ namespace ecommerce_apple_phone.Controllers
             return re;
         }
 
-        [HttpGet("get-ids/{id}")]
+        [HttpGet("stringids/{id}")]
         public ActionResult<List<ProductDTO>> FindByIds(string id)
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
@@ -41,7 +41,7 @@ namespace ecommerce_apple_phone.Controllers
             return _productModel.FindByIds(re, id.Split(","));
         }
 
-        [HttpGet("best-seller")]
+        [HttpGet("bests")]
         public ActionResult<List<ProductDTO>> FindBestSeller()
         {
             //Get in cache
@@ -66,7 +66,7 @@ namespace ecommerce_apple_phone.Controllers
             return _productModel.FindByCate(re, cateId);
         }
 
-        [HttpGet("promotion")]
+        [HttpGet("promotions")]
         public ActionResult<List<ProductDTO>> FindPromotion()
         {
             //Get in cache
@@ -91,7 +91,7 @@ namespace ecommerce_apple_phone.Controllers
             return _productModel.FindByString(re, query);
         }
 
-        [HttpGet("{id}/list-attr")]
+        [HttpGet("{id}/attrs")]
         public ActionResult<List<ProductDTO>> GetListAttr(string id)
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
@@ -169,7 +169,7 @@ namespace ecommerce_apple_phone.Controllers
         #endregion
         // =============== Sub attibute product ===============
         #region Attribute Product
-        [HttpGet("attr/{id}")]
+        [HttpGet("attrs/{id}")]
         public ActionResult<ProductDTO> GetAttr(string id)
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
@@ -181,7 +181,7 @@ namespace ecommerce_apple_phone.Controllers
             return re;
         }
 
-        [HttpPost("attr/{id}")]
+        [HttpPost("attrs/{id}")]
         public ActionResult AddAttr(int productDetailId,[FromForm] ProductDTO ProductAttrDTO)
         {
             if (productDetailId <= 0 || !ModelState.IsValid) return BadRequest();
@@ -193,7 +193,7 @@ namespace ecommerce_apple_phone.Controllers
             return Ok();
         }
 
-        [HttpPut("attr/{id}")]
+        [HttpPut("attrs/{id}")]
         public ActionResult UpdateAttr(string id,[FromForm] ProductDTO productAttrDTO)
         {
             if (DataHelper.IsEmptyString(id) || !ModelState.IsValid) return BadRequest();
@@ -207,7 +207,7 @@ namespace ecommerce_apple_phone.Controllers
             return Ok();
         }
 
-        [HttpPut("attr/status/{id}")]
+        [HttpPut("attrs/status/{id}")]
         public ActionResult UpdateStatusAttr(string id,[FromForm(Name="status")] bool? status)
         {
             if (DataHelper.IsEmptyString(id)||status==null) return BadRequest();
@@ -219,7 +219,7 @@ namespace ecommerce_apple_phone.Controllers
             return Ok();
         }
 
-        [HttpDelete("attr/{id}")]
+        [HttpDelete("attrs/{id}")]
         public ActionResult RemoveAttr(string id)
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();

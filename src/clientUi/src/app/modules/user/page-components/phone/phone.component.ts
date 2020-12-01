@@ -20,7 +20,6 @@ export class PhoneComponent implements OnInit {
         this.productService.getListByCate(1).subscribe(
             (resp) => {
                 if (resp != null || resp) this.listProducts = resp;
-                console.log(resp);
             },
             (er) => (this.message = er),
             () => (this.isLoaded = true)

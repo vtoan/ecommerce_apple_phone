@@ -2,17 +2,17 @@
     <p *ngIf="!product">Not found product with id: {{itemId}} </p>
     <div *ngIf="product" class="row align-items-lg-center">
         <div class="col-4 col-lg-2">
-            <div class="img bg-red" style="height: 90px; width: 90px;"><img src=""></div>
+            <div class="img bg-red" style="height: 120px; width: 90px;"><img src="{{fileService.rootPath}}/{{resImage[0]}}"></div>
         </div>
         <div class="col-6 col-lg-8">
             <div class="row align-items-center">
                 <div class="col-12 col-lg-6 mb-2">
                     <p class="bold mb-0">{{product.name}}</p>
-                    <p>{{product.color}} / {{product.rOM}}</p>
+                    <p>{{product.color}} / {{product.rom}}</p>
                     <span item-price class="text-4 red bold"> 
                         <paser-value [rawVal]="(product.price-promotion)"></paser-value>
                     </span>
-                    <del class="normal text-sub"> 
+                    <del *ngIf="promotion!=0" class="pl-3 normal text-sub"> 
                         <paser-value [rawVal]="(product.price)"></paser-value>
                     </del>
                 </div>

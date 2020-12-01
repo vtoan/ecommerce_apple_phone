@@ -16,7 +16,7 @@ export class CartService {
     constructor(private cookie: CookieService) {}
 
     // ===== method ======
-    addToCart(product: Product): void {
+    addToCart(product: Product): boolean {
         let idx = this.cart.item.findIndex(
             (item) => item.productId == product.id
         );
@@ -30,6 +30,7 @@ export class CartService {
                 price: product.price,
             });
         this.notifyChange();
+        return true;
     }
 
     reduceQuantity(id: string): void {

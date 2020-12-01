@@ -41,7 +41,7 @@ export class ProductService {
 
     getListBestSeller(): Observable<Product[]>{
         return this.http
-        .get<Product[]>(this.apiUrl+"/best-seller")
+        .get<Product[]>(this.apiUrl+"/bests")
         .pipe(
             retry(3),
             catchError(this.interceptor.handleError<Product[]>('Get list best seller',[]))
@@ -60,7 +60,7 @@ export class ProductService {
 
     getListDiscount(): Observable<Product[]>{
         return this.http
-        .get<Product[]>(this.apiUrl+"/promotion")
+        .get<Product[]>(this.apiUrl+"/promotions")
         .pipe(
             retry(3),
             catchError(this.interceptor.handleError<Product[]>('Get list promotion',[]))
@@ -78,8 +78,8 @@ export class ProductService {
     }
     // product detail
 
-    get(id:number): Observable<ProductDetail>{
-        if(!id && id < 0) return throwError("Id is invalid");
+    get(id:string): Observable<ProductDetail>{
+        if(!id && id =="") return throwError("Id is invalid");
         return this.http
         .get<ProductDetail>(this.apiUrl+"/"+id)
         .pipe(
@@ -107,7 +107,7 @@ export class ProductService {
     // product attribute
     getListAttr(id:string): Observable<Product[]>{
         return this.http
-        .get<Product[]>(this.apiUrl+"/attr/"+id)
+        .get<Product[]>(this.apiUrl+"/"+id+"/attrs")
         .pipe(
             retry(3),
             catchError(this.interceptor.handleError<Product[]>('Get list attr',[]))
@@ -118,7 +118,7 @@ export class ProductService {
         console.log("Get "+id);
         if(!id) return throwError("Query is empty");
         return this.http
-        .get<Product>(this.apiUrl+"/attr/"+id)
+        .get<Product>(this.apiUrl+"/attrs/"+id)
         .pipe(
             retry(3),
             catchError(this.interceptor.handleError<Product>('Get item attribute',[]))

@@ -191,4 +191,8 @@ export class CartComponent implements OnInit {
         // );
         this.totalPayVal += totalFee;
     }
+
+    onRemoveItem(id:string){
+        this.cartService.remove(id);
+    }
 }

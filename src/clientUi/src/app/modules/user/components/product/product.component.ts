@@ -1,6 +1,9 @@
-import { isNgTemplate } from '@angular/compiler';
 import { Component, Input, Output,EventEmitter, OnInit } from '@angular/core';
+// model
 import { Product } from 'src/app/models/IModels';
+//Service
+import { FileService } from 'src/app/services/file.service';
+
 
 
 @Component({
@@ -14,9 +17,15 @@ export class ProductComponent implements OnInit {
     @Output() onAddCart=  new EventEmitter<Product>()
     @Output() onShowDetail =  new EventEmitter<Product>();
     //
+    constructor(
+        public fileService: FileService
+    ){}
+    //
     promotion:number =0; 
+    resImage: any[];
     ngOnInit(): void {
         this.promotion = this.item.discount;
+        this.resImage = Object.values(JSON.parse(this.item.images));
         if(this.item.discount %1!=0)
             this.promotion = this.item.price * (this.item.discount);
     }

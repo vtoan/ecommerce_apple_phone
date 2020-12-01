@@ -1,1 +1,156 @@
-<p>product-detail works!</p>
+<!--Banner small-->
+<app-banner [titlePage]="title"></app-banner>
+<app-loader style="height: 350px;" *ngIf="!isLoaded"></app-loader>
+<!--Prodcut Detail-->
+<div *ngIf="isLoaded" class="container">
+    <div class="product-detail contents">
+        <!--Product info -->
+        <div class="section">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-5 px-5">
+                    <div id="gallery">
+                        <div class="img-content mb-4">
+                            <div class="img">
+                                <img src="{{fileService.rootPath}}/{{imageDisplay}}">
+                            </div>
+                        </div>
+                        <a class="arrow-prev black"><i class="las la-angle-left" (click)="onPrevGallery()"></i></a>
+                        <a class="arrow-next black"><i class="las la-angle-right" (click)="onPrevGallery()"></i></a>
+                    </div>
+                    <div id="gallery-nav">
+                        <div *ngFor="let item of listImage" class="img">
+                            <img src="{{fileService.rootPath}}/{{item}}" (click)="imageDisplay = item">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-7 px-5">
+                    <div class="product-text">
+                        <h1 class="normal mb-3 text-2"> {{listAttr[0].name}} - {{productDetail.rom}} </h1>
+                        <div class="">
+                            <div class="example-button-row">
+                                <button class="mr-3" 
+                                    *ngFor="let item of listAttr"
+                                     mat-stroked-button 
+                                     (click)="onChangeColor(item.id)"
+                                     [ngClass]="item.id == itemActive ? 'bg-black white': '' "
+                                     > {{item.color}}   
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-4  py-4">
+                            <p class="italic bold mb-0 "> Gia chi:
+                                <span class="text-4 red bold d-block d-lg-inline-block mb-1 pl-3">
+                                    <paser-value [rawVal]="itemPrice - itemDiscount"></paser-value>
+                                </span>
+
+                            </p>
+                            <p class="italic" *ngIf="itemDiscount!=0"> Gia goc
+                                <del class="normal text-sub pl-3">
+                                    <paser-value [rawVal]="itemPrice"></paser-value>
+                                </del>
+                            </p>
+                        </div>
+                        <div *ngIf="listProm!=null && listProm.length>0" class="product-policy mb-4 text-4">
+                            <p class="italic bold mb-0 ">Ưu đãi</p>
+                            <div class="policy-container border-black">
+                                <div *ngFor="let item of listProm" class="policy-item">
+                                    <span class="policy-icon">
+                                        <img src="{{fileService.rootPath}}/icon/sale.svg" width="30px" height="30px"/>
+                                   </span>
+                                    <div class="policy-text">
+                                        <p class="mb-0">{{item.name}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-btns text-center mb-3">
+                            <a class="buy-now btn btn-lg white bg-red mb-3 w-60" routerLink="/cart" (click)="onBuyNow()">Mua ngay</a>
+                            <button class="to-cart btn btn-lg white bg-black  w-60" (click)="onAddCart()">Thêm vào giỏ
+                                hàng</button>
+                        </div>
+                        <span class="text-sub text-center d-block">Hoặc đặt mua qua facebook tại <a class="link blue"
+                                href=""> ĐÂY </a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Product description-->
+        <div class="section">
+            <div class="row">
+                <div class="col-12 col-lg-5">
+                    <h3 class="mb-4">Thông số</h3>
+                    <table *ngIf="productDetail != null" class="table table-color">
+                        <thead>
+                            <th style="width: 30%;"></th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="productDetail.screen">
+                                <td scope="row">Screen</td>
+                                <td>{{productDetail.screen}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.fontCamera">
+                                <td scope="row">xuất xứ</td>
+                                <td>{{productDetail.fontCamera}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.fontCamera">
+                                <td scope="row">phân loại</td>
+                                <td>{{productDetail.fontCamera}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.operationSystem">
+                                <td scope="row">kính</td>
+                                <td>{{productDetail.operationSystem}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.chipset">
+                                <td scope="row">thông số</td>
+                                <td>{{productDetail.chipset}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.rom">
+                                <td scope="row">máy</td>
+                                <td>{{productDetail.rom}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.ram">
+                                <td scope="row">niềng</td>
+                                <td>{{productDetail.ram}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.connector">
+                                <td scope="row">dây đeo</td>
+                                <td>{{productDetail.connector}}/td>
+                            </tr>
+                            <tr *ngIf="productDetail.parameter">
+                                <td scope="row">chống nước</td>
+                                <td>{{productDetail.parameter}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.weight">
+                                <td scope="row">chức năng</td>
+                                <td>{{productDetail.weight}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.battery">
+                                <td scope="row">nơi sản xuất</td>
+                                <td>{{productDetail.battery}}</td>
+                            </tr>
+                            <tr *ngIf="productDetail.functionOther">
+                                <td scope="row">bảo hành</td>
+                                <td>{{productDetail.functionOther}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-lg-7">
+                    <h3 class="mb-4">Giới thiệu</h3>
+                    <div id="posts">
+                        <p *ngIf="!postObject">Chưa có bài giới thiệu</p>
+                        {{postObject}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Product Other-->
+        <div class="section">
+            <h3 class="text-center mb-4 mb-lg-5">Sản phẩm tương tự</h3>
+            <p *ngIf=" !isLoaded || listProductRelate==null" class="text-center" style="line-height: 25;">No exixt data</p>
+            <app-list-product *ngIf="isLoaded && listProductRelate" [products]="listProductRelate" [isPage]="false"
+                [isFilter]="false"></app-list-product>
+        </div>
+    </div>
+</div>

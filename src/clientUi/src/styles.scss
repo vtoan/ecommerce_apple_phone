@@ -174,7 +174,7 @@ h4,
 .img-content {
     position: relative;
     overflow: hidden;
-    padding-top: 100%;
+    padding-top: 130%;
 }
 
 .img-content .img {
@@ -183,7 +183,7 @@ h4,
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: aquamarine;
+    // background-color: aquamarine;
 }
 
 .img-content img {
@@ -192,7 +192,7 @@ h4,
 
 @media only screen and (min-width: 62em) {
     .img-content:hover img {
-        transform: scale(1.3);
+        transform: scale(1.2);
     }
 }
 
