@@ -55,15 +55,25 @@ namespace ecommerce_apple_phone.Helper
             //Prom
             CreateMap<PromotionDTO, Promotion>();
             CreateMap<Promotion, PromotionDTO>();
+            CreateMap<Promotion, PromBillDTO>()
+                .ForMember(src => src.Discount, act => act.MapFrom(des => des.PromBill.Discount))
+                .ForMember(src => src.ConditionItem, act => act.MapFrom(des => des.PromBill.ConditionItem))
+                .ForMember(src => src.ConditionAmount, act => act.MapFrom(des => des.PromBill.ConditionItem));
+            CreateMap<Promotion, PromProductDTO>()
+                .ForMember(src => src.Discount, act => act.MapFrom(des => des.PromProduct.Discount))
+                .ForMember(src => src.ProductInProms, act => act.MapFrom(des => des.PromProduct.ProductInProms))
+                .ForMember(src => src.CategoryId, act => act.MapFrom(des => des.PromProduct.CategoryId));
             //
+            CreateMap<Promotion, PromPointDTO>()
+                .ForMember(src => src.DiscountIn, act => act.MapFrom(des => des.PromPoint.DiscountIn))
+                .ForMember(src => src.DiscountOut, act => act.MapFrom(des => des.PromPoint.DiscountOut));
+            //
+
             CreateMap<PromBillDTO, PromBill>();
-            CreateMap<PromBill, PromBillDTO>();
             //
-            CreateMap<PromPoint, PromPointDTO>();
             CreateMap<PromPointDTO, PromPoint>();
             //
             CreateMap<PromProductDTO, PromProduct>();
-            CreateMap<PromProduct, PromProductDTO>();
         }
 
         private int getPropID(string idstring, int idx)

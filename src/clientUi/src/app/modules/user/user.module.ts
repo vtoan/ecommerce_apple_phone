@@ -27,7 +27,8 @@ import { ProductDetailComponent } from "./page-components/product-detail/product
 import { SearchProductComponent } from "./page-components/search-product/search-product.component";
 
 //services
-import { ErrorService } from './services/error.service';
+import { ErrorService } from "./services/error.service";
+import { CartService } from "./services/cart.service";
 
 @NgModule({
     declarations: [
@@ -56,6 +57,6 @@ import { ErrorService } from './services/error.service';
         FormsModule,
         ReactiveFormsModule,
     ],
-    providers: [ ErrorService ],
+    providers: [CartService, ErrorService],
 })
 export class UserModule {}

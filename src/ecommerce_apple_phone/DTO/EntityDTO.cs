@@ -137,6 +137,7 @@ namespace ecommerce_apple_phone.DTO {
 
     public class PromBillDTO {
         public int Id { get; set; }
+        public string Name {get;set;}
         public double? Discount { get; set; }
         public byte? ConditionItem { get; set; }
         public int? ConditionAmount { get; set; }
@@ -144,6 +145,7 @@ namespace ecommerce_apple_phone.DTO {
 
     public class PromProductDTO {
         public int Id { get; set; }
+        public string Name {get;set;}
         public double? Discount { get; set; }
         public string ProductInProms { get; set; }
         public int? CategoryId { get; set; }
@@ -152,6 +154,8 @@ namespace ecommerce_apple_phone.DTO {
 
     public class PromPointDTO {
         public int Id { get; set; }
+
+        public string Name {get;set;}
         public double? DiscountIn { get; set; }
         public double? DiscountOut { get; set; }
     }

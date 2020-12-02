@@ -42,7 +42,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         return throwError(result);
     }
 
-    suscees(){
-        this.message.showSuccess("OK");
+    suscees(operation = 'operation'){
+        this.message.showSuccess(operation);
     }
 }

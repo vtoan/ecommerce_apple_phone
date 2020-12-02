@@ -1,21 +1,21 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 
 @Component({
-  selector: 'app-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss']
+    selector: "app-dropdown",
+    templateUrl: "./dropdown.component.html",
+    styleUrls: ["./dropdown.component.scss"],
 })
-export class DropdownComponent implements OnInit {  
-  @Input()listItem:string[];
-  @Input()defName:string ="Chon";
-  @Output()choose = new EventEmitter<number>();
+export class DropdownComponent implements OnInit {
+    @Input() listItem: string[];
+    @Input() defName: string = "- Select- ";
+    @Output() choose = new EventEmitter<number>();
 
-  isShow:boolean =false;
-  defaultName:string="";
-  constructor() { }
+    isShow: boolean = false;
+    defaultName: string = "";
 
-  ngOnInit() {
-    this.defaultName =this.defName;
-  }  
+    constructor() {}
+
+    ngOnInit() {
+        this.defaultName = this.defName;
+    }
 }
-

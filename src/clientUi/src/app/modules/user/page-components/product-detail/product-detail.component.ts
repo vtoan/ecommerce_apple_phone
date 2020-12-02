@@ -72,17 +72,20 @@ export class ProductDetailComponent implements OnInit {
         if (idx >= 0) this.productAttrDisplay(idx);
     }
 
-    onNextGallery() {}
+    onNextGallery() {
+    }
 
     onPrevGallery() {}
 
     onAddCart() {
-        let idx = this.listAttr.findIndex((item) => item.id == this.itemActive);
-        if (idx < 0) this.meesageService.showFail("Can't item to cart");
-        else {
-            this.cartService.addToCart(this.listAttr[idx]);
-            this.meesageService.showSuccess("Added item to cart");
-        }
+        this.errService.redirectError("asdsadas");
+
+        // let idx = this.listAttr.findIndex((item) => item.id == this.itemActive);
+        // if (idx < 0) this.meesageService.showFail("Can't item to cart");
+        // else {
+        //     this.cartService.addToCart(this.listAttr[idx]);
+        //     this.meesageService.showSuccess("Added item to cart");
+        // }
     }
 
     onBuyNow() {

@@ -22,12 +22,13 @@ export class ProductService {
 
     // ============ Method ============
     getList(): Observable<Product[]>{
-        return this.http
+        let obs = this.http
         .get<Product[]>(this.apiUrl)
         .pipe(
             retry(3),
             catchError(this.interceptor.handleError<Product[]>('Get list data',[]))
         )
+        return obs;
     }
 
     getListById(ids:string): Observable<Product[]>{

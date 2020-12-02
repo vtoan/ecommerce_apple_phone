@@ -3,9 +3,7 @@ import { CookieService } from "ngx-cookie";
 import { OrderDetail, Product } from "../../../models/IModels";
 import { Subject } from "rxjs";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class CartService {
     // ===== prop ======
     private cart: Cart = {

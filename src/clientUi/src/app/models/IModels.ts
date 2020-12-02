@@ -42,6 +42,7 @@ interface Product {
     color:string;
     quantity:number;
     isShow:boolean;
+    promotion:string;
 }
 
 
@@ -133,6 +134,7 @@ interface Promotion {
 
 interface PromBill {
     id:number;
+    name:string;
     discount:number;
     conditionItem:number;
     conditionAmount:number;
@@ -140,23 +142,19 @@ interface PromBill {
 
 interface PromProduct {
     id:number;
+    name:string;
     discount:number;
     productInProms:string;
     categoryId:number;
-    bandId:number;
 }
 
 interface PromPoint{
     id:number;
+    name:string;
     discountIn:number;
     discountOut:number;
 }
 
-interface PromMethodPay {
-    id:number;
-    discount:number;
-    methodPayId:number;
-}
 
 export {
     Fee,
@@ -172,7 +170,6 @@ export {
     Promotion,
     PromPoint,
     PromBill,
-    PromMethodPay,
     PromProduct,
     ImportProduct,
     ImportDetail

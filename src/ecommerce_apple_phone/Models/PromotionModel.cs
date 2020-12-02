@@ -22,26 +22,26 @@ namespace ecommerce_apple_phone.Models
             else if (detail is PromBill) obj.PromBill = (detail);
             else if (detail is PromPoint) obj.PromPoint = (detail);
             //
-            using (var db = new EntityDAO<Promotion>(_context))
+            using (var db = new PromDAO(_context))
                 return ObjectMapperTo<Promotion, PromotionDTO>(db.Add(obj));
         }
 
         public List<PromBillDTO> GetListDTOsPromBill()
         {
-            using (var db = new EntityDAO<PromBill>(_context))
-                return LsObjectMapperTo<PromBill, PromBillDTO>(db.GetList());
+            using (var db = new PromDAO(_context))
+                return LsObjectMapperTo<Promotion, PromBillDTO>(db.GetListBill());
         }
 
         public List<PromPointDTO> GetListDTOsPromPoint()
         {
-            using (var db = new EntityDAO<PromPoint>(_context))
-                return LsObjectMapperTo<PromPoint, PromPointDTO>(db.GetList());
+            using (var db = new PromDAO(_context))
+                return LsObjectMapperTo<Promotion, PromPointDTO>(db.GetListPoint());
         }
 
         public List<PromProductDTO> GetListDTOsPromProduct()
         {
-            using (var db = new EntityDAO<PromProduct>(_context))
-                return LsObjectMapperTo<PromProduct, PromProductDTO>(db.GetList());
+            using (var db = new PromDAO(_context))
+                return LsObjectMapperTo<Promotion, PromProductDTO>(db.GetListProduct());
         }
 
         public bool UpdateDTO(int id, PromotionDTO promotionDTO, object promDetail)
@@ -94,6 +94,12 @@ namespace ecommerce_apple_phone.Models
                 return db.Update(id, modified);
         }
 
+        public bool ChangePromotion(int PromOld, int PromNew, int ProdId)
+        {   
+            using(var db = new PromDAO(_context))
+                return db.ChangePromProduct(PromOld, PromNew, ProdId);
+        }
+
         public dynamic CheckPromDetail(object promDetail)
         {
             if (promDetail == null) return null;
@@ -103,9 +109,6 @@ namespace ecommerce_apple_phone.Models
             else return null;
         }
 
-        public bool ChangePromotion(int PromOld, int PromNew, int ProdId)
-        {
-            throw new System.NotImplementedException();
-        }
+        
     }
 }

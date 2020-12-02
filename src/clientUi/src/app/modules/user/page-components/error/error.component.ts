@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router"
-import { param } from 'jquery';
 //service
 
 @Component({
@@ -15,9 +14,9 @@ export class ErrorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.route.params.subscribe( param => {
-            this.title = param['title'] ? param['title']: "Error";
-            this.message = param['message'];
-        })
+       this.route.params.subscribe(params => {
+            this.title =params["title"];
+            this.message = params["message"];
+       })
     }
 }

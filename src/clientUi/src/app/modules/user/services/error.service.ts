@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class ErrorService {
-    
-    constructor() {}
-    
+    constructor(private router: Router) {}
+
     redirectError(message: string, title?: string): void {
-        title = title ? title : 'Error';
-        message = message ? message : 'No determine';
-        location.assign("/error/"+title+"/"+message);
+        title = title ? title : "Error 500";
+        message = message ? message : "No determine";
+        this.router.navigate(["error", title, message]);
     }
 }

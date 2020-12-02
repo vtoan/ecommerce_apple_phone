@@ -104,7 +104,6 @@ export class CategoryComponent implements OnInit {
                         this.cateService.getUrlUpload()
                     );
                 }
-                this.message.showSuccess("Update");
                 this.onReset();
             },
             (er) => console.log(er),

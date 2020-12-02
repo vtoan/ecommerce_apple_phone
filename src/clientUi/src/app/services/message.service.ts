@@ -15,7 +15,6 @@ export class MessageService {
     constructor() { }
 
     showSuccess(message: string,title:string ="Thành công"){
-        console.log(message);
             this.obs.next({
                 title:title,
                 data:message,
