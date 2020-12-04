@@ -3,7 +3,8 @@
         <h3 class="mb-4">Thông tin cửa hàng</h3>
     </div>
     <div class="card-content">    
-        <form #form [formGroup]="formValidate"(submit)="onSubmit()" *ngIf="isLoaded" #ngFrom="ngForm"   >    
+        <p class="text-center py-5 empty" *ngIf="isLoaded && info ==null"> Khong co du lieu </p>
+        <form #form [formGroup]="formValidate"(submit)="onSubmit()" *ngIf="isLoaded && info !=null" #ngFrom="ngForm"   >    
             <div class="row mb-5">
                 <div class="col-lg-8">
                     <p>

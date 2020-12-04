@@ -10,6 +10,7 @@ import { HttpInterceptorService } from "./http-interceptor.service";
 })
 export class OrderService {
     private apiUrl = "api/order";
+    private options = { year: 'numeric', month: 'numeric', day: 'numeric' };
 
     constructor(
         private http: HttpClient,
@@ -29,27 +30,105 @@ export class OrderService {
             );
     }
 
+    getList(start: Date, end: Date): Observable<Order[]> {
+        let sDate:string = start.toLocaleDateString();
+        let eDate:string = end.toLocaleDateString();
+        let data = [
+            {
+                id: 1,
+                dateCreated: "asew",
+                questName: "abc",
+                questPhone: "abc",
+                questProvince: "abc",
+                questDistrict: "abc",
+                questEmail: "abc",
+                questAddress: "abc",
+                note: "abc",
+                promotion: "abc",
+                fees: "abc",
+                status: 1,
+                userId: 1,
+                methodPayId: 1,
+                pointUse: 1,
+                point: 1,
+                orderItems: "",
+            },
+            {
+                id: 1,
+                dateCreated: "asew",
+                questName: "abc",
+                questPhone: "abc",
+                questProvince: "abc",
+                questDistrict: "abc",
+                questEmail: "abc",
+                questAddress: "abc",
+                note: "abc",
+                promotion: "abc",
+                fees: "abc",
+                status: 1,
+                userId: 1,
+                methodPayId: 1,
+                pointUse: 1,
+                point: 1,
+                orderItems: "",
+            },
+        ];
+        return of(data);
+
+        // if (!start|| !end)
+        //     return this.interceptor.clientError("Get data", "Id is null", []);
+        // return this.http
+        //     .get<Order[]>(this.apiUrl + "/" )
+        //     .pipe(
+        //         retry(3),
+        //         catchError(
+        //             this.interceptor.handleError<Order[]>("Get data", [])
+        //         )
+        //     );
+    }
+
+    updateStatus(id: number, status: number): Observable<Order> {
+        if (!id || !status)
+            return this.interceptor.clientError("Get data", "Id is null", null);
+        return this.http
+            .get<Order>(this.apiUrl + "/")
+            .pipe(
+                retry(3),
+                catchError(
+                    this.interceptor.handleError<Order>("Get data", null)
+                )
+            );
+    }
 
     confirmOrder(order: Order): Observable<Order> {
         return this.http
             .post<Order>(this.apiUrl, order)
             .pipe(
                 retry(3),
-                catchError(this.interceptor.handleError<Order>("Confirm order", null))
+                catchError(
+                    this.interceptor.handleError<Order>("Confirm order", null)
+                )
             );
     }
 
-
-
     payment(order: Order, paymentId: number): Observable<boolean> {
         if (!paymentId)
-            return this.interceptor.clientError("Payment order", "Payment is null", null);
+            return this.interceptor.clientError(
+                "Payment order",
+                "Payment is null",
+                null
+            );
         return this.http
-        .post<boolean>(this.apiUrl+"/"+paymentId, order)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<boolean>("Confirm order", false))
-        );
+            .post<boolean>(this.apiUrl + "/" + paymentId, order)
+            .pipe(
+                retry(3),
+                catchError(
+                    this.interceptor.handleError<boolean>(
+                        "Confirm order",
+                        false
+                    )
+                )
+            );
     }
 
     getListProvice(): Observable<any> {
@@ -57,21 +136,16 @@ export class OrderService {
             .get("api/asset/province.json")
             .pipe(
                 retry(3),
-                catchError(
-                    this.interceptor.handleError("Get Province", null)
-                )
+                catchError(this.interceptor.handleError("Get Province", null))
             );
     }
 
     getListDistrict(id: number): Observable<any> {
         return this.http
-        .get("api/asset/district/"+id+".json")
-        .pipe(
-            retry(3),
-            catchError(
-                this.interceptor.handleError("Get District", null)
-            )
-        );
+            .get("api/asset/district/" + id + ".json")
+            .pipe(
+                retry(3),
+                catchError(this.interceptor.handleError("Get District", null))
+            );
     }
-
 }

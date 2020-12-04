@@ -7,6 +7,8 @@ import { Info } from "src/app/models/IModels";
 import { InfoService } from "src/app/services/info.service";
 import { FileService } from "src/app/services/file.service";
 import { MessageService } from "src/app/services/message.service";
+import { of } from "rxjs";
+import { finalize } from "rxjs/operators";
 
 @Component({
     selector: "app-info",
@@ -44,15 +46,9 @@ export class InfoComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.infoService.get().subscribe(
-            (resp) => {
-                this.info = resp;
-                console.log(resp);
-                this.formValidate.patchValue(resp);
-            },
-            (er) => console.log(er),
-            ()=> this.isLoaded = true
-        );
+        of(this.getDataInfo())
+            .pipe(finalize(() => (this.isLoaded = true)))
+            .subscribe();
     }
 
     // =========== Event ==========
@@ -91,22 +87,33 @@ export class InfoComponent implements OnInit {
     // =========== Private ===========
     private update(info: Info) {
         console.log(info);
-        this.isLoaded =false;
+        this.isLoaded = false;
         this.infoService.update(info).subscribe(
             (resp) => {
                 const urlRes = this.infoService.getUrlUpload();
-                if (this.listLogo.length > 0){
+                if (this.listLogo.length > 0) {
                     let file = this.listLogo.pop();
                     this.fileServcie.upload(file, urlRes[0]);
-                }              
-                if (this.listFile.length > 0){
+                }
+                if (this.listFile.length > 0) {
                     let file = this.listFile.pop();
                     this.fileServcie.upload(file, urlRes[1]);
                 }
                 this.message.showSuccess("Update");
                 location.reload();
             },
-            (er) => console.log(er),
+            (er) => console.log(er)
+        );
+    }
+
+    private getDataInfo() {
+        this.infoService.get().subscribe(
+            (resp) => {
+                this.info = resp;
+                console.log(resp);
+                this.formValidate.patchValue(resp);
+            },
+            (erVal) => (this.info = erVal)
         );
     }
 }

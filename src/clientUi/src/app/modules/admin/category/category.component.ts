@@ -7,6 +7,8 @@ import { Category } from "src/app/models/IModels";
 import { CategoryService } from "src/app/services/category.service";
 import { FileService } from "src/app/services/file.service";
 import { MessageService } from "src/app/services/message.service";
+import { of } from "rxjs";
+import { finalize } from "rxjs/operators";
 
 @Component({
     selector: "app-category",
@@ -34,19 +36,12 @@ export class CategoryComponent implements OnInit {
         private fb: FormBuilder,
         private cateService: CategoryService,
         public fileServcie: FileService,
-        private message: MessageService
     ) {}
 
     ngOnInit() {
-        this.cateService.getList().subscribe(
-            (resp) => {
-                this.isLoaded = true;
-                this.listCates = resp;
-                this.tableData.data = this.listCates;
-                this.tableData._updateChangeSubscription();
-            },
-            (er) => (this.isLoaded = true)
-        );
+        of(this.getDataCate())
+            .pipe(finalize(() => (this.isLoaded = true)))
+            .subscribe();
     }
 
     //Event
@@ -81,11 +76,11 @@ export class CategoryComponent implements OnInit {
     }
 
     onRemoveFile() {
-        this.formValidate.patchValue({seoImage: ""});
+        this.formValidate.patchValue({ seoImage: "" });
         this.listFile.length = 0;
     }
 
-    // =========== Private ===========
+    // =========== Use full ===========
     private update(cate: Category) {
         this.cateService.update(cate.id, cate).subscribe(
             (resp) => {
@@ -108,6 +103,17 @@ export class CategoryComponent implements OnInit {
             },
             (er) => console.log(er),
             () => (this.isLoaded = true)
+        );
+    }
+
+    private getDataCate() {
+        this.cateService.getList().subscribe(
+            (resp) => {
+                this.listCates = resp;
+                this.tableData.data = this.listCates;
+                this.tableData._updateChangeSubscription();
+            },
+            (erVal) => (this.listCates = erVal)
         );
     }
 }

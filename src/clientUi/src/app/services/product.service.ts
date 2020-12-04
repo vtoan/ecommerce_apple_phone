@@ -85,16 +85,16 @@ export class ProductService {
         .get<ProductDetail>(this.apiUrl+"/"+id)
         .pipe(
             retry(3),
-            catchError(this.interceptor.handleError<ProductDetail>('Get product detail '+id,[]))
+            catchError(this.interceptor.handleError<ProductDetail>('Get product detail '+id))
         )
     }
 
-    add(idCate:number, product:ProductDetail): Observable<ProductDetail>{
-        return
+    add(product:ProductDetail): Observable<number>{
+        return of(1);
     }
 
-    update(id:number, product:ProductDetail): Observable<ProductDetail>{
-        return
+    update(id:string, product:ProductDetail): Observable<ProductDetail>{
+        return of(null)
     }
 
     updateStatus(id:string, status:boolean): Observable<boolean>{

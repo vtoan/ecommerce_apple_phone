@@ -10,7 +10,7 @@ import { InfoComponent } from './info/info.component';
 import { OrderComponent } from './order/order.component';
 import { ProductComponent } from './product/product.component';
 import { PromotionComponent } from './promotion/promotion.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component'
+import { ProductTabComponent } from './product-tab/product-tab.component';
 //
 const routes: Routes = [
   { 
@@ -22,7 +22,8 @@ const routes: Routes = [
       { path:"info", component:InfoComponent },
       { path:"order", component:OrderComponent },
       { path:"product", component:ProductComponent },
-      { path:"product-detail/:id", component:ProductDetailComponent },
+      { path:"product-detail/:id", component:ProductTabComponent },
+      { path:"product-detail", component:ProductTabComponent },
       { path:"promotion", component:PromotionComponent },
     ]
   }

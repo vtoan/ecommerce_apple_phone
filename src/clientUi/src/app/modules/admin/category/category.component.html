@@ -72,7 +72,7 @@
                     <tr mat-header-row *matHeaderRowDef="['Id', 'Name','Action']"></tr>
                     <tr mat-row *matRowDef="let row; columns: ['Id', 'Name','Action'];" ></tr>
                 </table>  
-                <p *ngIf="isLoaded &&listCates.length ==0" class="text-center py-5 empty">Không có dữ liệu</p> 
+                <p *ngIf="isLoaded &&listCates?.length ==0" class="text-center py-5 empty">Không có dữ liệu</p> 
                 <div class="py-5">
                     <app-loader *ngIf="!isLoaded && listCates == null"></app-loader>
                 </div>

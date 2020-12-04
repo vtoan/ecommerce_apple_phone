@@ -45,6 +45,7 @@ namespace ecommerce_apple_phone.DTO {
         public string Color { get; set; }
         public int? Quantity { get; set; }
         public bool isShow {get;set;}
+
     }
 
     public class ProductDetailDTO {
@@ -60,6 +61,8 @@ namespace ecommerce_apple_phone.DTO {
         public string Weight { get; set; }
         public string Battery { get; set; }
         public string FunctionOther { get; set; }
+        public int CategoryId { get; set; }
+
     }
 
     public class PostDTO {

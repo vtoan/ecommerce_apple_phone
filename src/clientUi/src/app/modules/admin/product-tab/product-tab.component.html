@@ -1,0 +1,15 @@
+<div class="card">
+    <div class="card-header">
+        <mat-tab-group animationDuration="0ms">
+            <mat-tab label="First">
+                <app-product-detail></app-product-detail>
+            </mat-tab>
+            <mat-tab *ngIf="itemId" label="Second">
+                <app-post></app-post>
+            </mat-tab>
+            <mat-tab *ngIf="itemId" label="Third">
+                <app-feedback></app-feedback>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

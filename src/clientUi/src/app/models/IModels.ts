@@ -59,6 +59,7 @@ interface ProductDetail {
     weight:string;
     battery:string;
     functionOther:string;
+    categoryId: number;
 }
 
 interface Post {
@@ -83,7 +84,7 @@ interface MethodPay {
 
 interface Order {
     id:number;
-    dateCreated:Date
+    dateCreated:string
     questName:string;
     questPhone:string;
     questProvince:string;

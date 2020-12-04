@@ -1,13 +1,56 @@
 <div class="card">
-    <div class="card-header">
-        <mat-tab-group>
-            <mat-tab label="First">Content 1</mat-tab>
-            <mat-tab label="Second">
-                <app-post></app-post>
-            </mat-tab>
-            <mat-tab label="Third">
-                <app-feedback></app-feedback>
-            </mat-tab>
-        </mat-tab-group>
+    <!-- <div class="card-header">
+    </div> -->
+    <div class="card-content">
+        <p *ngIf="isLoaded && prodDetail==null" >Loi</p>
+        <form #form [formGroup]="formValidate" (submit)="onSubmit()" *ngIf="isLoaded && prodDetail!=null" #ngFrom="ngForm">
+            <!-- select -->
+            <p>
+                <mat-form-field  appearance="legacy">
+                    <mat-label> Phan loai </mat-label>
+                    <mat-select formControlName="categoryId"  class="py-1" name="food">
+                      <mat-option *ngFor="let cate of listCate" [value]="cate.id">
+                        {{cate.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="formValidate.invalid || (ngFrom.submitted && formValidate.get('categoryId').invalid)">
+                        Không được để trống
+                    </mat-error>
+                  </mat-form-field>
+            </p>
+            <!-- text input -->
+            <ng-container *ngFor="let attr of listPropertys ">
+                <p>
+                    <mat-form-field class="w-80" appearance="legacy">
+                        <mat-label>{{ attr.label }}</mat-label>
+                        <input formControlName="{{ attr.name }}" class="py-1" matInput type="text"
+                            placeholder="Placeholder">
+                    </mat-form-field>
+                </p>
+            </ng-container>
+            <!-- text area -->
+            <p>
+                <mat-form-field class="w-80" appearance="legacy">
+                    <mat-label>Ket noi</mat-label>
+                    <textarea formControlName="connector" rows="3" class="py-1" matInput 
+                        placeholder="Placeholder"></textarea> 
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field class="w-80" appearance="legacy">
+                    <mat-label>Chuc nang khac</mat-label>
+                    <textarea formControlName="functionOther" rows="3" class="py-1" matInput 
+                        placeholder="Placeholder"></textarea>
+                </mat-form-field>
+            </p>   
+            <div>
+                <button (click)="onSubmit($event)" class="btn btn-sm bg-blue white px-lg-4 mr-3" type="submit"> Lưu
+                </button>
+            </div>
+        </form>
+        <div class="py-5">
+            <app-loader *ngIf="!isLoaded"></app-loader>
+        </div>
     </div>
 </div>

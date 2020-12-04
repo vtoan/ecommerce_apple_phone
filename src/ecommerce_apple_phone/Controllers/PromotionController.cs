@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-namespace ecommerce_apple_phone.Controllers {
+namespace ecommerce_apple_phone.Controllers
+{
     [ApiController]
     [Route ("[controller]")]
     public class PromotionController : ControllerBase {

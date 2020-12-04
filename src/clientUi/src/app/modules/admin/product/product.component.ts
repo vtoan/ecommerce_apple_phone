@@ -6,6 +6,8 @@ import {
     of,
 } from "rxjs";
 
+import { finalize } from 'rxjs/operators';
+
 //model
 import { Category, Product, PromProduct } from "src/app/models/IModels";
 //service
@@ -42,11 +44,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
             of(this.getDataPromotion()),
             of(this.getDataProduct()),
             of(this.getDataCategory())
-        ).subscribe({
-            complete() {
-                this.isLoaded = false;
-            },
-        });
+        ).pipe(
+            finalize(()=> this.isLoaded =true)
+        ).subscribe();
     }
 
     ngAfterViewInit(): void {
@@ -62,7 +62,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         let idx = this.listPromotion.findIndex((prom) => prom.id == Number(arp[0]));
         if (idx == -1 && index == 0) return;
         if (idx == index) return;
-        console.log("o?");
         let itemId = Number(item.id.split("-")[0]);
         this.promService.changePromProduct(
             arp[0],
@@ -91,7 +90,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private getDataProduct() {
         this.productService.getList().subscribe(
             (resp) => {
-                this.isLoaded = true;
                 this.listProduct = resp;
                 this.tableData.data = this.listProduct;
                 this.tableData._updateChangeSubscription();
