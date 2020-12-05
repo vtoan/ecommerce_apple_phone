@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, Subject, throwError } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
-import { Order } from "../models/IModels";
+import { Fee, Order, OrderDetail, PromBill } from "../models/IModels";
 import { HttpInterceptorService } from "./http-interceptor.service";
 
 @Injectable({
@@ -10,14 +10,23 @@ import { HttpInterceptorService } from "./http-interceptor.service";
 })
 export class OrderService {
     private apiUrl = "api/order";
-    private options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    // private options = { year: "numeric", month: "numeric", day: "numeric" };
 
     constructor(
         private http: HttpClient,
         private interceptor: HttpInterceptorService
     ) {}
 
-    get(id: string): Observable<Order> {
+    getListStatus():string[]{
+        return[
+            "Chua xac nhan",
+            "Da xac nhan",
+            "Dang giao",
+            "Hoan thanh",
+        ];
+    }
+
+    get(id: number): Observable<Order> {
         if (!id)
             return this.interceptor.clientError("Get data", "Id is null", null);
         return this.http
@@ -31,8 +40,8 @@ export class OrderService {
     }
 
     getList(start: Date, end: Date): Observable<Order[]> {
-        let sDate:string = start.toLocaleDateString();
-        let eDate:string = end.toLocaleDateString();
+        let sDate: string = start.toLocaleDateString();
+        let eDate: string = end.toLocaleDateString();
         let data = [
             {
                 id: 1,
@@ -102,7 +111,7 @@ export class OrderService {
 
     confirmOrder(order: Order): Observable<Order> {
         return this.http
-            .post<Order>(this.apiUrl, order)
+            .post<Order>(this.apiUrl + "/confirm", order)
             .pipe(
                 retry(3),
                 catchError(
@@ -147,5 +156,55 @@ export class OrderService {
                 retry(3),
                 catchError(this.interceptor.handleError("Get District", null))
             );
+    }
+
+    calTotalOrder(listOrderDetails: OrderDetail[]): [number, number] {
+        let quantity = 0;
+        let amount = 0;
+        listOrderDetails.forEach((item) => {
+            quantity += item.quantity;
+            amount +=
+                item.quantity *
+                (item.price -
+                    (item.discount % 1 == 0
+                        ? item.discount
+                        : item.price * item.discount));
+        });
+        return [quantity, amount];
+    }
+
+    calFee(amount: number, listFees: Fee[]): number {
+        let totalFee = 0;
+        if (listFees && listFees.length > 0) {
+            totalFee = listFees.reduce(
+                (accur, val) =>
+                    (accur += val.cost % 1 == 0 ? val.cost : amount * val.cost),
+                0
+            );
+        }
+        return totalFee;
+    }
+
+    calProm(amount: number, quantity: number, listProms: PromBill[]): number {
+        let totalProm = 0;
+        if (listProms && listProms.length > 0) {
+            for (const prom of listProms) {
+                if (
+                    prom.conditionAmount >= 0 &&
+                    prom.conditionAmount <= quantity
+                ) {
+                    totalProm = prom.discount;
+                    break;
+                }
+                if (
+                    prom.conditionAmount >= 0 &&
+                    prom.conditionAmount <= amount
+                ) {
+                    totalProm = prom.discount;
+                    break;
+                }
+            }
+        }
+        return totalProm;
     }
 }

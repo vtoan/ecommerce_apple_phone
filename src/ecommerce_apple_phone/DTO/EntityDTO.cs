@@ -109,7 +109,7 @@ namespace ecommerce_apple_phone.DTO {
 
     public class OrderDetailDTO {
         public int OrderId { get; set; }
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
         public byte? Quantity { get; set; }
         public int? Price { get; set; }
         public double? Discount { get; set; }

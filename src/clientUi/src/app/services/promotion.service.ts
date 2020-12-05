@@ -23,6 +23,23 @@ export class PromotionService {
         private interceptor: HttpInterceptorService
     ) {}
 
+
+    get(id:number):Observable<Promotion>{
+        return of();
+    }
+
+    add(prom:Promotion):Observable<number>{
+        return of(1);
+    }
+
+    update(id:number, prom:Promotion):Observable<boolean>{
+        return of();
+    }
+
+    remove(id:number):Observable<boolean>{
+        return of();
+    }
+
     getListOfBill(): Observable<PromBill[]> {
         return of([
             {
@@ -46,20 +63,20 @@ export class PromotionService {
         return of([]);
     }
 
-    getListDisplay(): Observable<Promotion[]> {
+    getList(): Observable<Promotion[]> {
         return of([
             {
                 id: 1,
                 name: "Khuyen mai",
                 fromDate: new Date(),
                 toDate: new Date(),
-                status: true,
+                status: false,
                 type: 1,
                 itemDetail: "Khuyen mai",
             },
 
             {
-                id: 1,
+                id: 2,
                 name: "Khuyen mai",
                 fromDate: new Date(),
                 toDate: new Date(),
@@ -68,7 +85,7 @@ export class PromotionService {
                 itemDetail: "Khuyen mai",
             },
             {
-                id: 1,
+                id: 3,
                 name: "Khuyen mai",
                 fromDate: new Date(),
                 toDate: new Date(),
@@ -127,5 +144,9 @@ export class PromotionService {
         //     );
         // obs.subscribe(val => console.log("sussecc"))
         // return obs;
+    }
+
+    updateStatus(id:number, sts:boolean ): Observable<boolean>{
+        return of();
     }
 }

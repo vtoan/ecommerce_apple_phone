@@ -40,7 +40,7 @@ export class ProductDetailComponent implements OnInit {
     //
     postObject: Post;
     listFeedback: Feedback[];
-    listProm: Promotion[] = [];
+    listProm: PromBill[] = [];
     listProductRelate: Product[];
 
     constructor(
@@ -136,7 +136,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     private getSubData(id: string) {
-        this.promService.getListDisplay().subscribe((val) => {
+        this.promService.getListOfBill().subscribe((val) => {
             this.listProm = val;
         });
         //post

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
-import { Observable  } from 'rxjs';
 
 //models
 import { Product } from "src/app/models/IModels";
@@ -35,8 +34,7 @@ export class CartItemComponent implements OnInit {
             this.product =val;
             this.resImage=Object.values(JSON.parse(val.images));
             this.getInfo();
-        })
-        
+        })    
     }
 
     onAddition(){

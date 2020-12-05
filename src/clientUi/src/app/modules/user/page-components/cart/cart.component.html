@@ -1,11 +1,9 @@
-<div class="bg-black white py-3 text-center text-3 section">
-  {{titlePage}}
-</div>
+<app-banner [titlePage]="titlePage"></app-banner>
 <div *ngIf="isLoadOrder && order==null" class="container" style="padding:16em 0;" >
     <app-loader></app-loader>
 </div>
 <!---->
-<div *ngIf="!isLoadOrder" class="container">
+<div *ngIf="!isLoadOrder && order ==null" class="container">
     <div class="cart contents">    
         <!-- Cart - Shopping -->
         <div class="section">
@@ -17,8 +15,8 @@
             <!--Cart - List Item-->
             <div id="cart-container">
                 <app-loader *ngIf="!isLoaded"></app-loader>
-                <p class="text-center py-5" *ngIf="isLoaded && listItem.length == 0">Not item in cart</p>
-                <div  *ngIf="isLoaded && listItem.length > 0">
+                <p class="text-center py-5" *ngIf="isLoaded && listItem?.length == 0">Not item in cart</p>
+                <div  *ngIf="isLoaded && listItem?.length > 0">
                     <app-cart-item *ngFor="let item of listItem" [itemId]="item.productId" (remove)="onRemoveItem($event)" ></app-cart-item>
                 </div>
             </div>
@@ -122,7 +120,7 @@
     </div> 
 </div>
 <!---->
-<div *ngIf="isLoadOrder && order!=null">
+<div *ngIf="order!=null">
     <div class="container"><a class="link blue" (click)="onBackToCart()" > Back to cart</a> </div> 
     <app-order-detail [order]="order"></app-order-detail>
 </div>

@@ -2,16 +2,14 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
-
 //sub-module
 import { UserRoutingModule } from "./user-routing.module";
 import { ShareModule } from "../share/share.module";
 import { MaterialModule } from "../material.module";
+
 //components
 import { BannerComponent } from "./components/banner/banner.component";
 import { ListProductComponent } from "./components/list-product/list-product.component";
-import { CartItemComponent } from "./components/cart-item/cart-item.component";
-import { OrderDetailComponent } from "./components/order-detail/order-detail.component";
 import { ProductComponent } from "./components/product/product.component";
 //page-component
 import { UserMainComponent } from "./user-main.component";
@@ -45,8 +43,6 @@ import { CartService } from "./services/cart.service";
         WatchComponent,
         ProductDetailComponent,
         SearchProductComponent,
-        CartItemComponent,
-        OrderDetailComponent,
         BannerComponent,
     ],
     imports: [

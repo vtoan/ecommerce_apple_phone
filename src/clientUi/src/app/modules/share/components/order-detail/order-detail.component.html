@@ -1,4 +1,4 @@
-<div *ngIf="order==null" class="container text-center py-5"> Order not found </div>
+<div *ngIf="order==null" class="container text-center py-5"> {{ message }}</div>
 <div *ngIf="order!=null" class="container pt-5">
     <div  *ngIf="isRequest"  style="padding:16em 0">
         <app-loader></app-loader>

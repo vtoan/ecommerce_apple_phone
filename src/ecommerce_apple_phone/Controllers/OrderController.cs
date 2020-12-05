@@ -23,9 +23,9 @@ namespace ecommerce_apple_phone.Controllers
             [FromServices] IFeeModel feeModel, 
             OrderDTO orderDTO) 
             {
-            if (orderDTO.OrderItems == null || orderDTO.OrderItems == "") return BadRequest ();
+            if (DataHelper.IsEmptyString(orderDTO.OrderItems)) return BadRequest ();
             //Parse list order Item
-            List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>> (orderDTO.OrderItems);
+            var orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>>(orderDTO.OrderItems);
             var pramOrder = _orderModel.GetPramOrder (orderDetailDTOs);
             //
             double promBill = 0;
@@ -34,11 +34,11 @@ namespace ecommerce_apple_phone.Controllers
             int point = 0;
             //bills
             var bills = _promModel.GetListDTOsPromBill ();
-            if (bills != null || bills.Count > 0)
+            if (bills != null || bills?.Count > 0)
                 promBill = _orderModel.FindPromBill (pramOrder.Item2, pramOrder.Item1, bills);
             //point
             var points = _promModel.GetListDTOsPromPoint ();
-            if (points != null || points.Count > 0) {
+            if (points != null || points?.Count > 0) {
                 if (orderDTO.PointUse != 0)
                     promPoint = _orderModel.FindPromPoint ((int) orderDTO.PointUse, points);
                 point = _orderModel.GetdPoint (pramOrder.Item2, points);
@@ -53,7 +53,7 @@ namespace ecommerce_apple_phone.Controllers
                     methodPay = promMethod,
                     promPoint = promPoint
             });
-            //
+            
             return orderDTO;
         }
 

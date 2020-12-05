@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+
 //models
 import { Info } from "src/app/models/IModels";
 //services
@@ -16,18 +17,18 @@ export class UserMainComponent implements OnInit, OnDestroy {
     isShowSearch: boolean;
     countItemCart: number = 0;
     info: Info = {
-        nameStore: "sad",
-        logo: "sad",
-        email: "sad",
-        facebook: "sad",
-        messenger: "sad",
-        instargram: "sad",
-        phone: "sad",
-        address: "sad",
-        workTime: "sad",
-        seoImage: "sad",
-        seoTitle: "sad",
-        seoDescription: "sad",
+        nameStore: "none",
+        logo: "none",
+        email: "none",
+        facebook: "none",
+        messenger: "none",
+        instargram: "none",
+        phone: "none",
+        address: "none",
+        workTime: "none",
+        seoImage: "none",
+        seoTitle: "none",
+        seoDescription: "none",
     };
 
     constructor(
@@ -39,10 +40,10 @@ export class UserMainComponent implements OnInit, OnDestroy {
     ngOnInit() {
         // get info
         this.infoService.get().subscribe(
-            (resp) => {
-                this.info = resp;
-            },
-            (err) => console.log(err)
+            (val) => {
+                if(val)
+                this.info = val;
+            }
         );
         //get cart in cookie
         this.cartService.retriveCart();
@@ -63,4 +64,10 @@ export class UserMainComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.cartService.saveCart();
     }
+
+    // // ========= use full ======
+    // private initFacebookService(): void {
+    //     const initParams: InitParams = { xfbml:true, version:'v9.0'};
+    //     this.facebookService.init(initParams);
+    // }
 }

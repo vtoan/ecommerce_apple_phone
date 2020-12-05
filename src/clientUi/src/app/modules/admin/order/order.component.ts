@@ -29,12 +29,7 @@ export class OrderComponent implements OnInit, AfterViewInit {
     //
     listPay: MethodPay[];
     listOrder: Order[];
-    listStatus: string[] = [
-        "Chua xac nhan",
-        "Da xac nhan",
-        "Dang giao",
-        "Hoan thanh",
-    ];
+    listStatus: string[] = this.orderService.getListStatus();
     //
     tableData = new MatTableDataSource();
     constructor(
@@ -63,9 +58,9 @@ export class OrderComponent implements OnInit, AfterViewInit {
 
     onChangeDate() {
         this.isLoaded = false;
-        of(this.getDataOrder(this.dateRange.begin, this.dateRange.end)).pipe(
-            finalize(() => (this.isLoaded = true))
-        ).subscribe();
+        of(this.getDataOrder(this.dateRange.begin, this.dateRange.end))
+            .pipe(finalize(() => (this.isLoaded = true)))
+            .subscribe();
     }
 
     getStatus(item: Order) {

@@ -16,7 +16,6 @@ export class PageinatorComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.length);
     for (let index = 1; index <= this.length; index++) {
       this.pages.push(index);
     }

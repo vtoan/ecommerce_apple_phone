@@ -44,7 +44,7 @@
                     <a routerLink="../product-detail/{{item.id}}" class="text-2 btn-icon blue pr-3 pr-lg-5">
                         <i class="las la-chevron-circle-right"></i>
                     </a>
-                    <mat-slide-toggle [checked]="item.isShow"></mat-slide-toggle>
+                    <mat-slide-toggle (toggleChange)="onChangeStatus(item)" [checked]="item.isShow"></mat-slide-toggle>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="['Id','Image' ,'Name','Category','Quantity','Status','Action']"></tr>

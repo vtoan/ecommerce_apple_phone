@@ -95,8 +95,9 @@ namespace ecommerce_apple_phone.Models
             {
                 foreach (var item in orderDetailDTOs)
                 {
+                    int itemId = DataHelper.GetAttrlId(item.ProductId);
                     PropModified<Product> modified = new PropModified<Product>(new { Quantity = item.Quantity });
-                    db.Update(item.ProductId, modified);
+                    db.Update(itemId, modified);
                 }
             }
             return true;

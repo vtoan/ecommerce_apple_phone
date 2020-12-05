@@ -3,7 +3,7 @@ import {
     HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders
 } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { MessageService } from '../services/message.service';
 
 
@@ -33,7 +33,7 @@ export class HttpInterceptorService implements HttpInterceptor {
             if (!erMsg) erMsg =  error.statusText +"\n"+ error.url;
             this.message.showFail(error.status+" - "+ erMsg,operation);
             console.log(error);
-            return throwError(result);
+            return of(result);
         }
     }
 

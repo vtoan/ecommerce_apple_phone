@@ -21,6 +21,8 @@ import { PostComponent } from "./post/post.component";
 import { FeedbackComponent } from "./feedback/feedback.component";
 import { ProductDetailComponent } from "./product-detail/product-detail.component";
 import { ProductTabComponent } from "./product-tab/product-tab.component";
+import { OrderDetailAdminComponent } from './order-detail-admin/order-detail-admin.component';
+import { PromotionDetailComponent } from './promotion-detail/promotion-detail.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,8 @@ import { ProductTabComponent } from "./product-tab/product-tab.component";
         FeedbackComponent,
         ProductDetailComponent,
         ProductTabComponent,
+        OrderDetailAdminComponent,
+        PromotionDetailComponent,
     ],
     imports: [
         CommonModule,
