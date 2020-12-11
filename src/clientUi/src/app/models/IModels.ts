@@ -156,6 +156,20 @@ interface PromPoint{
     discountOut:number;
 }
 
+interface User{
+    id:string;
+    name:string;
+    phone:string;
+    address:string;
+    email:string;
+    roleName:string
+}
+
+// interface Role{
+//     id:string;
+//     name:string;
+// }
+
 
 export {
     Fee,
@@ -173,5 +187,6 @@ export {
     PromBill,
     PromProduct,
     ImportProduct,
-    ImportDetail
+    ImportDetail,
+    User,
 } 

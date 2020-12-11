@@ -11,11 +11,11 @@ export class AppComponent implements OnInit {
     
     constructor(private facebookService: FacebookService) {}
     ngOnInit(): void {
-        this.initFacebookService();
+        // this.initFacebookService();
     }
-    // ========= use full ======
-    private initFacebookService(): void {
-        const initParams: InitParams = { xfbml: true, version: "v9.0" };
-        this.facebookService.init(initParams);
-    }
+    // // ========= use full ======
+    // private initFacebookService(): void {
+    //     const initParams: InitParams = { xfbml: true, version: "v9.0" };
+    //     this.facebookService.init(initParams);
+    // }
 }

@@ -1,8 +1,18 @@
 <div class="card">
     <div class="card-header">
-        <div class="d-flex justify-content-between">
-            <h3>List Product</h3>
-            <a routerLink="/admin/product-detail" class="btn btn-sm bg-blue white px-lg-4 mr-3"> Add </a>
+        <div class="row align-items-baseline">
+            <div class="col-6">
+                <h3>List Product</h3>
+            </div>
+            <div class="col-4">
+                <mat-form-field floatLabel="never" class="w-80" appearance="">
+                    <input  matInput placeholder="Search product ..">
+                </mat-form-field>
+            </div>
+            <div class="ml-auto">
+                <a  routerLink="/admin/product-detail" class="btn btn-sm bg-blue white px-lg-4 mr-3" type="button" >Create</a>
+                <a class="btn btn-sm bg-blue white px-lg-4" type="button" >Import</a>
+            </div>
         </div>
     </div>
     <div class="card-content">

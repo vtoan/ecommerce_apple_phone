@@ -23,6 +23,7 @@ import { ProductDetailComponent } from "./product-detail/product-detail.componen
 import { ProductTabComponent } from "./product-tab/product-tab.component";
 import { OrderDetailAdminComponent } from './order-detail-admin/order-detail-admin.component';
 import { PromotionDetailComponent } from './promotion-detail/promotion-detail.component';
+import { ListUserComponent } from './list-user/list-user.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import { PromotionDetailComponent } from './promotion-detail/promotion-detail.co
         ProductTabComponent,
         OrderDetailAdminComponent,
         PromotionDetailComponent,
+        ListUserComponent,
     ],
     imports: [
         CommonModule,

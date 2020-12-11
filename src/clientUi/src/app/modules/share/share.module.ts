@@ -16,6 +16,7 @@ import { OrderDetailComponent }  from './components/order-detail/order-detail.co
 //directive
 import { PaserValueComponent } from './components/paser-value/paser-value.component';
 import { InputImageComponent } from './components/input-image/input-image.component';
+import { ContainerComponent } from './components/container/container.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { InputImageComponent } from './components/input-image/input-image.compon
     InputImageComponent,
     CartItemComponent,
     OrderDetailComponent,
+    ContainerComponent,
   ],
   entryComponents:[
     MessageComponent,
@@ -53,6 +55,7 @@ import { InputImageComponent } from './components/input-image/input-image.compon
     InputImageComponent,
     CartItemComponent,
     OrderDetailComponent,
+    ContainerComponent,
   ]
 })
 export class ShareModule { }
