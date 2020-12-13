@@ -10,8 +10,8 @@ import { Product } from "src/app/models/IModels";
     styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
-    listSeller: Product[] = null;
-    listDiscount: Product[] = null;
+    listSeller: Product[];
+    listDiscount: Product[];
     message: string;
 
     constructor(private productService: ProductService) {}
@@ -25,12 +25,12 @@ export class HomeComponent implements OnInit {
         this.productService.getListBestSeller().subscribe(
             (resp) => {
                 if (resp != null || resp) {
-                    this.listSeller = [];
                     this.listSeller = resp;
                 }
+                console.log(this.listSeller);
+
             },
-            (er) => (this.message = er),
-            () => (this.listSeller = [])
+            (er) => (this.message = er)
         );
     }
 
@@ -42,8 +42,7 @@ export class HomeComponent implements OnInit {
                     this.listDiscount = resp;
                 }
             },
-            (er) => (this.message = er),
-            () => (this.listDiscount = [])
+            (er) => (this.message = er)
         );
     }
 }

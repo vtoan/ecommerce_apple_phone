@@ -1,0 +1,45 @@
+<div *ngIf="userId && userDetail" class="row">
+    <div class="col-6">
+        <form (submit)="onSave($event)" #ngFrom="ngForm">
+            <input-val [classNames]="'w-80'" [fm]="ngFrom" [fmGroup]="formValidate"
+                [fmControlName]="'name'">Full Name
+            </input-val>
+            <input-val [classNames]="'w-80'" [fm]="ngFrom" [fmGroup]="formValidate"
+                [fmControlName]="'phone'">Phone number
+            </input-val>
+            <input-val [classNames]="'w-80'" [fm]="ngFrom" [fmGroup]="formValidate"
+                [fmControlName]="'email'">Email Address
+            </input-val>
+            <p>
+                <mat-form-field [formGroup]="formValidate" class="w-80" appearance="legacy">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput formControlName="address" rows="3"> </textarea>
+                </mat-form-field>
+            </p>
+            <div>
+                <button (click)="onSave($event)" class="btn btn-sm bg-blue white px-lg-4 mr-3"
+                    type="submit">
+                    Save</button>
+                <button class="btn btn-sm bg-red white px-lg-4" type="button"
+                    (click)="onReset()">Reset</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-6">
+        <table>
+            <tr>
+                <td class="py-3 placeholder">User Id</td>
+                <td>{{userDetail? userDetail.id : 'Unknown'}}</td>
+            </tr>
+            <tr>
+                <td class="py-3 placeholder">Role Name</td>
+                <td>{{userDetail? userDetail.roleName : 'Unknown'}}</td>
+            </tr>
+            <tr>
+                <td class="py-3 placeholder">Date Created</td>
+                <td>{{userDetail? userDetail.dateCreated : 'Unknown' }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div *ngIf="!userId || !userDetail" >  User is't found</div>

@@ -66,6 +66,7 @@ export class PromotionDetailComponent implements OnInit {
         merge(this.getDataCate(), this.getDataRoute(), this.getDataProm())
             .pipe(finalize(() => (this.isLoaded = true)))
             .subscribe();
+
     }
 
     onSubmit(e) {

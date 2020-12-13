@@ -9,17 +9,19 @@ export class ContainerComponent implements OnInit {
     @Input() config: Container = {
         isLoaded: false,
         isDataEmpty: false,
-        displayText: "Error",
+        displayText: "Not found data !",
     };
 
     constructor() {}
 
     ngOnInit() {
+        if(this.config.displayText!=null) this.config.isDataEmpty = true;
+        console.log(this.config);
     }
 }
 
 export interface Container {
     isLoaded: boolean;
     isDataEmpty: boolean;
-    displayText: string;
+    displayText?: string;
 }

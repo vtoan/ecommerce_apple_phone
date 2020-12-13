@@ -13,6 +13,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 
 
@@ -30,7 +32,8 @@ import {MatNativeDateModule} from '@angular/material/core';
         MatSlideToggleModule,
         MatPaginatorModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatDialogModule
     ]
   })
   export class MaterialModule {}

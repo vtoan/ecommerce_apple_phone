@@ -28,6 +28,7 @@ export class ListProductComponent implements OnInit {
 	) {}
 	// ========= event =========
 	ngOnInit() {
+        console.log(this.products);
 		this.dataLength = this.products.length;
 		this.pageNumber = Math.ceil(this.dataLength/this.pageSize);
 		this.showDataPage(1);	

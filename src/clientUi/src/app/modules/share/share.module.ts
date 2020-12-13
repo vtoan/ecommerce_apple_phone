@@ -17,6 +17,10 @@ import { OrderDetailComponent }  from './components/order-detail/order-detail.co
 import { PaserValueComponent } from './components/paser-value/paser-value.component';
 import { InputImageComponent } from './components/input-image/input-image.component';
 import { ContainerComponent } from './components/container/container.component';
+import { InputValComponent } from './components/input-val/input-val.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { DialogChangepassComponent } from './components/dialog-changepass/dialog-changepass.component';
 
 @NgModule({
   declarations: [
@@ -32,10 +36,16 @@ import { ContainerComponent } from './components/container/container.component';
     CartItemComponent,
     OrderDetailComponent,
     ContainerComponent,
+    InputValComponent,
+    DialogComponent,
+    UserInfoComponent,
+    DialogChangepassComponent,
   ],
   entryComponents:[
     MessageComponent,
-    NotifySnackBarComponent
+    NotifySnackBarComponent,
+    DialogComponent,
+    DialogChangepassComponent
   ],
   imports: [
     CommonModule,
@@ -56,6 +66,10 @@ import { ContainerComponent } from './components/container/container.component';
     CartItemComponent,
     OrderDetailComponent,
     ContainerComponent,
+    InputValComponent,
+    UserInfoComponent,
+    DialogChangepassComponent,
+
   ]
 })
 export class ShareModule { }

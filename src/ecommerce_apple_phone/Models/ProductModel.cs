@@ -209,7 +209,8 @@ namespace ecommerce_apple_phone.Models
 
         public List<ProductDTO> FindBestSeller(List<ProductDTO> productDTOs)
         {
-            return productDTOs.OrderBy(item => item.SaleCount).Take(4).ToList();
+            var re =productDTOs.OrderBy(item => item.SaleCount).Take(4).ToList();
+            return re;
         }
 
         public List<ProductDTO> FindByCate(List<ProductDTO> productDTOs, int cateId)

@@ -24,6 +24,7 @@ import { ProductTabComponent } from "./product-tab/product-tab.component";
 import { OrderDetailAdminComponent } from './order-detail-admin/order-detail-admin.component';
 import { PromotionDetailComponent } from './promotion-detail/promotion-detail.component';
 import { ListUserComponent } from './list-user/list-user.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import { ListUserComponent } from './list-user/list-user.component';
         OrderDetailAdminComponent,
         PromotionDetailComponent,
         ListUserComponent,
+        UserDetailComponent,
     ],
     imports: [
         CommonModule,

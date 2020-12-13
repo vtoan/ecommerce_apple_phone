@@ -42,7 +42,7 @@ export class OrderDetailAdminComponent implements OnInit {
 
     getStatus():string{
         let stt = this.order ? this.order.status : null;
-        return stt ? this.listStatus[stt-1] : "Khong xac dinh";
+        return stt ? this.listStatus[stt-1] : "Unknow";
     }
 
     //=========  help full =========

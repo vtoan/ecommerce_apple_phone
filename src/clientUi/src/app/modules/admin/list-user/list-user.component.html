@@ -10,7 +10,7 @@
                 </mat-form-field>
             </div>
             <div class="ml-auto">
-                <a class="btn btn-sm bg-blue white px-lg-4" type="button" >Create</a>
+                <a class="btn btn-sm bg-blue white px-lg-4" type="button" (click)="onCreate()">Create</a>
             </div>
         </div>
     </div>
@@ -19,20 +19,20 @@
             <table mat-table [dataSource]="tableData">
                 <ng-container matColumnDef="Id">
                     <th mat-header-cell *matHeaderCellDef>User ID</th>
-                    <td mat-cell *matCellDef="let item">{{item.id}}</td>
+                    <td mat-cell *matCellDef="let item">{{item.id ? item.id : "Unknown"}}</td>
                 </ng-container>
                 <ng-container matColumnDef="Name">
                     <th mat-header-cell *matHeaderCellDef>User Name </th>
-                    <td mat-cell *matCellDef="let item">{{item.name}}</td>
+                    <td mat-cell *matCellDef="let item">{{item.name ? item.name: "Unknown"}}</td>
                 </ng-container>
                 <ng-container matColumnDef="Phone">
                     <th mat-header-cell *matHeaderCellDef>Phone number</th>
-                    <td mat-cell *matCellDef="let item">{{item.phone}}</td>
+                    <td mat-cell *matCellDef="let item">{{item.phone ? item.phone : "Unknown"}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="Email">
-                    <th mat-header-cell *matHeaderCellDef>Eamil</th>
-                    <td mat-cell *matCellDef="let item">{{item.email}}</td>
+                    <th mat-header-cell *matHeaderCellDef>Email</th>
+                    <td mat-cell *matCellDef="let item">{{item.email ? item.email : "Unknown"}}</td>
                 </ng-container>
                 <ng-container matColumnDef="Role">
                     <th mat-header-cell *matHeaderCellDef style="width:150px">Role</th>
@@ -44,9 +44,12 @@
                 <ng-container matColumnDef="Action">
                     <th mat-header-cell *matHeaderCellDef style="width:200px"></th>
                     <td mat-cell *matCellDef="let item" class="text-center">
-                        <a routerLink="../order-detail/{{item.id}}" class="text-2 btn-icon blue pr-3 pr-lg-5">
+                        <a routerLink="../user-detail/{{item.id}}" class="text-2 btn-icon blue pr-3 pr-lg-5">
                             <i class="las la-chevron-circle-right"></i>
                         </a>
+                        <span (click)="onRemove(item.id)" class=" btn-icon red text-2">
+                            <i class="lar la-trash-alt "></i> 
+                        </span>
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="['Id','Name' ,'Phone','Email','Role','Action']">

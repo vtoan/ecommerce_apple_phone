@@ -17,15 +17,54 @@ export class AccountService {
                 address: "abad",
                 email: "abad",
                 roleName: "abad",
+                dateCreated: new Date()
             },
         ]);
     }
 
-    getUser(userId: string): Observable<User> {
-        return of(null);
+    get(userId: string): Observable<User> {
+        return of({
+            id: "abad",
+            name: "abad",
+            phone: "abad",
+            address: "abad",
+            email: "abad",
+            roleName: "abad",
+            dateCreated: new Date()
+        });
     }
 
     changeRole(userId: string, roleName: string): Observable<boolean> {
         return of(null);
+    }
+
+    update(itemid:string, user:User):Observable<boolean>{
+        return of(true);
+    }
+
+    add(email:string, password:string): Observable<User>{
+        return of(
+            {
+                id: "abad",
+                name: "abad",
+                phone: "abad",
+                address: "abad",
+                email: email,
+                roleName: "abad",
+                dateCreated: new Date()
+            },
+        );
+    }
+
+    remove(userId):Observable<Boolean>{
+        return of(true);
+    }
+
+    changePassword(userId:string, password:string, newPassword:string): Observable<boolean>{
+        return of(true);
+    }
+
+    logout(userID): Observable<boolean>{
+        return of(true)
     }
 }

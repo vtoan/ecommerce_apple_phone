@@ -162,14 +162,9 @@ interface User{
     phone:string;
     address:string;
     email:string;
-    roleName:string
+    roleName:string;
+    dateCreated:Date;
 }
-
-// interface Role{
-//     id:string;
-//     name:string;
-// }
-
 
 export {
     Fee,
