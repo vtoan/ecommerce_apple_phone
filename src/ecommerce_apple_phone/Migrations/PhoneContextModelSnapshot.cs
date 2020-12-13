@@ -68,16 +68,23 @@ namespace ecommerce_apple_phone.Migrations
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.Feedback", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FeedbackContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductDetailId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FeedbackContent")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                    b.HasKey("ProductId", "UserId");
+                    b.HasIndex("ProductDetailId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -218,6 +225,12 @@ namespace ecommerce_apple_phone.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<int?>("Point")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PointUse")
+                        .HasColumnType("int");
+
                     b.Property<string>("Promotion")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -225,6 +238,10 @@ namespace ecommerce_apple_phone.Migrations
                     b.Property<string>("QuestAddress")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<string>("QuestDistrict")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("QuestEmail")
                         .HasColumnType("nvarchar(35)")
@@ -239,8 +256,8 @@ namespace ecommerce_apple_phone.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("QuestProvince")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<byte>("Status")
                         .ValueGeneratedOnAdd()
@@ -313,100 +330,17 @@ namespace ecommerce_apple_phone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Battery")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Chipset")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Connector")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("FontCamera")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("FunctionOther")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("OperationSystem")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Parameter")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("RAM")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ROM")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("RearCamera")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Screen")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Weight")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<bool?>("isDel")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("isShow")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ecommerce_apple_phone.EF.ProductDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
-                    b.Property<string>("ImageDefault")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ImageGallery")
+                    b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductDetailId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -429,7 +363,86 @@ namespace ecommerce_apple_phone.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductDetailId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ecommerce_apple_phone.EF.ProductDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Battery")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Chipset")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Connector")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("FontCamera")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("FunctionOther")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("OperationSystem")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Parameter")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("RAM")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("ROM")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("RearCamera")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Screen")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Weight")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<bool?>("isDel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool?>("isShow")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ProductDetails");
                 });
@@ -453,22 +466,6 @@ namespace ecommerce_apple_phone.Migrations
                     b.ToTable("PromBills");
                 });
 
-            modelBuilder.Entity("ecommerce_apple_phone.EF.PromMethodPay", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("MethodPayId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PromMethodPays");
-                });
-
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromPoint", b =>
                 {
                     b.Property<int>("Id")
@@ -488,9 +485,6 @@ namespace ecommerce_apple_phone.Migrations
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromProduct", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BandId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
@@ -555,9 +549,9 @@ namespace ecommerce_apple_phone.Migrations
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.Feedback", b =>
                 {
-                    b.HasOne("ecommerce_apple_phone.EF.Product", null)
+                    b.HasOne("ecommerce_apple_phone.EF.ProductDetail", null)
                         .WithMany("Feedbacks")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -597,20 +591,27 @@ namespace ecommerce_apple_phone.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ecommerce_apple_phone.EF.Post", b =>
+                {
+                    b.HasOne("ecommerce_apple_phone.EF.ProductDetail", "ProductDetail")
+                        .WithOne("Post")
+                        .HasForeignKey("ecommerce_apple_phone.EF.Post", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ecommerce_apple_phone.EF.Product", b =>
                 {
-                    b.HasOne("ecommerce_apple_phone.EF.Category", "Category")
+                    b.HasOne("ecommerce_apple_phone.EF.ProductDetail", "ProductDetail")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("ProductDetailId");
                 });
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.ProductDetail", b =>
                 {
-                    b.HasOne("ecommerce_apple_phone.EF.Product", "Product")
+                    b.HasOne("ecommerce_apple_phone.EF.Category", "Category")
                         .WithMany("ProductDetails")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromBill", b =>
@@ -622,20 +623,11 @@ namespace ecommerce_apple_phone.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ecommerce_apple_phone.EF.PromMethodPay", b =>
-                {
-                    b.HasOne("ecommerce_apple_phone.EF.Promotion", "Promotion")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromPoint", b =>
                 {
                     b.HasOne("ecommerce_apple_phone.EF.Promotion", "Promotion")
-                        .WithMany()
-                        .HasForeignKey("Id")
+                        .WithOne("PromPoint")
+                        .HasForeignKey("ecommerce_apple_phone.EF.PromPoint", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

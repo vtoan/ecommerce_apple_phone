@@ -1,0 +1,83 @@
+
+<!--Fee-->
+<div class="card">
+    <div class="card-header">
+        <h3 class="mb-4">Thông tin phí</h3>
+    </div>
+    <div class="card-content">    
+        <div class="row">
+            <div class="col-lg-6 pr-lg-5" style="padding-top: 0.8em;">
+                <div *ngIf="isLoaded">
+                    <form #form [formGroup]="formValidate"(submit)="onSubmit()" #ngFrom="ngForm"  >    
+                        <div class="mb-5 ">
+                            <input #itemId type="hidden" formControlName="id" >
+                            <p>
+                                <mat-form-field class="w-60" appearance="legacy">
+                                    <mat-label>Tên loại phí</mat-label>
+                                    <input  formControlName="name"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
+                                    <mat-error *ngIf="formValidate.invalid  || (ngFrom.submitted && formValidate.get('name').invalid)">
+                                        Vui lòng nhập tên loại phí                            
+                                    </mat-error>
+                                </mat-form-field>
+                            </p>
+                            <p class="mb-3">
+                                <mat-form-field class="w-60" appearance="legacy">
+                                    <mat-label>Mức phí</mat-label>
+                                    <input class="py-1" formControlName="cost" matInput  type="number" placeholder="Placeholder" required>
+                                    <mat-error *ngIf="formValidate.invalid  || (ngFrom.submitted && formValidate.get('cost').invalid)">
+                                        Vui lòng nhập tên loại phí                            
+                                    </mat-error>
+                                </mat-form-field>
+                            </p>
+                            <p >
+                                <mat-radio-group class="pr-3" formControlName="suffix" required>
+                                    <mat-radio-button class="pr-3" value="currency"> VNĐ </mat-radio-button>
+                                    <mat-radio-button value="precent"> %</mat-radio-button>
+                                </mat-radio-group>
+                            </p>
+                        </div>      
+                        <div >
+                            <button (click)="onSubmit($event)" class="btn btn-sm bg-blue white px-lg-4 mr-3" type="submit"> {{ submitTitle}} </button>
+                            <button class="btn btn-sm bg-red white px-lg-4" type="button" (click)="onReset()" >Huỷ</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="py-5">
+                    <app-loader *ngIf="!isLoaded && itemSelected!=null"></app-loader>
+                </div>
+            </div>
+            <div class="col-lg-6">										
+                <table mat-table [dataSource]="tableData"  >
+                    <ng-container matColumnDef="Id">
+                        <th mat-header-cell *matHeaderCellDef>Id</th>
+                        <td mat-cell *matCellDef="let item">{{item.id}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef>Tên mức phí</th>
+                        <td mat-cell *matCellDef="let item">{{item.name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Cost">
+                        <th mat-header-cell *matHeaderCellDef>Mức phí </th>
+                        <td mat-cell *matCellDef="let item">{{item.cost % 1 == 0 ? item.cost+" đ" : (item.cost * 100) +" %"    }} </td>
+                    </ng-container>                   
+                    <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef style="width:150px"></th>
+                        <td mat-cell *matCellDef="let item" class="text-center">
+                            <span (click)="onShowDetail(item.id)" class="material-icons btn-icon blue pr-3 pr-lg-5">
+                                edit
+                            </span>
+                            <span (click)="onDelete(item.id)" class="material-icons btn-icon red">
+                                <i class="lar la-trash-alt"></i>
+                            </span>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="['Id', 'Name','Cost','Action']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['Id', 'Name','Cost','Action'];" ></tr>
+                </table>  
+                <p *ngIf="isLoaded &&listFees?.length ==0" class="text-center py-5 empty">Không có dữ liệu</p> 
+                <app-loader *ngIf="!isLoaded && listFees == null"></app-loader>
+            </div>
+        </div>	
+    </div>
+</div>
+                

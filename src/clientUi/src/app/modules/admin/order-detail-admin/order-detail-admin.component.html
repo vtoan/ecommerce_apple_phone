@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h3>Order Detail</h3>
+            <app-dropdown *ngIf="order!=null" [listItem]="listStatus" [defName]="getStatus()"
+            (choose)="onChangeStatus($event)"></app-dropdown>
+        </div>  
+    </div>
+    <div class="card-content">
+        <app-order-detail *ngIf="isLoaded && order" [order]="order"></app-order-detail>
+        <p *ngIf="isLoaded && !order" class="text-center py-5 empty">Không có dữ liệu</p>
+        <app-loader *ngIf="!isLoaded"></app-loader>
+    </div>
+</div>

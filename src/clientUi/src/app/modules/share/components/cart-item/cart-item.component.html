@@ -1,0 +1,38 @@
+<div class="cart-item mb-3" >
+    <p *ngIf="!product">Not found product with id: {{itemId}} </p>
+    <div *ngIf="product" class="row align-items-lg-center">
+        <div class="col-4 col-lg-2">
+            <div class="img bg-red" style="height: 120px; width: 90px;"><img src="{{fileService.rootPath}}/{{resImage[0]}}"></div>
+        </div>
+        <div class="col-6 col-lg-8">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-6 mb-2">
+                    <p class="bold mb-0">{{product.name}}</p>
+                    <p>{{product.color}} / {{product.rom}}</p>
+                    <span item-price class="text-4 red bold"> 
+                        <paser-value [rawVal]="(product.price-promotion)"></paser-value>
+                    </span>
+                    <del *ngIf="promotion!=0" class="pl-3 normal text-sub"> 
+                        <paser-value [rawVal]="(product.price)"></paser-value>
+                    </del>
+                </div>
+                <div *ngIf="isChange" class="col-12 col-lg-3 mb-2">
+                    <div class="d-flex align-items-center">
+                        <a class="btn-add p-2" (click)="onAddition()"><i class="las la-angle-up"></i></a>
+                        <span item-count class="px-3">{{ quantity}}</span>
+                        <a  class="btn-subtract p-2" [ngClass]="quantity<1 ? 'muted': ''" (click)="onSubtract()"><i class="las la-angle-down"></i></a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 mb-2">
+                    <span >Tổng: </span>
+                    <span class="text-4">
+                        <paser-value [rawVal]="(product.price-promotion) *quantity"></paser-value>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isChange" class="col-2 text-right">
+            <a class="btn p-1 red" style="min-width: 0;" href="javascript:void(0)" (click)="onRemove()"><i class=" icon las la-times"></i></a>
+        </div>
+    </div>
+</div>

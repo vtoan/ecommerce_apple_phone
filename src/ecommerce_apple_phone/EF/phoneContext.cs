@@ -26,22 +26,19 @@ namespace ecommerce_apple_phone.EF {
         public DbSet<PromProduct> PromProducts { get; set; }
         public DbSet<PromBill> PromBills { get; set; }
         public DbSet<PromPoint> PromPoints { get; set; }
-        public DbSet<PromMethodPay> PromMethodPays { get; set; }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder) {
             base.OnModelCreating (modelBuilder);
             //Product
-            modelBuilder.Entity<Product> ().Property (p => p.isShow).HasDefaultValue (true);
-            modelBuilder.Entity<Product> ().Property (p => p.isDel).HasDefaultValue (false);
-            //
-            modelBuilder.Entity<ProductDetail> ().Property (p => p.SaleCount).HasDefaultValue (0);
             modelBuilder.Entity<ProductDetail> ().Property (p => p.isShow).HasDefaultValue (true);
             modelBuilder.Entity<ProductDetail> ().Property (p => p.isDel).HasDefaultValue (false);
+            //
+            modelBuilder.Entity<Product> ().Property (p => p.SaleCount).HasDefaultValue (0);
+            modelBuilder.Entity<Product> ().Property (p => p.isShow).HasDefaultValue (true);
+            modelBuilder.Entity<Product> ().Property (p => p.isDel).HasDefaultValue (false);
             //Import
             modelBuilder.Entity<ImportProduct> ().Property (p => p.DateCreated).HasColumnType ("smalldatetime");
             modelBuilder.Entity<ImportDetail> ().HasKey (od => new { od.ProductId, od.ImportId });
-            //Feedback
-            modelBuilder.Entity<Feedback> ().HasKey (od => new { od.ProductId, od.UserId });
             //Config Promotion
             modelBuilder.Entity<Promotion> ().Property (p => p.Status).HasDefaultValue (true);
             modelBuilder.Entity<Promotion> ().Property (p => p.ToDate).HasColumnType ("smalldatetime");
@@ -58,52 +55,51 @@ namespace ecommerce_apple_phone.EF {
         [Key]
         public int Id { get; set; }
         public string Email { get; set; }
-
         //Nav
         public List<Order> Orders { get; set; }
     }
 
-    public class Product {
+    public class ProductDetail {
         [Key]
         public int Id { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Name { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Screen { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string FontCamera { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string RearCamera { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string OperationSystem { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Chipset { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string ROM { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string RAM { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Connector { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Parameter { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Weight { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string Battery { get; set; }
 
-        [MaxLength (50)]
+        [MaxLength (250)]
         public string FunctionOther { get; set; }
         public bool? isShow { get; set; }
         public bool? isDel { get; set; }
@@ -112,11 +108,13 @@ namespace ecommerce_apple_phone.EF {
         public int? CategoryId { get; set; }
         //Nav
         public Category Category { get; set; }
-        public List<ProductDetail> ProductDetails { get; set; }
+
+        public Post Post { get; set; }
+        public List<Product> Products { get; set; }
         public List<Feedback> Feedbacks { get; set; }
     }
 
-    public class ProductDetail {
+    public class Product {
         [Key]
         public int Id { get; set; }
         public double Price { get; set; }
@@ -124,18 +122,15 @@ namespace ecommerce_apple_phone.EF {
         [StringLength (25)]
         public string Color { get; set; }
         public int SaleCount { get; set; }
-
-        [StringLength (50)]
-        public string ImageDefault { get; set; }
-        public string ImageGallery { get; set; }
+        public string Images { get; set; }
         public int Quantity { get; set; }
         public bool? isShow { get; set; }
         public bool? isDel { get; set; }
 
-        [ForeignKey ("Product")]
-        public int ProductId { get; set; }
+        [ForeignKey ("ProductDetail")]
+        public int? ProductDetailId { get; set; }
         //
-        public Product Product { get; set; }
+        public ProductDetail ProductDetail { get; set; }
     }
 
     public class ImportProduct {
@@ -154,7 +149,6 @@ namespace ecommerce_apple_phone.EF {
         //Nav
         public ImportProduct ImportProduct { get; set; }
         public Product Product { get; set; }
-
     }
 
     public class Category {
@@ -173,7 +167,7 @@ namespace ecommerce_apple_phone.EF {
         [MaxLength (350)]
         public string SeoDescription { get; set; }
         //Nav property
-        public List<Product> Products { get; set; }
+        public List<ProductDetail> ProductDetails { get; set; }
     }
 
     public class Fee {
@@ -232,6 +226,7 @@ namespace ecommerce_apple_phone.EF {
 
     public class Post {
         [Key]
+        [ForeignKey ("ProductDetail")]
         [DatabaseGenerated (DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string PostContent { get; set; }
@@ -244,10 +239,14 @@ namespace ecommerce_apple_phone.EF {
 
         [MaxLength (350)]
         public string SeoDescription { get; set; }
+        //Nav
+        public ProductDetail ProductDetail { get; set; }
     }
 
     public class Feedback {
-        public int ProductId { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public int ProductDetailId { get; set; }
         public int UserId { get; set; }
         public string FeedbackContent { get; set; }
     }
@@ -271,8 +270,10 @@ namespace ecommerce_apple_phone.EF {
         [StringLength (50)]
         public string QuestPhone { get; set; }
 
-        [StringLength (25)]
+        [StringLength (50)]
         public string QuestProvince { get; set; }
+        [StringLength (50)]
+        public string QuestDistrict { get; set; }
 
         [StringLength (35)]
         public string QuestEmail { get; set; }
@@ -291,6 +292,8 @@ namespace ecommerce_apple_phone.EF {
         public byte Status { get; set; }
         public int? UserId { get; set; }
         public int MethodPayId { get; set; }
+        public int? PointUse { get; set; }
+        public int? Point { get; set; }
         //Nav property
         public List<OrderDetail> OrderDetails { get; set; }
     }
@@ -319,6 +322,7 @@ namespace ecommerce_apple_phone.EF {
         //Nav property
         public PromProduct PromProduct { get; set; }
         public PromBill PromBill { get; set; }
+        public PromPoint PromPoint { get; set; }
     }
 
     public class PromBill {
@@ -343,7 +347,6 @@ namespace ecommerce_apple_phone.EF {
         [StringLength (250)]
         public string ProductInProms { get; set; }
         public int? CategoryId { get; set; }
-        public int? BandId { get; set; }
         //Nav property
         public Promotion Promotion { get; set; }
     }
@@ -358,16 +361,4 @@ namespace ecommerce_apple_phone.EF {
         //Nav property
         public Promotion Promotion { get; set; }
     }
-
-    public class PromMethodPay {
-        [Key]
-        [ForeignKey ("Promotion")]
-        [DatabaseGenerated (DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
-        public double? Discount { get; set; }
-        public int? MethodPayId { get; set; }
-        //Nav property
-        public Promotion Promotion { get; set; }
-    }
-
 }

@@ -1,0 +1,14 @@
+<div>
+    <div style="width: 350px;">
+        <div class="img-content img-sm">
+            <div  class="img" >
+                <img #image>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex py-3">
+        <input  #inputImage (change)="onChangeFile(inputImage)" class="py-1 border-none"  type="file" placeholder="Placeholder">
+        <button type="button" class="mr-3"  mat-stroked-button (click)="inputImage.click()" >Upload Image</button>
+        <button type="button"  mat-stroked-button color="warn" (click)="onRemoveFile()">Delete Image</button>
+    </div>
+</div>

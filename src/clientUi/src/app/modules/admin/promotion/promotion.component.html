@@ -1,0 +1,59 @@
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h3>List Promotion</h3>
+            <span>
+                <a routerLink="/admin/promotion-detail/1" class="btn btn-sm bg-blue white px-lg-4 mr-3"> Add For Product </a>
+                <a routerLink="/admin/promotion-detail/2" class="btn btn-sm bg-blue white px-lg-4 mr-3"> Add For Bill </a>
+                <a routerLink="/admin/promotion-detail/3" class="btn btn-sm bg-blue white px-lg-4 mr-3"> Add For Point </a>
+            </span>  
+        </div>
+    </div>
+    <div class="card-content">
+        <table mat-table [dataSource]="tableData">
+            <ng-container matColumnDef="Id">
+                <th mat-header-cell *matHeaderCellDef>Id</th>
+                <td mat-cell *matCellDef="let item">{{item.id}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+                <th mat-header-cell *matHeaderCellDef>Tên</th>
+                <td mat-cell *matCellDef="let item">{{item.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Type">
+                <th mat-header-cell *matHeaderCellDef> Loai </th>
+                <td mat-cell *matCellDef="let item">{{item.type}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Start">
+                <th mat-header-cell *matHeaderCellDef>From</th>
+                <td mat-cell *matCellDef="let item">{{item.fromDate |date : 'dd/MM/yyyy' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="End">
+                <th mat-header-cell *matHeaderCellDef>To</th>
+                <td mat-cell *matCellDef="let item">{{item.toDate |date :'dd/MM/yyyy' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef style="width:250px"></th>
+                <td mat-cell *matCellDef="let item" class="text-center">
+                    <mat-slide-toggle class="pr-5" (toggleChange)="onChangeStatus(item)" [checked]="item.status"></mat-slide-toggle>
+
+                    <a routerLink="../promotion-detail/{{item.type}}/{{item.id}}"
+                        class="text-2 btn-icon blue pr-3 pr-lg-5">
+                        <i class="las la-chevron-circle-right"></i>
+                    </a>
+                    <span (click)="onRemove(item.id)" class=" btn-icon red text-2">
+                        <i class="lar la-trash-alt "></i> 
+                    </span>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['Id' ,'Name','Type','Start','End','Action']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['Id' ,'Name','Type','Start','End','Action']">
+            </tr>
+        </table>
+        <mat-paginator [ngClass]="isLoaded && listPromotion ?.length > 5 ? '': 'hide'" [pageSizeOptions]="[5, 10, 15]">
+        </mat-paginator>
+        <p *ngIf="isLoaded && listPromotion?.length ==0" class="text-center py-5 empty">Không có dữ liệu</p>
+        <app-loader *ngIf="!isLoaded && listPromotion == null"></app-loader>
+    </div>
+</div>

@@ -38,15 +38,14 @@ namespace ecommerce_apple_phone {
             //======== DbContext  ========
             services.AddDbContext<PhoneContext> (
                 options => options.UseSqlServer (Configuration.GetConnectionString ("Default")));
-            //======== Models  ========
-            services.AddModels (this.Configuration);
+            
             //======== SPA  ========
             // services.AddSpaStaticFiles (configuration => {
             //     configuration.RootPath = "clientUi/dist";
             // });
             // services.AddControllersWithViews ();
 
-            //======== CORS  ========
+            // ======== CORS  ========
             services.AddCors (options => {
                 options.AddPolicy (name: MyAllowSpecificOrigins,
                     builder => {
@@ -57,10 +56,13 @@ namespace ecommerce_apple_phone {
                     });
             });
             //======== Other  ========
-
+            services.AddMemoryCache ();
             services.AddAutoMapper (typeof (MapperConfig).Assembly);
             services.AddControllers ();
-            services.AddSingleton<IMailSenderService, EmailSender> ();
+            //======== Models  ========
+            services.AddModels (this.Configuration);
+            //======== SUb Serivce  ========
+            services.AddSubServices(this.Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

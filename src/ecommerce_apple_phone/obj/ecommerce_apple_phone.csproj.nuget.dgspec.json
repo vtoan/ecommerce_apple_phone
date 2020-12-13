@@ -1,30 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TOAN\\Documents\\Srouce\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj": {}
+    "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj": {}
   },
   "projects": {
-    "C:\\Users\\TOAN\\Documents\\Srouce\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj": {
+    "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TOAN\\Documents\\Srouce\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj",
+        "projectUniqueName": "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj",
         "projectName": "ecommerce_apple_phone",
-        "projectPath": "C:\\Users\\TOAN\\Documents\\Srouce\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj",
-        "packagesPath": "C:\\Users\\TOAN\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TOAN\\Documents\\Srouce\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\obj\\",
+        "projectPath": "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj",
+        "packagesPath": "/home/toan/.nuget/packages/",
+        "outputPath": "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\TOAN\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/toan/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -96,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.404/RuntimeIdentifierGraph.json"
         }
       }
     }
