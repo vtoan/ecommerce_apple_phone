@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<h1 mat-dialog-title> Create New User </h1>
 <div mat-dialog-content>
     <p *ngIf="data.password!=data.rePassword" class="red">Password incorrect</p>
     <form #ngForm="ngForm">
-        <mat-form-field class="w-100" *ngIf="!data.noEmail">
+        <mat-form-field class="w-100">
             <mat-label>Email</mat-label>
             <input matInput type="email" [(ngModel)]="data.email" name="email" value="username" required>
             <mat-error>

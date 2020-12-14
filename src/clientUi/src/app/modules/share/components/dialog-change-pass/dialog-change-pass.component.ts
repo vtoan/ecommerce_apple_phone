@@ -1,23 +1,23 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-    selector: "app-dialog-changepass",
-    templateUrl: "./dialog-changepass.component.html",
-    styleUrls: ["./dialog-changepass.component.scss"],
+    selector: "app-dialog-change-pass",
+    templateUrl: "./dialog-change-pass.component.html",
+    styleUrls: ["./dialog-change-pass.component.scss"],
 })
-export class DialogChangepassComponent implements OnInit {
+export class DialogChangePassComponent implements OnInit {
     textError: string = "";
     constructor(
-        public dialogRef: MatDialogRef<DialogChangepassComponent>,
+        public dialogRef: MatDialogRef<DialogChangePassComponent>,
         @Inject(MAT_DIALOG_DATA) public data
     ) {}
     ngOnInit(): void {
-        this.data ={
-            password:"",
-            newPassword:"",
-            rePassword:""
-        }
+        this.data = {
+            password: "",
+            newPassword: "",
+            rePassword: "",
+        };
     }
 
     onNoClick(): void {

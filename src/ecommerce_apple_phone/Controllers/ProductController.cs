@@ -207,7 +207,7 @@ namespace ecommerce_apple_phone.Controllers
             return Ok();
         }
 
-        [HttpPut("attrs/status/{id}")]
+        [HttpPut("attrs/{id}/status")]
         public ActionResult UpdateStatusAttr(string id,[FromForm(Name="status")] bool? status)
         {
             if (DataHelper.IsEmptyString(id)||status==null) return BadRequest();

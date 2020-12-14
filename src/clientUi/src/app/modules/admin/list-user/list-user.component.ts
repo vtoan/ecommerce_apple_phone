@@ -7,10 +7,9 @@ import { User } from "src/app/models/IModels";
 import { Container } from "src/app/modules/share/components/container/container.component";
 //sevices
 import { AccountService } from "src/app/services/account.service";
-import { RoleService } from "src/app/services/role.service";
 import { MessageService } from "src/app/services/message.service";
 import { MatDialog } from "@angular/material";
-import { DialogComponent } from "../../share/components/dialog/dialog.component";
+import { DialogCreateUserComponent } from '../../share/components/dialog-create-user/dialog-create-user.component';
 
 @Component({
     selector: "app-list-user",
@@ -29,7 +28,6 @@ export class ListUserComponent implements OnInit {
 
     constructor(
         private accountService: AccountService,
-        private roleService: RoleService,
         private messService: MessageService,
         public dialog: MatDialog
     ) {}
@@ -46,9 +44,8 @@ export class ListUserComponent implements OnInit {
     }
 
     onCreate(): void {
-        const dialogRef = this.dialog.open(DialogComponent, {
+        const dialogRef = this.dialog.open(DialogCreateUserComponent, {
             width: "350px",
-            data: { title: "Create new account" },
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log(result);
@@ -81,7 +78,7 @@ export class ListUserComponent implements OnInit {
 
     getRoleData() {
         let obs = new Subject();
-        this.roleService.getList().subscribe((val) => {
+        this.accountService.getListRoles().subscribe((val) => {
             if (val ? val.length > 0 : false) this.listRole = val;
             else this.container.isDataEmpty = true;
             obs.complete();

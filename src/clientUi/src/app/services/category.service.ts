@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Observable, of, throwError } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
 //models
 import { Category } from "src/app/models/IModels";
-import { HttpInterceptorService } from "../services/http-interceptor.service";
 
 @Injectable({
     providedIn: "root",
@@ -12,10 +11,13 @@ import { HttpInterceptorService } from "../services/http-interceptor.service";
 export class CategoryService {
     private apiUrl = "api/category";
 
-    constructor(
-        private http: HttpClient,
-        private interceptor: HttpInterceptorService
-    ) {}
+    constructor(private http: HttpClient) {}
+
+    private titleHeader(title) {
+        return {
+            headers: new HttpHeaders({ Action: title }),
+        };
+    }
 
     getUrlRes = (): string => "image_seo";
 
@@ -23,27 +25,23 @@ export class CategoryService {
 
     getList(): Observable<Category[]> {
         return this.http
-            .get<Category[]>(this.apiUrl)
+            .get<Category[]>(this.apiUrl, this.titleHeader("Get list category"))
             .pipe(
                 retry(3),
-                catchError(
-                    this.interceptor.handleError<Category[]>(
-                        "Get list category",
-                        []
-                    )
-                )
+                catchError(() => throwError(null))
             );
     }
 
-    update(id: number, cate: Category): Observable<any> {
-        let obs = this.http
-            .put(this.apiUrl + "/" + id, cate)
+    update(id: number, cate: Category): Observable<boolean> {
+        return this.http
+            .put<boolean>(
+                this.apiUrl + "/" + id,
+                cate,
+                this.titleHeader("Update category")
+            )
             .pipe(
-                catchError(
-                    this.interceptor.handleError("Update category", false)
-                )
+                retry(3),
+                catchError(() => throwError(false))
             );
-        obs.subscribe((next) => this.interceptor.suscees("Update category"));
-        return obs;
     }
 }

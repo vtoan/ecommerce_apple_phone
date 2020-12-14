@@ -1,44 +1,42 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, of } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { Observable, of, throwError } from "rxjs";
+import { catchError, retry } from "rxjs/operators";
 //models
 import { Info } from "../models/IModels";
-import { HttpInterceptorService } from "../services/http-interceptor.service";
-
-//service
-// import {HelpfulModule, } from 'src/app/helpful/helpful.module';
 
 @Injectable({
     providedIn: "root",
 })
 export class InfoService {
     private infoUrl = "api/info";
-    constructor(
-        private http: HttpClient,
-        private interceptor: HttpInterceptorService
-    ) {}
+    constructor(private http: HttpClient) {}
 
+    private titleHeader(title) {
+        return {
+            headers: new HttpHeaders({ Action: title }),
+        };
+    }
     //Method
-    getUrlRes = () => ["logo","image_seo"];
+    getUrlRes = () => ["logo", "image_seo"];
 
     getUrlUpload = () => [this.infoUrl + "/logo", this.infoUrl + "/image_seo"];
 
     get(): Observable<Info> {
         return this.http
-            .get<Info>(this.infoUrl)
+            .get<Info>(this.infoUrl, this.titleHeader("Get info"))
             .pipe(
-                catchError(this.interceptor.handleError<Info>("Get data Info"))
+                retry(3),
+                catchError(() => throwError(null))
             );
     }
 
-    update(info: Info): Observable<any> {
+    update(info: Info): Observable<boolean> {
         return this.http
-            .put(this.infoUrl, info)
+            .put<boolean>(this.infoUrl, info, this.titleHeader("Update info"))
             .pipe(
-                catchError(
-                    this.interceptor.handleError<Info>("Update data Info")
-                )
+                retry(3),
+                catchError(() => throwError(false))
             );
     }
 }

@@ -8,7 +8,6 @@ import * as dayjs from "dayjs";
 import { MethodPay, Order } from "src/app/models/IModels";
 // service
 import { OrderService } from "src/app/services/order.service";
-import { MethodPayService } from "src/app/services/method-pay.service";
 import { finalize } from "rxjs/operators";
 
 @Component({
@@ -34,7 +33,6 @@ export class OrderComponent implements OnInit, AfterViewInit {
     tableData = new MatTableDataSource();
     constructor(
         private orderService: OrderService,
-        private payService: MethodPayService
     ) {}
 
     ngOnInit() {
@@ -93,7 +91,7 @@ export class OrderComponent implements OnInit, AfterViewInit {
     }
 
     private getDataMethodPay() {
-        this.payService.getList().subscribe((val) => (this.listPay = val));
+        this.orderService.getListMethodPay().subscribe((val) => (this.listPay = val));
     }
 
     private changeStatus(id: number, status: number) {

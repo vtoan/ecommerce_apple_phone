@@ -5,13 +5,13 @@
             <a id="menu" (click)="isShowMenu= !isShowMenu" class="nav-item" href="javascript:void(0)"><i class="icon las la-bars"></i></a>
         </div>
         <!--Title-->
-        <div class="col-6 col-lg-2 text-center text-lg-left">
+        <div class="col-6 col-lg-3 text-center text-lg-left">
             <h3 class="py-3">
                 <a routerLink="/home">hommer house</a>
             </h3>
         </div>
         <!--Nav Desktop-->
-        <div class="col-6 col-lg-8 d-none d-lg-block">
+        <div class="col-6 col-lg-6 d-none d-lg-block">
             <nav class="nav-container">
                 <a class="nav-item" routerLink="/discount">khuyến mãi</a>
                 <a class="nav-item" routerLink="/phone">iphone</a>
@@ -21,7 +21,7 @@
             </nav>
         </div>
         <!--Cart shopping-->
-        <div class="col-3 col-lg-2 d-lg-block">
+        <div class="col-3 col-lg-3 d-lg-block">
             <div class="d-flex justify-content-end">
                 <a class="nav-item nav-icon d-none d-lg-block" (click)="isShowSearch= !isShowSearch" href="javascript:void(0)">
                     <i id="search" class="icon las la-search" ></i>
@@ -32,6 +32,7 @@
                         <span id="cart-items" class="white bg-red">{{countItemCart}}</span>
                     </div>
                 </a>
+                <app-user-action></app-user-action>
             </div>
         </div>
     </div>

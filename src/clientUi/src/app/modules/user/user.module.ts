@@ -13,20 +13,21 @@ import { ListProductComponent } from "./components/list-product/list-product.com
 import { ProductComponent } from "./components/product/product.component";
 //page-component
 import { UserMainComponent } from "./user-main.component";
-import { ErrorComponent } from "./page-components/error/error.component";
-import { HomeComponent } from "./page-components/home/home.component";
-import { CartComponent } from "./page-components/cart/cart.component";
-import { DiscountComponent } from "./page-components/discount/discount.component";
-import { PhoneComponent } from "./page-components/phone/phone.component";
-import { OtherComponent } from "./page-components/other/other.component";
-import { CheckOrderComponent } from "./page-components/check-order/check-order.component";
-import { WatchComponent } from "./page-components/watch/watch.component";
-import { ProductDetailComponent } from "./page-components/product-detail/product-detail.component";
-import { SearchProductComponent } from "./page-components/search-product/search-product.component";
+import { ErrorComponent } from "./pages/error/error.component";
+import { HomeComponent } from "./pages/home/home.component";
+import { CartComponent } from "./pages/cart/cart.component";
+import { DiscountComponent } from "./pages/discount/discount.component";
+import { PhoneComponent } from "./pages/phone/phone.component";
+import { OtherComponent } from "./pages/other/other.component";
+import { CheckOrderComponent } from "./pages/check-order/check-order.component";
+import { WatchComponent } from "./pages/watch/watch.component";
+import { ProductDetailComponent } from "./pages/product-detail/product-detail.component";
+import { SearchProductComponent } from "./pages/search-product/search-product.component";
 
 //services
 import { ErrorService } from "./services/error.service";
 import { CartService } from "./services/cart.service";
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { CartService } from "./services/cart.service";
         ProductDetailComponent,
         SearchProductComponent,
         BannerComponent,
+        LoginComponent,
     ],
     imports: [
         CommonModule,

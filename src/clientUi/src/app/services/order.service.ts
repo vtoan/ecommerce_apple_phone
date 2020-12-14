@@ -1,9 +1,14 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, Subject, throwError } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
-import { Fee, Order, OrderDetail, PromBill } from "../models/IModels";
-import { HttpInterceptorService } from "./http-interceptor.service";
+import {
+    Fee,
+    MethodPay,
+    Order,
+    OrderDetail,
+    PromBill,
+} from "../models/IModels";
 
 @Injectable({
     providedIn: "root",
@@ -12,150 +17,132 @@ export class OrderService {
     private apiUrl = "api/order";
     // private options = { year: "numeric", month: "numeric", day: "numeric" };
 
-    constructor(
-        private http: HttpClient,
-        private interceptor: HttpInterceptorService
-    ) {}
+    constructor(private http: HttpClient) {}
 
-    getListStatus():string[]{
-        return[
-            "Chua xac nhan",
-            "Da xac nhan",
-            "Dang giao",
-            "Hoan thanh",
-        ];
+    private titleHeader(title) {
+        return {
+            headers: new HttpHeaders({ Action: title }),
+        };
+    }
+
+    getListStatus(): string[] {
+        return ["Chua xac nhan", "Da xac nhan", "Dang giao", "Hoan thanh"];
     }
 
     get(id: number): Observable<Order> {
-        if (!id)
-            return this.interceptor.clientError("Get data", "Id is null", null);
         return this.http
-            .get<Order>(this.apiUrl + "/" + id)
+            .get<Order>(this.apiUrl + "/" + id, this.titleHeader("Get order"))
             .pipe(
                 retry(3),
-                catchError(
-                    this.interceptor.handleError<Order>("Get data", null)
-                )
+                catchError(() => of(null))
             );
     }
 
     getList(start: Date, end: Date): Observable<Order[]> {
         let sDate: string = start.toLocaleDateString();
         let eDate: string = end.toLocaleDateString();
-        let data = [
-            {
-                id: 1,
-                dateCreated: "asew",
-                questName: "abc",
-                questPhone: "abc",
-                questProvince: "abc",
-                questDistrict: "abc",
-                questEmail: "abc",
-                questAddress: "abc",
-                note: "abc",
-                promotion: "abc",
-                fees: "abc",
-                status: 1,
-                userId: 1,
-                methodPayId: 1,
-                pointUse: 1,
-                point: 1,
-                orderItems: "",
-            },
-            {
-                id: 1,
-                dateCreated: "asew",
-                questName: "abc",
-                questPhone: "abc",
-                questProvince: "abc",
-                questDistrict: "abc",
-                questEmail: "abc",
-                questAddress: "abc",
-                note: "abc",
-                promotion: "abc",
-                fees: "abc",
-                status: 1,
-                userId: 1,
-                methodPayId: 1,
-                pointUse: 1,
-                point: 1,
-                orderItems: "",
-            },
-        ];
-        return of(data);
-
-        // if (!start|| !end)
-        //     return this.interceptor.clientError("Get data", "Id is null", []);
-        // return this.http
-        //     .get<Order[]>(this.apiUrl + "/" )
-        //     .pipe(
-        //         retry(3),
-        //         catchError(
-        //             this.interceptor.handleError<Order[]>("Get data", [])
-        //         )
-        //     );
-    }
-
-    updateStatus(id: number, status: number): Observable<Order> {
-        if (!id || !status)
-            return this.interceptor.clientError("Get data", "Id is null", null);
+        // let data = [
+        //     {
+        //         id: 1,
+        //         dateCreated: "asew",
+        //         questName: "abc",
+        //         questPhone: "abc",
+        //         questProvince: "abc",
+        //         questDistrict: "abc",
+        //         questEmail: "abc",
+        //         questAddress: "abc",
+        //         note: "abc",
+        //         promotion: "abc",
+        //         fees: "abc",
+        //         status: 1,
+        //         userId: 1,
+        //         methodPayId: 1,
+        //         pointUse: 1,
+        //         point: 1,
+        //         orderItems: "",
+        //     },
+        //     {
+        //         id: 1,
+        //         dateCreated: "asew",
+        //         questName: "abc",
+        //         questPhone: "abc",
+        //         questProvince: "abc",
+        //         questDistrict: "abc",
+        //         questEmail: "abc",
+        //         questAddress: "abc",
+        //         note: "abc",
+        //         promotion: "abc",
+        //         fees: "abc",
+        //         status: 1,
+        //         userId: 1,
+        //         methodPayId: 1,
+        //         pointUse: 1,
+        //         point: 1,
+        //         orderItems: "",
+        //     },
+        // ];
+        // return of(data);
         return this.http
-            .get<Order>(this.apiUrl + "/")
+            .get<Order[]>(
+                this.apiUrl + "/report?start=" + sDate + "&end=" + eDate,
+                this.titleHeader("Report order")
+            )
             .pipe(
                 retry(3),
-                catchError(
-                    this.interceptor.handleError<Order>("Get data", null)
-                )
+                catchError(() => of([]))
+            );
+    }
+
+    updateStatus(id: number, status: number): Observable<boolean> {
+        return this.http
+            .get<boolean>(
+                this.apiUrl + "/",
+                this.titleHeader("Update status order")
+            )
+            .pipe(
+                retry(3),
+                catchError(() => of(false))
             );
     }
 
     confirmOrder(order: Order): Observable<Order> {
         return this.http
-            .post<Order>(this.apiUrl + "/confirm", order)
+            .post<Order>(
+                this.apiUrl + "/confirm",
+                order,
+                this.titleHeader("Confirm order")
+            )
             .pipe(
                 retry(3),
-                catchError(
-                    this.interceptor.handleError<Order>("Confirm order", null)
-                )
+                catchError(() => of(null))
             );
     }
 
     payment(order: Order, paymentId: number): Observable<boolean> {
-        if (!paymentId)
-            return this.interceptor.clientError(
-                "Payment order",
-                "Payment is null",
-                null
-            );
         return this.http
-            .post<boolean>(this.apiUrl + "/" + paymentId, order)
+            .post<boolean>(
+                this.apiUrl + "/" + paymentId,
+                order,
+                this.titleHeader("Confirm order")
+            )
             .pipe(
                 retry(3),
-                catchError(
-                    this.interceptor.handleError<boolean>(
-                        "Confirm order",
-                        false
-                    )
-                )
+                catchError(() => of(false))
             );
     }
 
     getListProvice(): Observable<any> {
-        return this.http
-            .get("api/asset/province.json")
-            .pipe(
-                retry(3),
-                catchError(this.interceptor.handleError("Get Province", null))
-            );
+        return this.http.get("api/asset/province.json").pipe(
+            retry(3),
+            catchError(() => of(null))
+        );
     }
 
     getListDistrict(id: number): Observable<any> {
-        return this.http
-            .get("api/asset/district/" + id + ".json")
-            .pipe(
-                retry(3),
-                catchError(this.interceptor.handleError("Get District", null))
-            );
+        return this.http.get("api/asset/district/" + id + ".json").pipe(
+            retry(3),
+            catchError(() => of(null))
+        );
     }
 
     calTotalOrder(listOrderDetails: OrderDetail[]): [number, number] {
@@ -206,5 +193,18 @@ export class OrderService {
             }
         }
         return totalProm;
+    }
+
+    getListMethodPay(): Observable<MethodPay[]> {
+        return of([
+            {
+                id: 1,
+                name: "Paypal",
+            },
+            {
+                id: 2,
+                name: "Cash",
+            },
+        ]);
     }
 }

@@ -3,7 +3,6 @@ import { FormControl, Validators } from "@angular/forms";
 //module
 import { Fee, MethodPay, Order, OrderDetail } from "src/app/models/IModels";
 //service
-import { MethodPayService } from "src/app/services/method-pay.service";
 import { OrderService } from "src/app/services/order.service";
 import { ErrorService } from "src/app/modules/user/services/error.service";
 
@@ -32,14 +31,13 @@ export class OrderDetailComponent implements OnInit {
     methodPay = new FormControl(1, Validators.required);
 
     constructor(
-        private methodService: MethodPayService,
         private orderService: OrderService,
         private errService: ErrorService,
     ) {}
     // ========= event =========
     ngOnInit() {
         //get prom point
-        this.methodService.getList().subscribe(
+        this.orderService.getListMethodPay().subscribe(
             (val) => {
                 if (!val) this.errService.redirectError("Can't get method pay");
                 this.listMethodPays = val;

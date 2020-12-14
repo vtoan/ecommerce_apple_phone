@@ -11,13 +11,16 @@ import { ShareModule }  from 'src/app/modules/share/share.module';
 import { CookieModule } from 'ngx-cookie';
 import { FacebookModule } from 'ngx-facebook';
 
-
 //components
 import { AppComponent } from './app.component';
 //
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr, 'fr');
+//
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RequestInterceptorService }  from 'src/app/services/request-interceptor.service';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +39,9 @@ registerLocaleData(localeFr, 'fr');
     CookieModule.forRoot(),
     FacebookModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService , multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

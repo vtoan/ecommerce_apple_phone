@@ -3,16 +3,17 @@ import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
 //component
 import { UserMainComponent } from "./user-main.component";
-import { ErrorComponent } from "./page-components/error/error.component";
-import { HomeComponent } from "./page-components/home/home.component";
-import { DiscountComponent } from "./page-components/discount/discount.component";
-import { PhoneComponent } from "./page-components/phone/phone.component";
-import { OtherComponent } from "./page-components/other/other.component";
-import { WatchComponent } from "./page-components/watch/watch.component";
-import { CheckOrderComponent } from "./page-components/check-order/check-order.component";
-import { CartComponent } from "./page-components/cart/cart.component";
-import { ProductDetailComponent } from "./page-components/product-detail/product-detail.component";
-import { SearchProductComponent } from "./page-components/search-product/search-product.component";
+import { ErrorComponent } from "./pages/error/error.component";
+import { HomeComponent } from "./pages/home/home.component";
+import { DiscountComponent } from "./pages/discount/discount.component";
+import { PhoneComponent } from "./pages/phone/phone.component";
+import { OtherComponent } from "./pages/other/other.component";
+import { WatchComponent } from "./pages/watch/watch.component";
+import { CheckOrderComponent } from "./pages/check-order/check-order.component";
+import { CartComponent } from "./pages/cart/cart.component";
+import { ProductDetailComponent } from "./pages/product-detail/product-detail.component";
+import { SearchProductComponent } from "./pages/search-product/search-product.component";
+import { LoginComponent } from './pages/login/login.component';
 //
 const routes: Routes = [
     {
@@ -31,6 +32,8 @@ const routes: Routes = [
             { path: "error/:title/:message", component: ErrorComponent },
             { path: "error/:title", component: ErrorComponent },
             { path: "error", component: ErrorComponent },
+            { path: "login",component:LoginComponent},
+            { path: "login/:returnUrl",component:LoginComponent},
             { path: "**", redirectTo: "/error", pathMatch: "full" },
         ],
     },

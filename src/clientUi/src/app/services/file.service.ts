@@ -2,9 +2,7 @@ import { Injectable } from "@angular/core";
 //
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { catchError } from "rxjs/operators";
-//sevice
-import { HttpInterceptorService } from "../services/http-interceptor.service";
+import { catchError, retry } from "rxjs/operators";
 
 @Injectable({
     providedIn: "root",
@@ -12,11 +10,10 @@ import { HttpInterceptorService } from "../services/http-interceptor.service";
 
 export class FileService {
     
-    rootPath:string =  "https://localhost:5001";
+    rootPath:string =  "api";
 
     constructor(
         private http: HttpClient,
-        private interceptor: HttpInterceptorService
     ) {}
 
     private uploadToServer(image: File, url): Observable<any> {
@@ -25,7 +22,7 @@ export class FileService {
         return this.http
             .post(url, formData)
             .pipe(
-                catchError(this.interceptor.handleError("Update image", false))
+                retry(3)
             );
     }
 
