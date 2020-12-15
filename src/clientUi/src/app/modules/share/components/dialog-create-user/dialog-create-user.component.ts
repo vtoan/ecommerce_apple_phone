@@ -14,6 +14,7 @@ export class DialogCreateUserComponent implements OnInit {
     ) {}
     ngOnInit(): void {
         this.data = {
+            name:"",
             email: "",
             password: "",
             rePassword: "",
@@ -30,6 +31,7 @@ export class DialogCreateUserComponent implements OnInit {
             return;
         }
         this.dialogRef.close({
+            name:this.data.name,
             email: this.data.email,
             password: this.data.password,
         });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, NgForm, Validators } from "@angular/forms";
 import { merge } from "rxjs";
 //module
 import {
@@ -39,7 +39,7 @@ export class PromotionDetailComponent implements OnInit {
     });
     //
     productFormValidate = this.fb.group({
-        discount: [1, Validators.required],
+        discount: [0, Validators.required],
         categoryId: [0],
     });
     //
@@ -69,12 +69,13 @@ export class PromotionDetailComponent implements OnInit {
 
     }
 
-    onSubmit(e) {
+    onSave(e) {
         if (this.promFormValidate.invalid) return;
         e.preventDefault();
-        let obj: Promotion = this.productFormValidate.value;
+        let obj: Promotion = this.promFormValidate.value;
+        obj["type"]=1;
         let detail;
-        switch (this.itemType) {
+        switch ( Number(this.itemType)) {
             case 1:
                 if (this.productFormValidate.invalid) return;
                 detail = this.productFormValidate.value;
@@ -90,6 +91,7 @@ export class PromotionDetailComponent implements OnInit {
         }
         if (!detail) return;
         obj.itemDetail = JSON.stringify(detail);
+        // obj.type=this.itemType;
         this.itemId ? this.update(obj) : this.add(obj);
     }
 

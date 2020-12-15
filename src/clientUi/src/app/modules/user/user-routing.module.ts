@@ -14,6 +14,8 @@ import { CartComponent } from "./pages/cart/cart.component";
 import { ProductDetailComponent } from "./pages/product-detail/product-detail.component";
 import { SearchProductComponent } from "./pages/search-product/search-product.component";
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { UserComponent }  from './pages/user/user.component';
 //
 const routes: Routes = [
     {
@@ -34,6 +36,8 @@ const routes: Routes = [
             { path: "error", component: ErrorComponent },
             { path: "login",component:LoginComponent},
             { path: "login/:returnUrl",component:LoginComponent},
+            { path: "register",component:RegisterComponent},
+            { path: "user",component:UserComponent},
             { path: "**", redirectTo: "/error", pathMatch: "full" },
         ],
     },

@@ -20,9 +20,9 @@ export class PostService {
         };
     }
 
-    get(id: number): Observable<Post> {
+    get(id: string): Observable<Post> {
         return this.http
-            .get<Post>(this.apiUrl + "/" + id, this.titleHeader("Get post"))
+            .get<Post>(this.apiUrl + "/" + id)
             .pipe(
                 retry(3),
                 catchError(() => throwError(null))
@@ -38,7 +38,7 @@ export class PostService {
             );
     }
 
-    update(id: number, post: string): Observable<boolean> {
+    update(id: string, post: string): Observable<boolean> {
         return this.http
             .put<any>(
                 this.apiUrl + "/" + id,
@@ -51,7 +51,7 @@ export class PostService {
             );
     }
 
-    delete(id: number): Observable<boolean> {
+    delete(id: string): Observable<boolean> {
         return this.http
             .delete<any>(
                 this.apiUrl + "/" + id,

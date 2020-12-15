@@ -72,8 +72,10 @@ interface Post {
 }
 
 interface Feedback {
-    productId:number;
-    userId:number;
+    id?:number;
+    productId:string;
+    userId:string;
+    userName:string;
     feedbackContent:string;
 }
 

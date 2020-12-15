@@ -57,7 +57,6 @@ namespace ecommerce_apple_phone.Controllers
                 methodPay = promMethod,
                 promPoint = promPoint
             });
-
             return orderDTO;
         }
 

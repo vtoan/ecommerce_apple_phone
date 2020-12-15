@@ -10,7 +10,6 @@ import {
     PromPoint,
     PromProduct,
 } from "src/app/models/IModels";
-import { HttpInterceptorService } from "../services/http-interceptor.service";
 
 @Injectable({
     providedIn: "root",
@@ -72,26 +71,26 @@ export class PromotionService {
     }
 
     getListOfBill(): Observable<PromBill[]> {
-        return this.http.get<PromBill[]>(this.apiUrl).pipe(
-            retry(3),
-            catchError(() => of([]))
-        );
-        // return of([
-        //     {
-        //         id: 1,
-        //         name: "A",
-        //         discount: 0.5,
-        //         conditionItem: -1,
-        //         conditionAmount: 20000000,
-        //     },
-        //     {
-        //         id: 2,
-        //         name: "B",
-        //         discount: 0.2,
-        //         conditionItem: -1,
-        //         conditionAmount: 1000000,
-        //     },
-        // ]);
+        // return this.http.get<PromBill[]>(this.apiUrl).pipe(
+        //     retry(3),
+        //     catchError(() => throwError([]))
+        // );
+        return of([
+            {
+                id: 1,
+                name: "A",
+                discount: 0.5,
+                conditionItem: -1,
+                conditionAmount: 20000000,
+            },
+            {
+                id: 2,
+                name: "B",
+                discount: 0.2,
+                conditionItem: -1,
+                conditionAmount: 1000000,
+            },
+        ]);
     }
 
     getListOfPoint(): Observable<PromPoint[]> {

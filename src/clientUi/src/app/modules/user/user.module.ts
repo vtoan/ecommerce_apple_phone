@@ -28,6 +28,11 @@ import { SearchProductComponent } from "./pages/search-product/search-product.co
 import { ErrorService } from "./services/error.service";
 import { CartService } from "./services/cart.service";
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { UserComponent } from './pages/user/user.component';
+import { ProductsRelateComponent } from './components/products-relate/products-relate.component';
+import { ProductPostComponent } from './components/product-post/product-post.component';
+import { ProductPromotionComponent } from './components/product-promotion/product-promotion.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +51,11 @@ import { LoginComponent } from './pages/login/login.component';
         SearchProductComponent,
         BannerComponent,
         LoginComponent,
+        RegisterComponent,
+        UserComponent,
+        ProductsRelateComponent,
+        ProductPostComponent,
+        ProductPromotionComponent,
     ],
     imports: [
         CommonModule,

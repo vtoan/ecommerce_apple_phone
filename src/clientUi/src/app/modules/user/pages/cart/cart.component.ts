@@ -16,6 +16,7 @@ import { FeeService } from "src/app/services/fee.service";
 import { OrderService } from "src/app/services/order.service";
 import { ErrorService } from "../../services/error.service";
 import { finalize } from "rxjs/operators";
+import { AccountService } from "src/app/services/account.service";
 
 @Component({
     selector: "app-cart",
@@ -28,7 +29,7 @@ export class CartComponent implements OnInit {
     titlePage: string = "CART SHOPPING";
     //
     listPromBill: PromBill[];
-    listPromPoint: PromPoint[];
+    // listPromPoint: PromPoint[];
     listFees: Fee[];
     listItem: OrderDetail[];
     order: Order;
@@ -58,6 +59,7 @@ export class CartComponent implements OnInit {
         private cartService: CartService,
         private feeService: FeeService,
         private orderService: OrderService,
+        private accountService: AccountService,
         private fb: FormBuilder,
         private errService: ErrorService
     ) {}
@@ -66,7 +68,7 @@ export class CartComponent implements OnInit {
         concat(
             this.getDataFee(),
             this.getDataPromBill(),
-            this.getDataPromPoint(),
+            // this.getDataPromPoint(),
             this.getDataCart(),
             this.getDataProvince()
         )
@@ -74,6 +76,7 @@ export class CartComponent implements OnInit {
                 finalize(() => {
                     this.calOrder(this.listItem);
                     this.isLoaded = true;
+                    this.getDataUser();
                 })
             )
             .subscribe();
@@ -114,31 +117,34 @@ export class CartComponent implements OnInit {
     //#region Get Data
     private getDataPromBill(): Observable<any> {
         let obs = new Subject();
-        this.promService.getListOfBill().subscribe((val) => {
-            if (!val)
-                this.errService.redirectError("Can't get bill promotions");
-            else this.listPromBill = val;
+        this.promService.getListOfBill().subscribe((val) => {         
+            this.listPromBill = val;
+            obs.complete();
+        },er =>{
+            this.errService.redirectError("Can't get bill promotions");
             obs.complete();
         });
         return obs;
     }
 
-    private getDataPromPoint(): Observable<any> {
-        let obs = new Subject();
-        this.promService.getListOfPoint().subscribe((val) => {
-            if (!val)
-                this.errService.redirectError("Can't get point promotions");
-            else this.listPromPoint = val;
-            obs.complete();
-        });
-        return obs;
-    }
+    // private getDataPromPoint(): Observable<any> {
+    //     let obs = new Subject();
+    //     this.promService.getListOfPoint().subscribe((val) => {
+    //         if (!val)
+    //             this.errService.redirectError("Can't get point promotions");
+    //         else this.listPromPoint = val;
+    //         obs.complete();
+    //     });
+    //     return obs;
+    // }
 
     private getDataFee(): Observable<any> {
         let obs = new Subject();
         this.feeService.getList().subscribe((val) => {
-            if (!val) this.errService.redirectError("Can't get fees");
-            else this.listFees = val;
+            this.listFees = val;
+            obs.complete();
+        }, er =>{
+            this.errService.redirectError("Can't get fees");
             obs.complete();
         });
         return obs;
@@ -147,8 +153,10 @@ export class CartComponent implements OnInit {
     private getDataProvince(): Observable<any> {
         let obs = new Subject();
         this.orderService.getListProvice().subscribe((val) => {
-            if (!val) this.errService.redirectError("Can't get list province");
-            else this.listProvince = Object.values(val);
+            this.listProvince = Object.values(val);
+            obs.complete();
+        }, er=>{
+            this.errService.redirectError("Can't get list province");
             obs.complete();
         });
         return obs;
@@ -189,12 +197,22 @@ export class CartComponent implements OnInit {
             (this.promtionVal % 1 == 0
                 ? this.promtionVal
                 : this.totalAmountVal * this.promtionVal);
+        let totalFee = this.orderService.calFee(
+            this.totalPayVal,
+            this.listFees
+        );
+        this.totalPayVal += totalFee;
+    }
 
-        // let totalFee = this.orderService.calFee(
-        //     this.totalAmountVal - this.promtionVal,
-        //     this.listFees
-        // );
-        this.totalPayVal += 0;
+    private getDataUser(){
+        let user = this.accountService.user
+        if(!user) return;
+        this.questForm.patchValue({
+            "questName":user.name,
+            "questPhone":user.phone,
+            "questAddress":user.address,
+            "questEmail":user.email,
+        })
     }
 
 }

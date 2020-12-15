@@ -104,9 +104,9 @@ namespace ecommerce_apple_phone.Interfaces {
         bool ChangePromotion (int PromOld, int PromNew, int ProdId);
     }
 
-    public interface IUserModel : IGetDTO<User> {
-        bool UpdatePoint (int id, int point);
-    }
+    // public interface IUserModel : IGetDTO<User> {
+    //     bool UpdatePoint (int id, int point);
+    // }
 
     #endregion
 

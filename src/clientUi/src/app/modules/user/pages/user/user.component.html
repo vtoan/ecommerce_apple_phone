@@ -1,0 +1,4 @@
+<app-banner [titlePage]="'User infomation'"></app-banner>
+<div class="container section">
+    <app-user-info [userId]="accountService.user? accountService.user.id:null " ></app-user-info>
+</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
 // models
 import {
@@ -14,8 +14,6 @@ import {
 import { ProductService } from "src/app/services/product.service";
 import { FileService } from "src/app/services/file.service";
 import { PromotionService } from "src/app/services/promotion.service";
-import { PostService } from "src/app/services/post.service";
-import { FeedbackService } from "src/app/services/feedback.service";
 import { ErrorService } from "../../services/error.service";
 import { CartService } from "../../services/cart.service";
 import { MessageService } from "src/app/services/message.service";
@@ -27,8 +25,8 @@ import { MessageService } from "src/app/services/message.service";
 })
 export class ProductDetailComponent implements OnInit {
     isLoaded: boolean = false;
-    title = "San pham";
     //
+    itemId:string;
     listAttr: Product[];
     productDetail: ProductDetail;
     //
@@ -38,8 +36,6 @@ export class ProductDetailComponent implements OnInit {
     itemPrice: number = 0;
     itemDiscount: number = 0;
     //
-    postObject: Post;
-    listFeedback: Feedback[];
     listProm: PromBill[] = [];
     listProductRelate: Product[];
 
@@ -47,23 +43,23 @@ export class ProductDetailComponent implements OnInit {
         public fileService: FileService,
         private productService: ProductService,
         private promService: PromotionService,
-        private feedBackService: FeedbackService,
-        private postService: PostService,
         private route: ActivatedRoute,
         private errService: ErrorService,
         private cartService: CartService,
         private meesageService: MessageService,
-        private location: Location
+        private router: Router
     ) {}
 
     ngOnInit() {
         this.route.params.subscribe((params) => {
-            let itemId = params["id"];
-            console.log(itemId);
-            if (!itemId || itemId == null)
+            let prodId = params["id"];
+            if (!prodId || prodId == null){
                 this.errService.redirectError("Badrequest");
-            this.getProductData(itemId);
-            this.getSubData(itemId);
+                return;
+            }
+            this.itemId = prodId;
+            this.getProductData(prodId);
+            this.getSubData(prodId);
         });
     }
 
@@ -78,20 +74,18 @@ export class ProductDetailComponent implements OnInit {
     onPrevGallery() {}
 
     onAddCart() {
-        this.errService.redirectError("asdsadas");
-
-        // let idx = this.listAttr.findIndex((item) => item.id == this.itemActive);
-        // if (idx < 0) this.meesageService.showFail("Can't item to cart");
-        // else {
-        //     this.cartService.addToCart(this.listAttr[idx]);
-        //     this.meesageService.showSuccess("Added item to cart");
-        // }
+        let idx = this.listAttr.findIndex((item) => item.id == this.itemActive);
+        if (idx < 0) this.meesageService.showFail("Can't item to cart");
+        else {
+            this.cartService.addToCart(this.listAttr[idx]);
+            this.meesageService.showSuccess("Added item to cart");
+        }
     }
 
     onBuyNow() {
         let idx = this.listAttr.findIndex((item) => item.id == this.itemActive);
         if (idx > 0) {
-            this.location.back();
+            this.router.navigate(["cart"])
             this.meesageService.showFail("Can't item to cart");
         }
         else {
@@ -105,7 +99,6 @@ export class ProductDetailComponent implements OnInit {
         this.productService.get(id).subscribe(
             (val) => {
                 this.productDetail = val;
-                console.log(val);
             },
             (er) => this.errService.redirectError("Not found product detail")
         );
@@ -138,14 +131,6 @@ export class ProductDetailComponent implements OnInit {
     private getSubData(id: string) {
         this.promService.getListOfBill().subscribe((val) => {
             this.listProm = val;
-        });
-        //post
-        this.postService.get(id).subscribe((val) => {
-            this.postObject = val;
-        });
-        //feedBack
-        this.feedBackService.getList(id).subscribe((val) => {
-            this.listFeedback = val;
         });
     }
 }

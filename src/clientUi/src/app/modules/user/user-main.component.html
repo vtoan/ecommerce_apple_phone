@@ -26,13 +26,13 @@
                 <a class="nav-item nav-icon d-none d-lg-block" (click)="isShowSearch= !isShowSearch" href="javascript:void(0)">
                     <i id="search" class="icon las la-search" ></i>
                 </a>
+                <app-user-action [urlDetail]="'user'" ></app-user-action>
                 <a class="nav-item nav-icon" routerLink="/cart">
                     <div class="cart-shopping">
                         <i class="icon las la-shopping-cart"></i>
                         <span id="cart-items" class="white bg-red">{{countItemCart}}</span>
                     </div>
                 </a>
-                <app-user-action></app-user-action>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
     </div>
 </header>
 
-<main style="min-height: 500px;">
+<main style="min-height: 530px;">
     <router-outlet></router-outlet>
     
 </main>
@@ -126,7 +126,7 @@
                     </span>
                     <div class="policy-text bold">
                         <h5> Hỗ Trợ (8h -20h) </h5>
-                        <p class="text-sub mb-0">{{ info.phone}}</p>
+                        <p class="text-sub mb-0">{{ info? info.phone : ""}}</p>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
         <div class="row">
             <div class="col-12 col-lg-4 mb-3">
                 <h4 class="mb-3">Thông tin cửa hàng</h4>
-                <p class="pr-5">{{info.seoDescription}}</p>
+                <p class="pr-5">{{info ? info.seoDescription :""}}</p>
             </div>
             <div class="col-12 col-lg-2 mb-3">
                 <h4 class="mb-3">Liên kế Website</h4>
@@ -152,23 +152,23 @@
                 <h4 class="mb-3">Thông tin liên hệ</h4>
                 <p class="middle-inline">
                     <i class="big-icon las la-envelope pr-1"></i>
-                    <span id="email">{{info.email}}</span>
+                    <span id="email">{{info ? info.email :""}}</span>
                 </p>
                 <p class="middle-inline">
                     <i class="big-icon las la-phone-volume pr-1"></i>
-                    <span id="phone">{{info.phone}}</span>
+                    <span id="phone">{{info ? info.phone : ""}}</span>
                 </p>
                 <p class="middle-inline">
                     <i class="big-icon lab la-facebook-square pr-1"></i>
-                    <a id="fb" href="#" title="Facebook">{{info.facebook}}</a>
+                    <a id="fb" href="#" title="Facebook">{{info ? info.facebook: ""}}</a>
                 </p>
                 <p class="middle-inline">
                     <i class="big-icon lab la-instagram pr-1"></i>
-                    <a id="location" href="#" title="Instargram">{{info.instargram}}</a>
+                    <a id="location" href="#" title="Instargram">{{info ? info.instargram: ""}}</a>
                 </p>
                 <p class="middle-inline">
                     <i class="big-icon las la-map-marked"></i>
-                    <span id="location">{{info.address}}</span>
+                    <span id="location">{{ info ?info.address :""}}</span>
                 </p>
             </div>
             <div class="col-12 col-lg-3 mb-3">

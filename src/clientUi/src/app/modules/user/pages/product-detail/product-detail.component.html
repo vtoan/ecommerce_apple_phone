@@ -1,5 +1,5 @@
 <!--Banner small-->
-<app-banner [titlePage]="title"></app-banner>
+<app-banner [titlePage]="'Product Detail'"></app-banner>
 <app-loader style="height: 350px;" *ngIf="!isLoaded"></app-loader>
 <!--Prodcut Detail-->
 <div *ngIf="isLoaded" class="container">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-7 px-5">
                     <div class="product-text">
-                        <h1 class="normal mb-3 text-2"> {{listAttr[0].name}} - {{productDetail.rom}} </h1>
+                        <h1 class="normal mb-3 text-2"> {{listAttr[0].name}} - {{productDetail.rom ? productDetail.rom : ""}} </h1>
                         <div class="">
                             <div class="example-button-row">
                                 <button class="mr-3" 
@@ -50,18 +50,8 @@
                                 </del>
                             </p>
                         </div>
-                        <div *ngIf="listProm!=null && listProm.length>0" class="product-policy mb-4 text-4">
-                            <p class="italic bold mb-0 ">Ưu đãi</p>
-                            <div class="policy-container border-black">
-                                <div *ngFor="let item of listProm" class="policy-item">
-                                    <span class="policy-icon">
-                                        <img src="{{fileService.rootPath}}/icon/sale.svg" width="30px" height="30px"/>
-                                   </span>
-                                    <div class="policy-text">
-                                        <p class="mb-0">{{item.name}}</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div>
+                            <app-product-promotion></app-product-promotion>
                         </div>
                         <div class="group-btns text-center mb-3">
                             <a class="buy-now btn btn-lg white bg-red mb-3 w-60" routerLink="/cart" (click)="onBuyNow()">Mua ngay</a>
@@ -137,20 +127,13 @@
                     </table>
                 </div>
                 <div class="col-12 col-lg-7">
-                    <h3 class="mb-4">Giới thiệu</h3>
-                    <div id="posts">
-                        <p *ngIf="!postObject">Chưa có bài giới thiệu</p>
-                        {{postObject}}
-                    </div>
+                    <app-product-post [productId]="itemId"></app-product-post>
                 </div>
             </div>
         </div>
+        <!--Product Feedback-->
+        <app-list-feedback [productId]="itemId"></app-list-feedback>
         <!--Product Other-->
-        <div class="section">
-            <h3 class="text-center mb-4 mb-lg-5">Sản phẩm tương tự</h3>
-            <p *ngIf=" !isLoaded || listProductRelate==null" class="text-center" style="line-height: 25;">No exixt data</p>
-            <app-list-product *ngIf="isLoaded && listProductRelate" [products]="listProductRelate" [isPage]="false"
-                [isFilter]="false"></app-list-product>
-        </div>
+        <app-products-relate ></app-products-relate>
     </div>
 </div>

@@ -37,14 +37,12 @@ export class PromotionComponent implements OnInit, AfterViewInit {
     }
 
     onChangeStatus(item:Promotion) {
-        console.log(item);
         this.promService.updateStatus(item.id, !item.status).subscribe(val =>{
             // if(val) item.status!=item.status;
         });
     }
 
     onRemove(id){
-        console.log(id);
-        this.promService.remove(id).subscribe();
+        this.promService.delete(id).subscribe();
     }
 }

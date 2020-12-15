@@ -155,3 +155,14 @@ C:/Users/TOAN/Documents/Srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/o
 C:/Users/TOAN/Documents/Srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/obj/Debug/netcoreapp3.1/ecommerce_apple_phone.dll
 C:/Users/TOAN/Documents/Srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/obj/Debug/netcoreapp3.1/ecommerce_apple_phone.pdb
 C:/Users/TOAN/Documents/Srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/obj/Debug/netcoreapp3.1/ecommerce_apple_phone.genruntimeconfig.cache
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/ecommerce_apple_phone.StaticWebAssets.xml
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Google.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Cryptography.Internal.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Identity.UI.Views.V3.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Identity.UI.Views.V4.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Identity.UI.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.Extensions.FileProviders.Embedded.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.Extensions.Identity.Core.dll
+/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/bin/Debug/netcoreapp3.1/Microsoft.Extensions.Identity.Stores.dll

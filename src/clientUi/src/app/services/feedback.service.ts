@@ -10,7 +10,7 @@ import { Feedback } from "src/app/models/IModels";
     providedIn: "root",
 })
 export class FeedbackService {
-    private apiUrl = "api/feedback";
+    private apiUrl = "api/product/feedback";
 
     constructor(private http: HttpClient) {}
     private titleHeader(title) {
@@ -21,7 +21,7 @@ export class FeedbackService {
 
     getList(id: string): Observable<Feedback[]> {
         return this.http
-            .get<Feedback[]>(this.apiUrl, this.titleHeader("Get list category"))
+            .get<Feedback[]>(this.apiUrl+"/"+id, this.titleHeader("Get list category"))
             .pipe(
                 retry(3),
                 catchError(() => throwError(null))
@@ -30,7 +30,7 @@ export class FeedbackService {
 
     add(fee: Feedback): Observable<Feedback> {
         return this.http
-            .post<Feedback>(this.apiUrl, fee, this.titleHeader("Add fee"))
+            .post<Feedback>(this.apiUrl, fee, this.titleHeader("Add feedback"))
             .pipe(
                 retry(3),
                 catchError(() => throwError(null))

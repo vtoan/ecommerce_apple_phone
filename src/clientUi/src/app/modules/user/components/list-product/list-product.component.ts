@@ -13,7 +13,7 @@ styleUrls: ['./list-product.component.scss']
 export class ListProductComponent implements OnInit {
 	@Input()isPage:boolean =true;
 	@Input()isFilter:boolean =true;
-	@Input()products:Product[]=[];
+	@Input()products:Product[];
 	// ========= prop =========
 	pageSize:number= 8;
 	dataLength:number =0;
@@ -28,10 +28,11 @@ export class ListProductComponent implements OnInit {
 	) {}
 	// ========= event =========
 	ngOnInit() {
-        console.log(this.products);
-		this.dataLength = this.products.length;
-		this.pageNumber = Math.ceil(this.dataLength/this.pageSize);
-		this.showDataPage(1);	
+        if(this.products){
+            this.dataLength = this.products.length;
+            this.pageNumber = Math.ceil(this.dataLength/this.pageSize);
+            this.showDataPage(1);
+        }
 	}
 
 	onChangeOrder(id){

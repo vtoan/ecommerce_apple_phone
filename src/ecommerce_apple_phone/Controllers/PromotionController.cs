@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ecommerce_apple_phone.DTO;
+using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 namespace ecommerce_apple_phone.Controllers
@@ -58,9 +59,10 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add ([FromForm] PromotionDTO promotionDTO) {
+        public IActionResult Add (PromotionDTO promotionDTO) {
             if (promotionDTO.Id != 0) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
-            var re = _promModel.AddDTO (promotionDTO, promotionDTO.ItemDetail);
+            var detail = DataHelper.ParserJsonTo<PromProductDTO>(promotionDTO.ItemDetail);
+            var re = _promModel.AddDTO (promotionDTO, detail);
             if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
             return Ok ();
         }

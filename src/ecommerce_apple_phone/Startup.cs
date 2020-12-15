@@ -18,9 +18,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace ecommerce_apple_phone {
-    public class Startup {
-        public Startup (IConfiguration configuration) {
+namespace ecommerce_apple_phone
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
@@ -28,17 +31,18 @@ namespace ecommerce_apple_phone {
 
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices (IServiceCollection services) {
+        public void ConfigureServices(IServiceCollection services)
+        {
 
             //======== Mail ========
-            services.AddOptions ();
-            var mailSettings = Configuration.GetSection ("MailSettings");
-            services.Configure<MailSettings> (mailSettings);
+            services.AddOptions();
+            var mailSettings = Configuration.GetSection("MailSettings");
+            services.Configure<MailSettings>(mailSettings);
             //======== DbContext  ========
-            services.AddDbContext<PhoneContext> (
-                options => options.UseSqlServer (Configuration.GetConnectionString ("Default")));
-            
+            services.AddDbContext<PhoneContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            //======== Identity  ========
+            services.AddIdenityServices(this.Configuration);
             //======== SPA  ========
             // services.AddSpaStaticFiles (configuration => {
             //     configuration.RootPath = "clientUi/dist";
@@ -46,46 +50,50 @@ namespace ecommerce_apple_phone {
             // services.AddControllersWithViews ();
 
             // ======== CORS  ========
-            services.AddCors (options => {
-                options.AddPolicy (name: MyAllowSpecificOrigins,
-                    builder => {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
                         builder
-                            .WithOrigins ("http://localhost:4200")
-                            .AllowAnyHeader ()
-                            .AllowAnyMethod ();;
+                            .WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod(); ;
                     });
             });
-            //======== Other  ========
-            services.AddMemoryCache ();
-            services.AddAutoMapper (typeof (MapperConfig).Assembly);
-            services.AddControllers ();
+
             //======== Models  ========
-            services.AddModels (this.Configuration);
-            //======== SUb Serivce  ========
+            services.AddModels(this.Configuration);
+            //======== Sub Serivce  ========
             services.AddSubServices(this.Configuration);
+            //======== Other  ========
+            services.AddMemoryCache();
+            services.AddAutoMapper(typeof(MapperConfig).Assembly);
+            services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment ()) {
-                app.UseDeveloperExceptionPage ();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection ();
+            app.UseHttpsRedirection();
 
-            app.UseStaticFiles ();
-            // if (!env.IsDevelopment ()) {
-            //     app.UseSpaStaticFiles ();
-            // }
+            app.UseStaticFiles();
 
-            app.UseRouting ();
+            app.UseRouting();
 
-            app.UseCors (MyAllowSpecificOrigins);
+            app.UseCors(MyAllowSpecificOrigins);
 
-            app.UseAuthorization ();
+            app.UseAuthentication();
+            
+            app.UseAuthorization();
 
-            app.UseEndpoints (endpoints => {
-                endpoints.MapControllers ();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
             });
 
             // app.UseSpa (spa => {

@@ -22,7 +22,9 @@ import { UserInfoComponent } from "./components/user-info/user-info.component";
 import { UserActionComponent } from "./components/user-action/user-action.component";
 import { DialogCreateUserComponent } from "./components/dialog-create-user/dialog-create-user.component";
 import { DialogChangePassComponent } from "./components/dialog-change-pass/dialog-change-pass.component";
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from "./components/login/login.component";
+import { DialogFeedbackComponent } from "./components/dialog-feedback/dialog-feedback.component";
+import { ListFeedbackComponent } from './components/list-feedback/list-feedback.component';
 
 @NgModule({
     declarations: [
@@ -44,12 +46,15 @@ import { LoginComponent } from './components/login/login.component';
         DialogCreateUserComponent,
         DialogChangePassComponent,
         LoginComponent,
+        DialogFeedbackComponent,
+        ListFeedbackComponent,
     ],
     entryComponents: [
         MessageComponent,
         NotifySnackBarComponent,
         DialogCreateUserComponent,
         DialogChangePassComponent,
+        DialogFeedbackComponent
     ],
     imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
     exports: [
@@ -70,6 +75,8 @@ import { LoginComponent } from './components/login/login.component';
         UserActionComponent,
         DialogCreateUserComponent,
         DialogChangePassComponent,
+        DialogFeedbackComponent,
+        ListFeedbackComponent
     ],
 })
 export class ShareModule {}

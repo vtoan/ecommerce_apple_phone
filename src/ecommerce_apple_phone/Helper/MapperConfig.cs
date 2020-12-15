@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using ecommerce_apple_phone.Controllers;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.EF;
 
@@ -40,8 +41,10 @@ namespace ecommerce_apple_phone.Helper
             CreateMap<Post, PostDTO>();
             CreateMap<PostDTO, Post>();
             //Feedback
-            CreateMap<Feedback, FeedbackDTO>();
-            CreateMap<FeedbackDTO, Feedback>();
+            CreateMap<Feedback, FeedbackDTO>()
+                .ForMember(src => src.ProductId ,act => act.MapFrom(des => des.ProductDetailId.ToString()));
+            CreateMap<FeedbackDTO, Feedback>()
+                .ForMember(src => src.ProductDetailId, act => act.MapFrom(des => getPropID(des.ProductId, 0)));
             //Import
             CreateMap<ImportDetail, ImportDetailDTO>();
             CreateMap<ImportDetailDTO, ImportDetail>();
@@ -74,6 +77,9 @@ namespace ecommerce_apple_phone.Helper
             CreateMap<PromPointDTO, PromPoint>();
             //
             CreateMap<PromProductDTO, PromProduct>();
+            //
+            CreateMap<AppUser, InfoModel>()
+                .ForMember(src => src.Phone, act => act.MapFrom(des => des.PhoneNumber));
         }
 
         private int getPropID(string idstring, int idx)

@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_apple_phone.EF {
-    public class PhoneContext : DbContext {
+    public class PhoneContext : IdentityDbContext<AppUser> {
 
         public PhoneContext (DbContextOptions<PhoneContext> options) : base (options) { }
 
@@ -17,7 +19,6 @@ namespace ecommerce_apple_phone.EF {
         public DbSet<Post> Posts { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<MethodPay> MethodPays { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Fee> Fees { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
@@ -49,14 +50,6 @@ namespace ecommerce_apple_phone.EF {
             modelBuilder.Entity<Order> ().Property (o => o.Status).HasDefaultValue (1);
             modelBuilder.Entity<Order> ().Property (o => o.DateCreated).HasColumnType ("smalldatetime");
         }
-    }
-
-    public class User {
-        [Key]
-        public int Id { get; set; }
-        public string Email { get; set; }
-        //Nav
-        public List<Order> Orders { get; set; }
     }
 
     public class ProductDetail {
@@ -247,7 +240,7 @@ namespace ecommerce_apple_phone.EF {
         [Key]
         public int Id { get; set; }
         public int ProductDetailId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string FeedbackContent { get; set; }
     }
 
@@ -360,5 +353,12 @@ namespace ecommerce_apple_phone.EF {
         public double? DiscountOut { get; set; }
         //Nav property
         public Promotion Promotion { get; set; }
+    }
+
+    public class AppUser : IdentityUser{
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Province { get; set; }
+        public string District { get; set; }
     }
 }

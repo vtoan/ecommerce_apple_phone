@@ -9,7 +9,7 @@ import { Container } from "src/app/modules/share/components/container/container.
 import { AccountService } from "src/app/services/account.service";
 import { MessageService } from "src/app/services/message.service";
 import { MatDialog } from "@angular/material";
-import { DialogCreateUserComponent } from '../../share/components/dialog-create-user/dialog-create-user.component';
+import { DialogCreateUserComponent } from "../../share/components/dialog-create-user/dialog-create-user.component";
 
 @Component({
     selector: "app-list-user",
@@ -49,11 +49,12 @@ export class ListUserComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log(result);
-            if (result) this.addUser(result.email, result.password);
+            if (result)
+                this.addUser(result.name, result.email, result.password);
         });
     }
 
-    onRemove(itemId:string) {
+    onRemove(itemId: string) {
         this.container.isLoaded = false;
         this.accountService.remove(itemId).subscribe((val) => {
             this.container.isLoaded = true;
@@ -94,13 +95,12 @@ export class ListUserComponent implements OnInit {
         return obs;
     }
 
-    addUser(email: string, password: string) {
-        this.accountService.add(email, password).subscribe(val =>{
-            if(val){
+    addUser(name: string, email: string, password: string) {
+        this.accountService.add(name, email, password).subscribe((val) => {
+            if (val) {
                 this.tableData.data.unshift(val);
                 this.tableData._updateChangeSubscription();
-
-            } 
+            }
         });
     }
 }

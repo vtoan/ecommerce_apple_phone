@@ -21,7 +21,7 @@ VALUES
 INSERT INTO Fees
     ([Name]
     ,[Cost])
-VALUES('Van chuyen', 3000),
+VALUES('Shipping', 30000),
     ('Tax', 0.1)
 
 INSERT INTO Categories 

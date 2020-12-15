@@ -11,14 +11,14 @@
         </mat-form-field>
         <mat-form-field class="w-100"> 
             <mat-label>New Password</mat-label>
-            <input matInput type="password" [(ngModel)]="data.newPassword " name="newPassword" required>
+            <input matInput type="password" [(ngModel)]="data.newPassword " autocomplete="new-password" required>
             <mat-error>
                 This field is required
             </mat-error>
         </mat-form-field>
         <mat-form-field class="w-100 mb-3">
             <mat-label>Re-Password</mat-label>
-            <input matInput type="password"  [(ngModel)]="data.rePassword" name="rePassword" required>
+            <input matInput type="password"  [(ngModel)]="data.rePassword" autocomplete="new-password" required>
             <mat-error>
                 This field is required
             </mat-error>

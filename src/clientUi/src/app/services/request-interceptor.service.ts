@@ -19,7 +19,6 @@ export class RequestInterceptorService implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         let msgTitle = req.headers.get("Action");
-
         return next.handle(req).pipe(
             tap((event) => {
                 if (event instanceof HttpResponse) {

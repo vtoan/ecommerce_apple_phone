@@ -15,8 +15,8 @@ export class ContainerComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
-        if(this.config.displayText!=null) this.config.isDataEmpty = true;
-        console.log(this.config);
+        // if(this.config.displayText!=null) this.config.isDataEmpty = true;
+        // console.log(this.config);
     }
 }
 

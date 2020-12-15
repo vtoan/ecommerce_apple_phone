@@ -10,7 +10,7 @@ namespace ecommerce_apple_phone.DAO
 
         public List<Feedback> GetList(int id){
             if(!CheckConnection()) return null;
-            return _context.Feedbacks.Where(item => item.Id == id).ToList();
+            return _context.Feedbacks.Where(item => item.ProductDetailId == id).ToList();
         }
 
     }

@@ -24,7 +24,7 @@ export class InfoService {
 
     get(): Observable<Info> {
         return this.http
-            .get<Info>(this.infoUrl, this.titleHeader("Get info"))
+            .get<Info>(this.infoUrl)
             .pipe(
                 retry(3),
                 catchError(() => throwError(null))

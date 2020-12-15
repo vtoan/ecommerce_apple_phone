@@ -19,7 +19,6 @@ namespace ecommerce_apple_phone.Services {
             services.AddScoped<IImportProductModel, ImportModel> ();
             services.AddScoped<IMethodPayModel, MethodPayModel> ();
             services.AddScoped<IPromotionModel, PromotionModel> ();
-            services.AddScoped<IUserModel, UserModel> ();
             return services;
         }
     }

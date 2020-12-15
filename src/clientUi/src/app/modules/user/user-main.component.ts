@@ -20,21 +20,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
     isShowMenu: boolean;
     isShowSearch: boolean;
     countItemCart: number = 0;
-    info: Info = {
-        nameStore: "none",
-        logo: "none",
-        email: "none",
-        facebook: "none",
-        messenger: "none",
-        instargram: "none",
-        phone: "none",
-        address: "none",
-        workTime: "none",
-        seoImage: "none",
-        seoTitle: "none",
-        seoDescription: "none",
-    };
-
+    info: Info;
     constructor(
         private infoService: InfoService,
         private cartService: CartService,
@@ -62,40 +48,36 @@ export class UserMainComponent implements OnInit, OnDestroy {
             );
         });
         //
-        this.accountService.obs.subscribe(val =>{
-            this.isSignIned = true;
-            this.user = val;
-            console.log(val);
-            console.log(this.isSignIned);
-        },
-        er => {
-            this.isSignIned = false;
-            this.user = null;
-            console.log("?");
-            console.log(this.isSignIned);
-
-        });
-        console.log(this.isSignIned);
+        // this.accountService.obs.subscribe(val =>{
+        //     this.isSignIned = true;
+        //     this.user = val;
+        //     console.log("User login");
+        // },
+        // er => {
+        //     this.isSignIned = false;
+        //     this.user = null;
+        //     console.log("User logout");
+        // });
     }
 
     search(e, query) {
-        if (e.keyCode == 13) location.assign("search/" + query);
+        if (e.keyCode == 13) this.router.navigate(["search", query]);
     }
 
     ngOnDestroy(): void {
         this.cartService.saveCart();
     }
 
-    onSignIn(){
-        this.router.navigate(["login",this.router.url]);
-    }
+    // onSignIn(){
+    //     this.router.navigate(["login",this.router.url]);
+    // }
 
 
-    onLogout() {
-        this.accountService.logout(this.user.id).subscribe(val =>{
-            if(val) this.router.navigate([""]);
-        })
-    }
+    // onLogout() {
+    //     this.accountService.logout().subscribe(val =>{
+    //         if(val) this.router.navigate([""]);
+    //     })
+    // }
 
     // // ========= use full ======
     // private initFacebookService(): void {
