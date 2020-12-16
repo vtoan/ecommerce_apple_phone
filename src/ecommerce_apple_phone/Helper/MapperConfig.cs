@@ -73,10 +73,11 @@ namespace ecommerce_apple_phone.Helper
             //
 
             CreateMap<PromBillDTO, PromBill>();
+            CreateMap<PromBill, PromBillDTO>();
             //
-            CreateMap<PromPointDTO, PromPoint>();
             //
             CreateMap<PromProductDTO, PromProduct>();
+            CreateMap<PromProduct, PromProductDTO>();
             //
             CreateMap<AppUser, InfoModel>()
                 .ForMember(src => src.Phone, act => act.MapFrom(des => des.PhoneNumber));

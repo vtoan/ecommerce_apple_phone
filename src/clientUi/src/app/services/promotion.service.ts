@@ -32,10 +32,10 @@ export class PromotionService {
         );
     }
 
-    add(prom: Promotion): Observable<Promotion> {
+    add(typeItem:number,prom: Promotion): Observable<Promotion> {
         return this.http
             .post<Promotion>(
-                this.apiUrl,
+                this.apiUrl +"/"+typeItem,
                 prom,
                 this.titleHeader("Add promotion")
             )
@@ -96,14 +96,14 @@ export class PromotionService {
     getListOfPoint(): Observable<PromPoint[]> {
         return this.http.get<PromPoint[]>(this.apiUrl).pipe(
             retry(3),
-            catchError(() => of([]))
+            catchError(() => throwError([]))
         );
     }
 
     getList(): Observable<Promotion[]> {
         return this.http.get<Promotion[]>(this.apiUrl).pipe(
             retry(3),
-            catchError(() => of([]))
+            catchError(() => throwError([]))
         );
         // return of([
         //     {
@@ -140,7 +140,7 @@ export class PromotionService {
     getListOfProduct(): Observable<PromProduct[]> {
         return this.http.get<PromProduct[]>(this.apiUrl + "/product").pipe(
             retry(3),
-            catchError(() => of([]))
+            catchError(() => throwError([]))
         );
     }
 
@@ -157,7 +157,7 @@ export class PromotionService {
             )
             .pipe(
                 retry(3),
-                catchError(() => of(false))
+                catchError(() => throwError(false))
             );
     }
 

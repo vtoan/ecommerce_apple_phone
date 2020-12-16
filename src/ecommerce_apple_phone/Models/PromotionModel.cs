@@ -12,6 +12,21 @@ namespace ecommerce_apple_phone.Models
     {
         public PromotionModel(PhoneContext context, IMapper mapper) : base(context, mapper) { }
 
+        public object GetDetail(int id, int type)
+        {
+            object re = null;
+            using (var db = new PromDAO(_context))
+                re = db.GetDetail(id, type);
+            switch (type)
+            {
+                case 1:
+                    return ObjectMapperTo<PromProduct, PromProductDTO>((PromProduct)re);
+                case 2:
+                    return ObjectMapperTo<PromBill, PromBillDTO>((PromBill)re);
+                default:
+                    return null;
+            }
+        }
         public PromotionDTO AddDTO(PromotionDTO promotionDTO, object promDetail)
         {
             var obj = ObjectMapperTo<PromotionDTO, Promotion>(promotionDTO);
@@ -44,46 +59,74 @@ namespace ecommerce_apple_phone.Models
                 return LsObjectMapperTo<Promotion, PromProductDTO>(db.GetListProduct());
         }
 
-        public bool UpdateDTO(int id, PromotionDTO promotionDTO, object promDetail)
+        public bool UpdateDTO(int id, PromotionDTO promotionDTO, string promDetail)
         {
             var prom = ObjectMapperTo<PromotionDTO, Promotion>(promotionDTO);
             PropModified<Promotion> modifiedProm = new PropModified<Promotion>(prom);
-            if (modifiedProm.isChanged)
+            int typeItem;
+            using (var db = new EntityDAO<Promotion>(_context))
             {
-                using (var db = new EntityDAO<Promotion>(_context))
-                    if (!db.Update(id, modifiedProm)) return false;
+                var obj = db.Get(id);
+                if (obj == null) return false;
+                typeItem = (int)obj.Type;
+                if (!db.Update(id, modifiedProm)) return false;
             }
-            //
-            var detail = CheckPromDetail(promDetail);
-            //
-            if (detail is PromProduct)
+
+            switch (typeItem)
             {
-                PropModified<PromProduct> modified = new PropModified<PromProduct>(prom);
-                if (modifiedProm.isChanged)
-                {
-                    using (var db = new EntityDAO<PromProduct>(_context))
-                        if (!db.Update(id, modified)) return false;
-                }
+                case 1:
+                    {
+                        var promProduct = DataHelper.ParserJsonTo<PromProduct>(promDetail);
+                        PropModified<PromProduct> modifiedProduct = new PropModified<PromProduct>(promProduct);
+                        if (modifiedProduct.isChanged)
+                        {
+                            using (var db = new EntityDAO<PromProduct>(_context))
+                                if (!db.Update(id, modifiedProduct)) return false;
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        var promBill = DataHelper.ParserJsonTo<PromBill>(promDetail);
+                        PropModified<PromBill> modifiedBill = new PropModified<PromBill>(promBill);
+                        if (modifiedBill.isChanged)
+                        {
+                            using (var db = new EntityDAO<PromBill>(_context))
+                                if (!db.Update(id, modifiedBill)) return false;
+                        }
+                        break;
+                    }
+                default: return false;
             }
-            else if (detail is PromBill)
-            {
-                PropModified<PromBill> modified = new PropModified<PromBill>(prom);
-                if (modifiedProm.isChanged)
-                {
-                    using (var db = new EntityDAO<PromBill>(_context))
-                        if (!db.Update(id, modified)) return false;
-                }
-            }
-            else if (detail is PromPoint)
-            {
-                PropModified<PromPoint> modified = new PropModified<PromPoint>(prom);
-                if (modifiedProm.isChanged)
-                {
-                    using (var db = new EntityDAO<PromPoint>(_context))
-                        if (!db.Update(id, modified)) return false;
-                }
-            }
-            else return false;
+
+            // if (detail is PromProduct)
+            // {
+            //     PropModified<PromProduct> modified = new PropModified<PromProduct>(prom);
+            //     if (modifiedProm.isChanged)
+            //     {
+            //         using (var db = new EntityDAO<PromProduct>(_context))
+            //             if (!db.Update(id, modified)) return false;
+            //     }
+            // }
+            // else if (detail is PromBill)
+            // {
+            //     PropModified<PromBill> modified = new PropModified<PromBill>(prom);
+            //     if (modifiedProm.isChanged)
+            //     {
+            //         using (var db = new EntityDAO<PromBill>(_context))
+            //             if (!db.Update(id, modified)) return false;
+            //     }
+            // }
+            // else if (detail is PromPoint)
+            // {
+            //     PropModified<PromPoint> modified = new PropModified<PromPoint>(prom);
+            //     if (modifiedProm.isChanged)
+            //     {
+            //         using (var db = new EntityDAO<PromPoint>(_context))
+            //             if (!db.Update(id, modified)) return false;
+            //     }
+            // }
+            // else return false;
             return true;
         }
 
@@ -95,8 +138,8 @@ namespace ecommerce_apple_phone.Models
         }
 
         public bool ChangePromotion(int PromOld, int PromNew, int ProdId)
-        {   
-            using(var db = new PromDAO(_context))
+        {
+            using (var db = new PromDAO(_context))
                 return db.ChangePromProduct(PromOld, PromNew, ProdId);
         }
 
@@ -108,7 +151,5 @@ namespace ecommerce_apple_phone.Models
             else if (promDetail is PromPointDTO) return ObjectMapperTo<PromPointDTO, PromPoint>((PromPointDTO)promDetail);
             else return null;
         }
-
-        
     }
 }

@@ -1,9 +1,9 @@
 <div *ngIf="userId && userDetail" class="row mb-3">
     <div class="col-6">
         <form (submit)="onSave($event)" #ngFrom="ngForm">
-            <input-val [classNames]="'w-80'" [fm]="ngFrom" [fmGroup]="formValidate" [fmControlName]="'name'">Full Name
+            <input-val [classNames]="'w-80'" [fmGroup]="formValidate" [fmControlName]="'name'">Full Name
             </input-val>
-            <input-val [classNames]="'w-80'" [fm]="ngFrom" [fmGroup]="formValidate" [fmControlName]="'phone'">Phone
+            <input-val [classNames]="'w-80'" [fmGroup]="formValidate" [fmControlName]="'phone'">Phone
                 number
             </input-val>
             <p>

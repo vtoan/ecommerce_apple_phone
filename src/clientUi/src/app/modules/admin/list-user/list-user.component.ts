@@ -66,12 +66,12 @@ export class ListUserComponent implements OnInit {
     getUserData() {
         let obs = new Subject();
         this.accountService.getList().subscribe((val: User[]) => {
-            console.log(val);
-            if (val ? val.length > 0 : false) {
                 this.listUser = val;
                 this.tableData.data = this.listUser;
                 this.tableData._updateChangeSubscription();
-            } else this.container.isDataEmpty = true;
+            obs.complete();
+        }, er=> {
+            this.container.isDataEmpty = true;
             obs.complete();
         });
         return obs;
@@ -80,8 +80,10 @@ export class ListUserComponent implements OnInit {
     getRoleData() {
         let obs = new Subject();
         this.accountService.getListRoles().subscribe((val) => {
-            if (val ? val.length > 0 : false) this.listRole = val;
-            else this.container.isDataEmpty = true;
+            this.listRole = val;
+            obs.complete();
+        }, er =>{
+            this.container.isDataEmpty = true;
             obs.complete();
         });
         return obs;

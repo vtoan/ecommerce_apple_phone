@@ -1,20 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormBuilder, NgForm, Validators } from "@angular/forms";
-import { merge } from "rxjs";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 //module
 import {
     Promotion,
     PromBill,
     PromProduct,
-    PromPoint,
+    // PromPoint,
     Category,
 } from "src/app/models/IModels";
 //service
 import { PromotionService } from "src/app/services/promotion.service";
 import { CategoryService } from "src/app/services/category.service";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, concat } from "rxjs";
 import { finalize } from "rxjs/operators";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-promotion-detail",
@@ -22,36 +22,35 @@ import { finalize } from "rxjs/operators";
     styleUrls: ["./promotion-detail.component.scss"],
 })
 export class PromotionDetailComponent implements OnInit {
-    isLoaded: boolean = true;
-    message: string = "Can't get data";
+    container: Container = {
+        isLoaded: false,
+        isDataEmpty: false,
+        displayText: "Promotion not found",
+    };
     //
     itemId: number;
     itemType: number;
     promotion: Promotion;
     promDetail: any;
     listCate: Category[];
-    listPropDetail: string[];
     //
-    promFormValidate = this.fb.group({
+    promValidate = this.fb.group({
         name: ["", Validators.required],
         fromDate: [new Date(), Validators.required],
         toDate: [new Date(), Validators.required],
     });
     //
-    productFormValidate = this.fb.group({
+    productValidate = this.fb.group({
         discount: [0, Validators.required],
+        suffix: ["currency", Validators.required],
         categoryId: [0],
     });
     //
-    billFormValidate = this.fb.group({
+    billValidate = this.fb.group({
         discount: [0, Validators.required],
+        suffix: ["currency", Validators.required],
         conditionItem: [0],
         conditionAmount: [0],
-    });
-    //
-    pointFormValidate = this.fb.group({
-        discountIn: [0, Validators.required],
-        discountOut: [0, Validators.required],
     });
 
     constructor(
@@ -63,41 +62,31 @@ export class PromotionDetailComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        merge(this.getDataCate(), this.getDataRoute(), this.getDataProm())
-            .pipe(finalize(() => (this.isLoaded = true)))
+        concat(this.getDataRoute(), this.getDataProm())
+            .pipe(
+                finalize(() => {
+                    this.container.isLoaded = true;
+                })
+            )
             .subscribe();
-
+        this.getDataCate();
     }
 
     onSave(e) {
-        if (this.promFormValidate.invalid) return;
+        this.promValidate.markAllAsTouched();
+        if (this.promValidate.invalid) return;
         e.preventDefault();
-        let obj: Promotion = this.promFormValidate.value;
-        obj["type"]=1;
-        let detail;
-        switch ( Number(this.itemType)) {
-            case 1:
-                if (this.productFormValidate.invalid) return;
-                detail = this.productFormValidate.value;
-                break;
-            case 2:
-                if (this.billFormValidate.invalid) return;
-                detail = this.billFormValidate.value;
-                break;
-            case 3:
-                if (this.pointFormValidate.invalid) return;
-                detail = this.pointFormValidate.value;
-                break;
-        }
+        let obj: Promotion = this.promValidate.value;
+        let detail = this.getValueDetail(this.itemType);
         if (!detail) return;
         obj.itemDetail = JSON.stringify(detail);
-        // obj.type=this.itemType;
-        this.itemId ? this.update(obj) : this.add(obj);
+        if (this.itemId) this.update(obj);
+        else this.add(obj);
     }
 
-    onReset() {}
-
-    
+    onReset() {
+        this.router.navigate(["admin/promotion"]);
+    }
 
     // =========== helpful ============
     private getDataRoute(): Observable<any> {
@@ -113,7 +102,7 @@ export class PromotionDetailComponent implements OnInit {
     private getDataCate() {
         let obs = new Subject();
         this.cateService.getList().subscribe((val) => {
-            if (!val) this.message = "Can't get category data";
+            if (!val) this.container.displayText = "Can't get category data";
             else this.listCate = val;
             obs.complete();
         });
@@ -123,42 +112,78 @@ export class PromotionDetailComponent implements OnInit {
     private getDataProm(): Observable<any> {
         let obs = new Subject();
         if (!this.itemType) {
-            this.message = "Type of promotion invalid";
+            this.container.displayText = "Type of promotion invalid";
             obs.complete();
             return obs;
         }
         if (!this.itemId) {
-            this.itemId =0;
+            this.itemId = 0;
             obs.complete();
             return obs;
-        }
-        else
-        this.promService.get(this.itemId).subscribe((val) => {
-            if (!this.promotion.itemDetail) {
-                this.message = "Can't get detail promotion";
-                return;
-            }
-            this.promotion = val;
-            this.promFormValidate.setValue(val);
-            let detail = JSON.parse(this.promotion.itemDetail);
-            this.showDetail(detail);
-            obs.complete();
-        });
+        } else
+            this.promService.get(this.itemId).subscribe((val) => {
+                console.log(val);
+                if (!val.itemDetail)
+                    this.container.displayText = "Can't get promotion";
+                else {
+                    this.promotion = val;
+                    this.promValidate.patchValue({
+                        name: val.name,
+                        fromDate: val.fromDate,
+                        toDate: val.toDate,
+                    });
+                    let detail = JSON.parse(this.promotion.itemDetail);
+                    console.log(detail);
+                    this.showDetail(detail);
+                }
+
+                obs.complete();
+            });
         return obs;
     }
 
     private showDetail(detail) {
-        switch (this.itemType) {
+        switch (Number(this.itemType)) {
             case 1:
-                this.promFormValidate.setValue(detail);
+                this.productValidate.patchValue(detail);
+                let disco = detail.discount;
+                if (disco % 1 == 0)
+                    this.productValidate.patchValue({
+                        suffix: "currency",
+                    });
+                else
+                    this.productValidate.patchValue({
+                        suffix: "precent",
+                        discount: disco * 100,
+                    });
                 break;
             case 2:
-                this.billFormValidate.setValue(detail);
-                break;
-            case 3:
-                this.pointFormValidate.setValue(detail);
+                this.billValidate.patchValue(detail);
+                this.billValidate.patchValue({
+                    suffix: detail.discount % 1 == 0 ? "currency" : "precent",
+                });
                 break;
         }
+    }
+
+    private getValueDetail(typeItem) {
+        let detail = null;
+        switch (Number(typeItem)) {
+            case 1:
+                if (this.productValidate.invalid) return;
+                detail = this.productValidate.value;
+                break;
+            case 2:
+                if (this.billValidate.invalid) return;
+                detail = this.billValidate.value;
+                detail.conditionItem = Number(detail.conditionItem ); 
+                detail.conditionAmount = Number(detail.conditionAmount ); 
+                break;
+        }
+        if (detail.suffix == "precent") detail.discount = detail.discount / 100;
+        detail.discount = Number(detail.discount);
+        console.log(detail);
+        return detail;
     }
 
     private update(prom) {
@@ -166,12 +191,8 @@ export class PromotionDetailComponent implements OnInit {
     }
 
     private add(prom: Promotion) {
-        this.promService.add(prom).subscribe((val) => {
-            if (val) this.router.navigate(["promotion-detail", val]);
+        this.promService.add(this.itemType, prom).subscribe((val) => {
+            if (val) this.router.navigate(["admin/promotion"]);
         });
     }
-
-    // private showDetail(){
-    //     if(this.)
-    // }
 }

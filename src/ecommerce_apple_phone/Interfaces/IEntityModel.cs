@@ -97,11 +97,12 @@ namespace ecommerce_apple_phone.Interfaces {
     public interface IPromotionModel : IGetDTO<PromotionDTO>, IGetListDTOs<PromotionDTO>, IRemoveDTO {
 
         PromotionDTO AddDTO (PromotionDTO promotionDTO, object promDetail);
-        bool UpdateDTO (int id, PromotionDTO promotionDTO, object promDetail);
+        bool UpdateDTO (int id, PromotionDTO promotionDTO, string promDetail);
         List<PromProductDTO> GetListDTOsPromProduct ();
         List<PromBillDTO> GetListDTOsPromBill ();
         List<PromPointDTO> GetListDTOsPromPoint ();
         bool ChangePromotion (int PromOld, int PromNew, int ProdId);
+        object GetDetail (int id, int Type);
     }
 
     // public interface IUserModel : IGetDTO<User> {

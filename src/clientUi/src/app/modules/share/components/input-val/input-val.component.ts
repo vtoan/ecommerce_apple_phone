@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControlName, FormGroup, NgForm } from "@angular/forms";
+import { FormGroup, } from "@angular/forms";
 
 @Component({
     selector: "input-val",
@@ -8,7 +8,6 @@ import { FormControlName, FormGroup, NgForm } from "@angular/forms";
 })
 export class InputValComponent implements OnInit {
     isValid:boolean = true;
-    @Input() fm: NgForm;
     @Input() fmGroup: FormGroup;
     @Input() fmControlName: string;
     @Input() inputError: string = "This field is required";
@@ -20,7 +19,7 @@ export class InputValComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
-        if(!this.fmGroup || !this.fmControlName || !this.fm){
+        if(!this.fmGroup || !this.fmControlName){
             this.isValid = false;
         }
     }

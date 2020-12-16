@@ -7,6 +7,7 @@ import { finalize } from "rxjs/operators";
 import { Promotion } from "src/app/models/IModels";
 //service
 import { PromotionService } from "src/app/services/promotion.service";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-promotion",
@@ -16,11 +17,15 @@ import { PromotionService } from "src/app/services/promotion.service";
 export class PromotionComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-    isLoaded: boolean = false;
+    container: Container = {
+        isLoaded: false,
+        isDataEmpty: false,
+        displayText: "Promotion not found",
+    };
     //
     listPromotion: Promotion[];
     //
-    tableData = new MatTableDataSource();
+    tableData = new MatTableDataSource<Promotion>();
 
     constructor(private promService: PromotionService) {}
 
@@ -29,6 +34,10 @@ export class PromotionComponent implements OnInit, AfterViewInit {
             this.listPromotion = val;
             if (val) this.tableData.data = this.listPromotion;
             this.tableData._updateChangeSubscription();
+            this.container.isLoaded = true;
+        },er => {
+            this.container.isDataEmpty =true;
+            this.container.isLoaded =true;
         });
     }
 
@@ -43,6 +52,12 @@ export class PromotionComponent implements OnInit, AfterViewInit {
     }
 
     onRemove(id){
-        this.promService.delete(id).subscribe();
+        this.promService.delete(id).subscribe(val =>{
+            let idx = this.tableData.data.findIndex(item => item.id == id);
+            if(idx !=-1) {
+                this.tableData.data.splice(idx,1);
+                this.tableData._updateChangeSubscription();
+            }
+        });
     }
 }

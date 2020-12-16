@@ -3,9 +3,9 @@
         <mat-label>
             <ng-content></ng-content>
         </mat-label>
-        <input formControlName="{{fmControlName}}" class="py-1" readonly="{{isRead}}" matInput type="{{inputType}}" placeholder="{{inputHint}}">
-        <mat-error 
-            *ngIf="(fmGroup.invalid  || (fm.submitted && fmGroup.get(fmControlName).invalid))">
+        <input formControlName="{{fmControlName}}" class="py-1" required="{{isRequired}}" readonly="{{isRead}}" matInput type="{{inputType}}"
+            placeholder="{{inputHint}}">
+        <mat-error *ngIf="fmGroup.get(fmControlName).invalid">
             {{inputError}}
         </mat-error>
     </mat-form-field>
