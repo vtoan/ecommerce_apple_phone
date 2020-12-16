@@ -63,13 +63,20 @@ namespace ecommerce_apple_phone.DAO
             if (!CheckConnection()) return false;
             var OldObj = _context.PromProducts.Find(PromOld);
             var NewObj = _context.PromProducts.Find(PromNew);
-            if (OldObj == null || NewObj == null) return false;
-            var arOld = JsonSerializer.Deserialize<List<int>>(OldObj.ProductInProms);
-            var arNew = JsonSerializer.Deserialize<List<int>>(NewObj.ProductInProms);
-            if (!arOld.Remove(ProdId)) return false;
+            if (NewObj == null) return false;
+            if (PromOld != 0)
+            {
+                if (OldObj == null) return false;
+                var arOld = JsonSerializer.Deserialize<List<int>>(OldObj.ProductInProms);
+                if (!arOld.Remove(ProdId)) return false;
+                OldObj.ProductInProms = JsonSerializer.Serialize(arOld);
+            }
+            List<int> arNew = new List<int>();
+            if (NewObj.ProductInProms != null && NewObj.ProductInProms != "")
+                arNew = JsonSerializer.Deserialize<List<int>>(NewObj.ProductInProms);
             if (!arNew.Contains(ProdId)) arNew.Add(ProdId);
-            OldObj.ProductInProms = JsonSerializer.Serialize(arOld);
             NewObj.ProductInProms = JsonSerializer.Serialize(arNew);
+            _context.SaveChanges();
             return true;
         }
     }

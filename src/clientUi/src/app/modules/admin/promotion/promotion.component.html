@@ -25,7 +25,7 @@
                     </ng-container>
                     <ng-container matColumnDef="Type">
                         <th mat-header-cell *matHeaderCellDef> Loai </th>
-                        <td mat-cell *matCellDef="let item">{{item.type}}</td>
+                        <td mat-cell *matCellDef="let item">{{item.typeProm}}</td>
                     </ng-container>
                     <ng-container matColumnDef="Start">
                         <th mat-header-cell *matHeaderCellDef>From</th>
@@ -43,7 +43,7 @@
                             <mat-slide-toggle class="pr-5" (toggleChange)="onChangeStatus(item)"
                                 [checked]="item.status"></mat-slide-toggle>
 
-                            <a routerLink="../promotion-detail/{{item.type}}/{{item.id}}"
+                            <a routerLink="../promotion-detail/{{item.typeProm}}/{{item.id}}"
                                 class="text-2 btn-icon blue pr-3 pr-lg-5">
                                 <i class="las la-chevron-circle-right"></i>
                             </a>

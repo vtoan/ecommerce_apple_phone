@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,5 +46,13 @@ namespace ecommerce_apple_phone.DAO
                 if (item.Products.Count > 0) pds.Add(item.Products.First());
             return pds;
         }
+
+        public bool SubTractQuanity(int itemId, int quantity){
+            var obj = _context.Products.Find(itemId);
+            if(obj==null) return false;
+            int total  = obj.Quantity - quantity;
+            obj.Quantity = total <=0 ? 0 : total;
+            return true;
+        }   
     }
 }

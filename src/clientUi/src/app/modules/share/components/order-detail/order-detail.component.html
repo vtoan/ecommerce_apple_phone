@@ -29,9 +29,9 @@
                         <!--Cart - List Item-->
                         <div id="cart-container">
                             <app-loader *ngIf="!isLoaded"></app-loader>
-                            <p class="text-center py-5" *ngIf="isLoaded && listItem.length == 0">Not item in cart</p>
-                            <div *ngIf="isLoaded && listItem.length > 0">
-                                <app-cart-item *ngFor="let item of listItem" [itemId]="item.productId" [isChange]="false" ></app-cart-item>
+                            <p class="text-center py-5" *ngIf="isLoaded && listItem?.length == 0">Not item in cart</p>
+                            <div *ngIf="isLoaded && listItem?.length > 0">
+                                <app-cart-item *ngFor="let item of listItem" [itemId]="item.productId" [orderDetail]="item" [isChange]="false" ></app-cart-item>
                             </div>
                         </div>
                     </div>  

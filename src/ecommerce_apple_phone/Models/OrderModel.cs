@@ -19,6 +19,8 @@ namespace ecommerce_apple_phone.Models {
             if(ord==null) return null;
             List<OrderDetail> ordDetial = LsObjectMapperTo<OrderDetailDTO, OrderDetail>(orderDetailDTOs);
             if(ordDetial==null) return null;
+            ord.OrderDetails=ordDetial;
+            ord.DateCreated = DateTime.Now;
             using (var db = new OrderDAO(_context)){
                 return ObjectMapperTo<Order, OrderDTO>(db.Add(ord));
             }

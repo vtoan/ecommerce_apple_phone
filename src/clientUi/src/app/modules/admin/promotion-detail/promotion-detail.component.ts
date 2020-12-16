@@ -136,7 +136,6 @@ export class PromotionDetailComponent implements OnInit {
                     console.log(detail);
                     this.showDetail(detail);
                 }
-
                 obs.complete();
             });
         return obs;
@@ -182,11 +181,11 @@ export class PromotionDetailComponent implements OnInit {
         }
         if (detail.suffix == "precent") detail.discount = detail.discount / 100;
         detail.discount = Number(detail.discount);
-        console.log(detail);
         return detail;
     }
 
-    private update(prom) {
+    private update(prom: Promotion) {
+        prom.typeProm = this.itemType;
         this.promService.update(this.itemId, prom).subscribe();
     }
 

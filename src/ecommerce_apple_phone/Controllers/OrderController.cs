@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using ecommerce_apple_phone.DTO;
@@ -61,7 +62,7 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPost("{payId}")]
-        public IActionResult Add(
+        public async System.Threading.Tasks.Task<IActionResult> AddAsync(
             [FromServices] IProductModel productModel,
             [FromServices] IPaymentService payment,
             OrderDTO orderDTO, int payId)
@@ -70,10 +71,11 @@ namespace ecommerce_apple_phone.Controllers
             //Parse list order Item
             List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>>(orderDTO.OrderItems);
             if (orderDetailDTOs.Count < 0) return Problem(statusCode: 500, detail: "Data invalid");
+            orderDTO.MethodPayId=payId;
             //Payment
-            if (orderDTO.MethodPayId != null)
+            if (payId==1)
             {
-                bool re = payment.OnPayment((int)orderDTO.MethodPayId, orderDTO);
+                var re = await payment.OnPayment((int)orderDTO.MethodPayId, orderDTO);
                 if (re == false) return Problem();
             }
             var od = _orderModel.AddDTO(orderDTO, orderDetailDTOs);
@@ -87,6 +89,9 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (id <= 0) return BadRequest(new { message = "ID is invalid" });
             var re = _orderModel.GetDTO(id);
+            if(re ==null) return NotFound();
+            var ordDetials = _orderModel.GetOrderDetailDTOs(id);
+            re.OrderItems=DataHelper.ParserObjToJson(ordDetials);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }

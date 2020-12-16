@@ -53,8 +53,10 @@ namespace ecommerce_apple_phone.Helper
             //Order
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderDTO, Order>();
-            CreateMap<OrderDetail, OrderDetailDTO>();
-            CreateMap<OrderDetailDTO, OrderDetail>();
+            CreateMap<OrderDetail, OrderDetailDTO>()
+                .ForMember(src=> src.ProductId, act =>act.MapFrom(des => des.ProductId.ToString()));
+            CreateMap<OrderDetailDTO, OrderDetail>()
+                .ForMember(src=> src.ProductId, act =>act.MapFrom(des => getPropID(des.ProductId,1)));
             //Prom
             CreateMap<PromotionDTO, Promotion>();
             CreateMap<Promotion, PromotionDTO>();

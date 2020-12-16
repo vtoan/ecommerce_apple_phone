@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ecommerce_apple_phone.DTO
 {
@@ -154,6 +155,7 @@ namespace ecommerce_apple_phone.DTO
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public bool? Status { get; set; }
+        [BindProperty(Name="typeProm", SupportsGet=true)]
         public byte? Type { get; set; }
         public string ItemDetail { get; set; }
     }

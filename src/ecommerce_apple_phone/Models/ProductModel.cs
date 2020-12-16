@@ -24,9 +24,9 @@ namespace ecommerce_apple_phone.Models
         public ProductDTO AddAttrDTOs(int productDetailId, ProductDTO productDTO)
         {
             Product prod = ObjectMapperTo<ProductDTO, Product>(productDTO);
-            if(prod==null) return null;
+            if (prod == null) return null;
             prod.ProductDetailId = productDetailId;
-            using(ProductDAO db = new ProductDAO(_context))
+            using (ProductDAO db = new ProductDAO(_context))
                 return ObjectMapperTo<Product, ProductDTO>(db.Add(prod));
         }
 
@@ -60,7 +60,7 @@ namespace ecommerce_apple_phone.Models
                 if (!isAdmin)
                     return ObjectMapperTo<Product, ProductDTO>(db.Get(attrId));
                 else
-                    return ObjectMapperTo<Product, ProductDTO>(db.Get(attrId,true));
+                    return ObjectMapperTo<Product, ProductDTO>(db.Get(attrId, true));
             }
         }
 
@@ -76,7 +76,7 @@ namespace ecommerce_apple_phone.Models
         {
             string[] ignore = { "productId" };
             if (attrId <= 0) return false;
-            PropModified<Product> modified = new PropModified<Product>(productDTO,ignore);
+            PropModified<Product> modified = new PropModified<Product>(productDTO, ignore);
             using (ProductDAO db = new ProductDAO(_context))
                 return db.Update(attrId, modified);
         }
@@ -96,8 +96,7 @@ namespace ecommerce_apple_phone.Models
                 foreach (var item in orderDetailDTOs)
                 {
                     int itemId = DataHelper.GetAttrlId(item.ProductId);
-                    PropModified<Product> modified = new PropModified<Product>(new { Quantity = item.Quantity });
-                    db.Update(itemId, modified);
+                    db.SubTractQuanity(itemId, (int)item.Quantity);
                 }
             }
             return true;
@@ -181,7 +180,7 @@ namespace ecommerce_apple_phone.Models
                     if (LsCate.ContainsKey(cateId)) LsCate[cateId] = discount;
                     else LsCate.Add(cateId, discount);
                 }
-                if (prom.ProductInProms != null || prom.ProductInProms != "")
+                if (prom.ProductInProms != null && prom.ProductInProms != "")
                 {
                     int[] arIds = DataHelper.ParserJsonTo<int[]>(prom.ProductInProms);
                     foreach (var id in arIds)
@@ -209,7 +208,7 @@ namespace ecommerce_apple_phone.Models
 
         public List<ProductDTO> FindBestSeller(List<ProductDTO> productDTOs)
         {
-            var re =productDTOs.OrderBy(item => item.SaleCount).Take(4).ToList();
+            var re = productDTOs.OrderBy(item => item.SaleCount).Take(4).ToList();
             return re;
         }
 

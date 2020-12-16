@@ -34,54 +34,23 @@ export class OrderService {
             .get<Order>(this.apiUrl + "/" + id, this.titleHeader("Get order"))
             .pipe(
                 retry(3),
-                catchError(() => of(null))
+                catchError(() => throwError(null))
+            );
+    }
+
+    getItems(id: number): Observable<OrderDetail[]> {
+        return this.http
+            .get<OrderDetail[]>(this.apiUrl + "items/" + id, this.titleHeader("Get item order"))
+            .pipe(
+                retry(3),
+                catchError(() => throwError(null))
             );
     }
 
     getList(start: Date, end: Date): Observable<Order[]> {
         let sDate: string = start.toLocaleDateString();
         let eDate: string = end.toLocaleDateString();
-        // let data = [
-        //     {
-        //         id: 1,
-        //         dateCreated: "asew",
-        //         questName: "abc",
-        //         questPhone: "abc",
-        //         questProvince: "abc",
-        //         questDistrict: "abc",
-        //         questEmail: "abc",
-        //         questAddress: "abc",
-        //         note: "abc",
-        //         promotion: "abc",
-        //         fees: "abc",
-        //         status: 1,
-        //         userId: 1,
-        //         methodPayId: 1,
-        //         pointUse: 1,
-        //         point: 1,
-        //         orderItems: "",
-        //     },
-        //     {
-        //         id: 1,
-        //         dateCreated: "asew",
-        //         questName: "abc",
-        //         questPhone: "abc",
-        //         questProvince: "abc",
-        //         questDistrict: "abc",
-        //         questEmail: "abc",
-        //         questAddress: "abc",
-        //         note: "abc",
-        //         promotion: "abc",
-        //         fees: "abc",
-        //         status: 1,
-        //         userId: 1,
-        //         methodPayId: 1,
-        //         pointUse: 1,
-        //         point: 1,
-        //         orderItems: "",
-        //     },
-        // ];
-        // return of(data);
+       
         return this.http
             .get<Order[]>(
                 this.apiUrl + "/report?start=" + sDate + "&end=" + eDate,
@@ -110,7 +79,6 @@ export class OrderService {
             .post<Order>(
                 this.apiUrl + "/confirm",
                 order,
-                this.titleHeader("Confirm order")
             )
             .pipe(
                 retry(3),
@@ -123,7 +91,7 @@ export class OrderService {
             .post<boolean>(
                 this.apiUrl + "/" + paymentId,
                 order,
-                this.titleHeader("Confirm order")
+                this.titleHeader("Ordered")
             )
             .pipe(
                 retry(3),

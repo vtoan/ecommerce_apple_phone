@@ -58,7 +58,7 @@ namespace ecommerce_apple_phone
                         builder
                             .WithOrigins("http://localhost:4200")
                             .AllowAnyHeader()
-                            .AllowAnyMethod(); ;
+                            .AllowAnyMethod();
                     });
             });
 

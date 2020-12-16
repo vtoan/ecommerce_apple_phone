@@ -42,7 +42,7 @@ interface Product {
     color:string;
     quantity:number;
     isShow:boolean;
-    promotion:string;
+    promId:number;
 }
 
 
@@ -131,7 +131,7 @@ interface Promotion {
     fromDate:Date;
     toDate:Date;
     status:boolean
-    type:number;
+    typeProm:number;
     itemDetail:string;
 }
 

@@ -68,8 +68,7 @@ export class ProductDetailComponent implements OnInit {
         if (idx >= 0) this.productAttrDisplay(idx);
     }
 
-    onNextGallery() {
-    }
+    onNextGallery() {}
 
     onPrevGallery() {}
 
@@ -120,6 +119,7 @@ export class ProductDetailComponent implements OnInit {
 
     private productAttrDisplay(idx) {
         let item = this.listAttr[idx];
+        console.log(item);
         this.itemPrice = item.price;
         this.itemDiscount =
             item.discount % 1 == 0 ? item.discount : item.price * item.discount;

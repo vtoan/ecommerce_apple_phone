@@ -32,10 +32,10 @@ export class PromotionService {
         );
     }
 
-    add(typeItem:number,prom: Promotion): Observable<Promotion> {
+    add(typeItem: number, prom: Promotion): Observable<Promotion> {
         return this.http
             .post<Promotion>(
-                this.apiUrl +"/"+typeItem,
+                this.apiUrl + "/" + typeItem,
                 prom,
                 this.titleHeader("Add promotion")
             )
@@ -71,26 +71,10 @@ export class PromotionService {
     }
 
     getListOfBill(): Observable<PromBill[]> {
-        // return this.http.get<PromBill[]>(this.apiUrl).pipe(
-        //     retry(3),
-        //     catchError(() => throwError([]))
-        // );
-        return of([
-            {
-                id: 1,
-                name: "A",
-                discount: 0.5,
-                conditionItem: -1,
-                conditionAmount: 20000000,
-            },
-            {
-                id: 2,
-                name: "B",
-                discount: 0.2,
-                conditionItem: -1,
-                conditionAmount: 1000000,
-            },
-        ]);
+        return this.http.get<PromBill[]>(this.apiUrl).pipe(
+            retry(3),
+            catchError(() => throwError([]))
+        );
     }
 
     getListOfPoint(): Observable<PromPoint[]> {
@@ -105,36 +89,6 @@ export class PromotionService {
             retry(3),
             catchError(() => throwError([]))
         );
-        // return of([
-        //     {
-        //         id: 1,
-        //         name: "Khuyen mai",
-        //         fromDate: new Date(),
-        //         toDate: new Date(),
-        //         status: false,
-        //         type: 1,
-        //         itemDetail: "Khuyen mai",
-        //     },
-
-        //     {
-        //         id: 2,
-        //         name: "Khuyen mai",
-        //         fromDate: new Date(),
-        //         toDate: new Date(),
-        //         status: true,
-        //         type: 1,
-        //         itemDetail: "Khuyen mai",
-        //     },
-        //     {
-        //         id: 3,
-        //         name: "Khuyen mai",
-        //         fromDate: new Date(),
-        //         toDate: new Date(),
-        //         status: true,
-        //         type: 1,
-        //         itemDetail: "Khuyen mai",
-        //     },
-        // ]);
     }
 
     getListOfProduct(): Observable<PromProduct[]> {
@@ -151,8 +105,8 @@ export class PromotionService {
     ): Observable<boolean> {
         return this.http
             .put<boolean>(
-                this.apiUrl + "/change/" + promOld + "/" + promNew,
-                { productId: prodId },
+                this.apiUrl + "/change",
+                { productId: prodId, promOldId: promOld, promNewId: promNew },
                 this.titleHeader("Change promotion")
             )
             .pipe(

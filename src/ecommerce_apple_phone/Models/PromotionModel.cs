@@ -98,35 +98,6 @@ namespace ecommerce_apple_phone.Models
                     }
                 default: return false;
             }
-
-            // if (detail is PromProduct)
-            // {
-            //     PropModified<PromProduct> modified = new PropModified<PromProduct>(prom);
-            //     if (modifiedProm.isChanged)
-            //     {
-            //         using (var db = new EntityDAO<PromProduct>(_context))
-            //             if (!db.Update(id, modified)) return false;
-            //     }
-            // }
-            // else if (detail is PromBill)
-            // {
-            //     PropModified<PromBill> modified = new PropModified<PromBill>(prom);
-            //     if (modifiedProm.isChanged)
-            //     {
-            //         using (var db = new EntityDAO<PromBill>(_context))
-            //             if (!db.Update(id, modified)) return false;
-            //     }
-            // }
-            // else if (detail is PromPoint)
-            // {
-            //     PropModified<PromPoint> modified = new PropModified<PromPoint>(prom);
-            //     if (modifiedProm.isChanged)
-            //     {
-            //         using (var db = new EntityDAO<PromPoint>(_context))
-            //             if (!db.Update(id, modified)) return false;
-            //     }
-            // }
-            // else return false;
             return true;
         }
 

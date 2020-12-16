@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
@@ -56,21 +57,22 @@ namespace ecommerce_apple_phone.Controllers
             var re = _promModel.GetDTO(id);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             var detail = _promModel.GetDetail(re.Id, (int)re.Type);
-            if(detail == null) return Problem(statusCode: 500, detail: "Data not exist");
+            if (detail == null) return Problem(statusCode: 500, detail: "Data not exist");
             re.ItemDetail = DataHelper.ParserObjToJson(detail);
             return re;
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, PromotionDTO promotionDTO)
+        public IActionResult Update([FromServices] ICacheHelper cache, int id, PromotionDTO promotionDTO)
         {
-            if (id <= 0 ||!ModelState.IsValid) return BadRequest(new { message = "ID is invalid" });
+            if (id <= 0 || !ModelState.IsValid) return BadRequest(new { message = "ID is invalid" });
             if (!_promModel.UpdateDTO(id, promotionDTO, promotionDTO.ItemDetail)) return Problem(statusCode: 500, detail: "Can't update data");
+            cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
         [HttpPost("{type}")]
-        public ActionResult<PromotionDTO> Add(int type, PromotionDTO promotionDTO)
+        public ActionResult<PromotionDTO> Add([FromServices] ICacheHelper cache, int type, PromotionDTO promotionDTO)
         {
             if (!ModelState.IsValid || type <= 0) return BadRequest();
             object detail = null;
@@ -86,27 +88,41 @@ namespace ecommerce_apple_phone.Controllers
                 default:
                     return BadRequest();
             }
-            if(detail==null) return BadRequest();
+            if (detail == null) return BadRequest();
             var re = _promModel.AddDTO(promotionDTO, detail);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
+            cache.DataUpdated(CacheKey.PRODUCT);
             return re;
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Remove(int id)
+        public IActionResult Remove([FromServices] ICacheHelper cache, int id)
         {
             if (id <= 0) return NotFound();
             if (!_promModel.RemoveDTO(id)) return Problem(statusCode: 500, detail: "Can't remove data");
+            cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
-        [HttpPut("change/{promOld}/{promNew}")]
-        public IActionResult ChangeProm(int promOld, int promNew, int productId)
+        [HttpPut("change")]
+        public IActionResult ChangeProm([FromServices] ICacheHelper cache, ChangePromDTO change)
         {
-            if (productId <= 0 || promOld <= 0 || promNew <= 0 || promOld == promNew) return BadRequest(new { message = "ID is invalid" });
-            if (!_promModel.ChangePromotion(promOld, promNew, productId)) return Problem(statusCode: 500, detail: "Can't update data");
+            if (!ModelState.IsValid || change.PromNewId == change.PromOldId) return BadRequest(new { message = "ID is invalid" });
+            if (!_promModel.ChangePromotion(change.PromOldId, change.PromNewId, change.ProductId)) return Problem(statusCode: 500, detail: "Can't update data");
+            cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
+    }
+
+    public class ChangePromDTO
+    {
+        [Required]
+        public int ProductId { get; set; }
+        [Required]
+        public int PromOldId { get; set; }
+        [Required]
+
+        public int PromNewId { get; set; }
     }
 }

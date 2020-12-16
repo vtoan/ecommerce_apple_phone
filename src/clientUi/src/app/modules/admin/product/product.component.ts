@@ -1,12 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
-import {
-    concat,
-    of,
-} from "rxjs";
+import { concat, Observable, Subject } from "rxjs";
 
-import { finalize } from 'rxjs/operators';
+import { finalize } from "rxjs/operators";
 
 //model
 import { Category, Product, PromProduct } from "src/app/models/IModels";
@@ -15,6 +12,7 @@ import { ProductService } from "src/app/services/product.service";
 import { PromotionService } from "src/app/services/promotion.service";
 import { CategoryService } from "src/app/services/category.service";
 import { FileService } from "src/app/services/file.service";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-product",
@@ -23,13 +21,17 @@ import { FileService } from "src/app/services/file.service";
 })
 export class ProductComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-    isLoaded: boolean = false;
     //
-    listProduct: Product[] = null;
-    listPromotion: PromProduct[] = null;
+    container: Container = {
+        isLoaded: false,
+        isDataEmpty: false,
+        displayText: "Promotion not found",
+    };
+    //
+    listProduct: Product[];
+    listPromotion: PromProduct[];
     listPromName: string[] = ["Not Promotion"];
-    listCategory: Category[] = null;
+    listCategory: Category[];
     //
     tableData = new MatTableDataSource();
     constructor(
@@ -41,12 +43,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         concat(
-            of(this.getDataPromotion()),
-            of(this.getDataProduct()),
-            of(this.getDataCategory())
-        ).pipe(
-            finalize(()=> this.isLoaded =true)
-        ).subscribe();
+            this.getDataPromotion(),
+            this.getDataProduct(),
+            this.getDataCategory()
+        )
+            .pipe(
+                finalize(() => {
+                    if (this.listPromotion.length > 0) this.attachProm();
+                    this.container.isLoaded = true;
+                })
+            )
+            .subscribe();
     }
 
     ngAfterViewInit(): void {
@@ -54,20 +61,21 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     onChangeStatus(item: Product) {
-        this.productService.updateStatus(item.id, item.isShow)
+        this.productService.updateStatus(item.id, item.isShow);
     }
 
-    onChangePromotion(index, item) {
-        let arp = item.promotion.split("%");
-        let idx = this.listPromotion.findIndex((prom) => prom.id == Number(arp[0]));
-        if (idx == -1 && index == 0) return;
-        if (idx == index) return;
-        let itemId = Number(item.id.split("-")[0]);
-        this.promService.changePromProduct(
-            arp[0],
-            this.listPromotion[idx-1].id,
-            itemId
+    onChangePromotion(index, item: Product) {
+        let idx = this.listPromotion.findIndex(
+            (prom) => prom.id == item.promId
         );
+        if (index == idx + 1) return;
+        //
+        let itemId = Number(item.id.split("-")[0]);
+        console.log(item);
+        let newPromId = idx==0 ? 0 : this.listPromotion[index -1].id;
+        this.promService.changePromProduct(item.promId, newPromId, itemId).subscribe(val =>{
+            item.promId = newPromId;
+        });
     }
 
     getImageUrl(item: Product) {
@@ -81,51 +89,79 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return this.listCategory.find((cate) => cate.id == cateId).name;
     }
 
-    getPromotion(promId) {
-        let idx = this.listPromotion.find(item => item.id==promId);
-        return idx ? idx.name : "No promotion";
+    getPromotion(item: Product) {
+        if (!this.listPromotion) return "Unknown";
+        let idx = this.listPromotion.find((prom) => prom.id == item.promId);
+        return idx ? idx.name : "Not promotion";
     }
 
     // ============= method ===============
-    private getDataProduct() {
+    private getDataProduct(): Observable<any> {
+        let obs = new Subject();
         this.productService.getList().subscribe(
             (resp) => {
                 this.listProduct = resp;
                 this.tableData.data = this.listProduct;
                 this.tableData._updateChangeSubscription();
-                if (this.listPromotion.length > 0) this.attachProm();
+                obs.complete();
             },
-            (erVal) => (this.listProduct = erVal)
+            (erVal) => {
+                this.container.isDataEmpty = true;
+                obs.complete();
+            }
         );
+        return obs;
     }
 
-    private getDataPromotion() {
+    private getDataPromotion(): Observable<any> {
+        console.log("object");
+        let obs = new Subject();
         this.promService.getListOfProduct().subscribe(
             (resp) => {
+                console.log(resp);
                 this.listPromotion = resp;
                 resp.forEach((item) => this.listPromName.push(item.name));
+                obs.complete();
             },
-            (erVal) => (this.listPromotion = erVal)
+            (erVal) => {
+                // this.listPromotion = erVal;
+                obs.complete();
+            }
         );
+        return obs;
     }
 
-    private getDataCategory() {
+    private getDataCategory(): Observable<any> {
+        let obs = new Subject();
         this.categoryService.getList().subscribe(
             (resp) => {
                 this.listCategory = resp;
+                obs.complete();
             },
-            (erVal) => (this.listCategory = erVal)
+            (erVal) => {
+                this.listCategory = erVal;
+                obs.complete();
+            }
         );
+        return obs;
     }
 
     private attachProm() {
+        console.log("arIds");
         for (const prom of this.listPromotion) {
             let arIds: number[] = JSON.parse(prom.productInProms);
-            if (this.listProduct)
-                this.listProduct.forEach((item) => {
-                    let itemId = Number(item.id.split("-")[0]);
-                    if (arIds.includes(itemId))
-                        item.promotion =prom.id+"";
+            let cateIds: number = prom.categoryId;
+            if (cateIds) {
+                this.listProduct.forEach((product) => {
+                    if (product.categoryId == cateIds) product.promId = prom.id;
+                    else product.promId = 0;
+                });
+            }
+            if (arIds != null)
+                this.listProduct.forEach((product) => {
+                    let itemId = Number(product.id.split("-")[0]);
+                    if (arIds.indexOf(itemId) >= 0) product.promId = prom.id;
+                    else product.promId = 0;
                 });
         }
     }

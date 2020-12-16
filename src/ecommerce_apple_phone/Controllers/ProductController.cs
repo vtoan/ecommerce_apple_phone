@@ -99,6 +99,13 @@ namespace ecommerce_apple_phone.Controllers
             var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.GetListAttrDTOs(itemId);
+            var product = GetListProducts().Find(item => item.Id == id);
+            if (product != null && product.Discount != 0)
+            {
+                double disc = product.Discount;
+                re.ForEach(item => item.Discount = disc);
+
+            }
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
@@ -120,7 +127,7 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPost("{cateId}")]
-        public ActionResult AddProductDetail(int cateId,[FromForm] ProductDetailDTO productDetailDTO)
+        public ActionResult AddProductDetail(int cateId, [FromForm] ProductDetailDTO productDetailDTO)
         {
             if (!ModelState.IsValid) return BadRequest();
             //
@@ -132,7 +139,7 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateProductDetail(int id,[FromForm] ProductDetailDTO productDetailDTO)
+        public ActionResult UpdateProductDetail(int id, [FromForm] ProductDetailDTO productDetailDTO)
         {
             if (!ModelState.IsValid) return BadRequest();
             //
@@ -144,13 +151,13 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut("{id}/status")]
-        public ActionResult UpdateStatusDetail(string id,[FromForm(Name="status")] bool? status)
+        public ActionResult UpdateStatusDetail(string id, [FromForm(Name = "status")] bool? status)
         {
             if (DataHelper.IsEmptyString(id) || status == null) return BadRequest();
             //
             var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
-            var re = _productModel.UpdateStatusDTO(itemId,(bool)status);
+            var re = _productModel.UpdateStatusDTO(itemId, (bool)status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
             return Ok();
         }
@@ -177,12 +184,15 @@ namespace ecommerce_apple_phone.Controllers
             var itemId = DataHelper.GetAttrlId(id);
             if (itemId == 0) return BadRequest();
             var re = _productModel.GetAttrDTO(itemId);
+            var productDetail = GetListProducts().Find(item => item.Id == id);
+            if (productDetail != null)
+                re.Discount = productDetail.Discount;
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
 
         [HttpPost("attrs/{id}")]
-        public ActionResult AddAttr(int productDetailId,[FromForm] ProductDTO ProductAttrDTO)
+        public ActionResult AddAttr(int productDetailId, ProductDTO ProductAttrDTO)
         {
             if (productDetailId <= 0 || !ModelState.IsValid) return BadRequest();
             //
@@ -194,7 +204,7 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut("attrs/{id}")]
-        public ActionResult UpdateAttr(string id,[FromForm] ProductDTO productAttrDTO)
+        public ActionResult UpdateAttr(string id, [FromForm] ProductDTO productAttrDTO)
         {
             if (DataHelper.IsEmptyString(id) || !ModelState.IsValid) return BadRequest();
             //
@@ -208,13 +218,13 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut("attrs/{id}/status")]
-        public ActionResult UpdateStatusAttr(string id,[FromForm(Name="status")] bool? status)
+        public ActionResult UpdateStatusAttr(string id, [FromForm(Name = "status")] bool? status)
         {
-            if (DataHelper.IsEmptyString(id)||status==null) return BadRequest();
+            if (DataHelper.IsEmptyString(id) || status == null) return BadRequest();
             //
             var itemId = DataHelper.GetDetailId(id);
             if (itemId == 0) return BadRequest();
-            var re = _productModel.UpdateStatusAttrDTO(itemId,(bool) status);
+            var re = _productModel.UpdateStatusAttrDTO(itemId, (bool)status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
             return Ok();
         }
