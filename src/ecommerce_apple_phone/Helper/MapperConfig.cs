@@ -42,7 +42,7 @@ namespace ecommerce_apple_phone.Helper
             CreateMap<PostDTO, Post>();
             //Feedback
             CreateMap<Feedback, FeedbackDTO>()
-                .ForMember(src => src.ProductId ,act => act.MapFrom(des => des.ProductDetailId.ToString()));
+                .ForMember(src => src.ProductId, act => act.MapFrom(des => des.ProductDetailId.ToString()));
             CreateMap<FeedbackDTO, Feedback>()
                 .ForMember(src => src.ProductDetailId, act => act.MapFrom(des => getPropID(des.ProductId, 0)));
             //Import
@@ -54,12 +54,14 @@ namespace ecommerce_apple_phone.Helper
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderDTO, Order>();
             CreateMap<OrderDetail, OrderDetailDTO>()
-                .ForMember(src=> src.ProductId, act =>act.MapFrom(des => des.ProductId.ToString()));
+                .ForMember(src => src.ProductId, act => act.MapFrom(des => des.ProductId.ToString()));
             CreateMap<OrderDetailDTO, OrderDetail>()
-                .ForMember(src=> src.ProductId, act =>act.MapFrom(des => getPropID(des.ProductId,1)));
+                .ForMember(src => src.ProductId, act => act.MapFrom(des => getPropID(des.ProductId, 1)));
             //Prom
-            CreateMap<PromotionDTO, Promotion>();
-            CreateMap<Promotion, PromotionDTO>();
+            CreateMap<PromotionDTO, Promotion>()
+                .ForMember(src => src.Type, act => act.MapFrom(des => des.TypeProm));
+            CreateMap<Promotion, PromotionDTO>()
+                .ForMember(src => src.TypeProm, act => act.MapFrom(des => des.Type));
             CreateMap<Promotion, PromBillDTO>()
                 .ForMember(src => src.Discount, act => act.MapFrom(des => des.PromBill.Discount))
                 .ForMember(src => src.ConditionItem, act => act.MapFrom(des => des.PromBill.ConditionItem))

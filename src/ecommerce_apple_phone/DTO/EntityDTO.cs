@@ -156,7 +156,7 @@ namespace ecommerce_apple_phone.DTO
         public DateTime? ToDate { get; set; }
         public bool? Status { get; set; }
         [BindProperty(Name="typeProm", SupportsGet=true)]
-        public byte? Type { get; set; }
+        public byte? TypeProm { get; set; }
         public string ItemDetail { get; set; }
     }
 

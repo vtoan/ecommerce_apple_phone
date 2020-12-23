@@ -30,6 +30,7 @@ export class CartItemComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log(this.itemId);
         this.prodService.getAttr(this.itemId).subscribe((val) => {
             if (!val) return;
             this.product = val;

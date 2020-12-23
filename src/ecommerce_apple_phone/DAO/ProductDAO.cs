@@ -12,22 +12,20 @@ namespace ecommerce_apple_phone.DAO
     {
         public ProductDAO(PhoneContext context) : base(context){}
 
-        public Product Get(int id, bool isAdmin = false)
+        public Product Get(int id)
         {
             if(!CheckConnection()) return null;
             //
             var query =  _context.Products.Where(item => item.Id == id && item.isDel == false);
-            if(!isAdmin) query =query.Where(item => item.isShow == true);
             //
             return query.Include(item => item.ProductDetail).FirstOrDefault();
         }
 
-        public List<Product> GetList(int id, bool isAdmin = false) // get all attribute of product
+        public List<Product> GetList(int id) // get all attribute of product
         {
             if(!CheckConnection()) return null;
             //
             var  query = _context.Products.Where(item => item.ProductDetailId == id && item.isDel == false);
-            if(!isAdmin) query = query.Where(item => item.isShow == true);  
             //
             var lsProduct = query.Include(item => item.ProductDetail).ToList();
             return lsProduct;
@@ -38,7 +36,6 @@ namespace ecommerce_apple_phone.DAO
             if(!CheckConnection()) return null;
             //
             var query = _context.ProductDetails.Where(item => item.isDel == false);
-            if(!isAdmin) query = query.Where(item => item.isShow == true);  
             //
             var lsProduct = query.Include(item => item.Products).ToList();
             List<Product> pds = new List<Product>();

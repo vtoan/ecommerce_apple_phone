@@ -17,7 +17,7 @@
 </div>
 <div class=" container">
     <app-loader style="height: 300px;" *ngIf="listSeller==null"></app-loader>
-    <p *ngIf="listSeller==null" class="text-center" style="line-height: 25;">Data is null</p>    
+    <p *ngIf="listSeller==null" class="text-center" style="line-height: 25;">Data is empty</p>    
 </div>
 <app-list-product *ngIf="listSeller!=null" [isFilter]="false" [isPage]="false" [products]="listSeller" ></app-list-product>
 <!--Discount-->
@@ -29,7 +29,7 @@
 </div>
 <div class=" container">
     <app-loader style="height: 300px;" *ngIf="listDiscount==null"></app-loader>
-    <p *ngIf="listDiscount!=null &&listDiscount.length==0" class="text-center" style="line-height: 25;">Data is null</p>    
+    <p *ngIf="listDiscount!=null && listDiscount?.length==0" class="text-center" style="line-height: 25;">Data is empty</p>    
 </div>
-<app-list-product *ngIf="listDiscount!=null &&listDiscount.length>0" [isFilter]="false" [isPage]="false" ></app-list-product>
+<app-list-product *ngIf="listDiscount!=null && listDiscount?.length>0" [isFilter]="false" [isPage]="false" [products]="listDiscount" ></app-list-product>
 

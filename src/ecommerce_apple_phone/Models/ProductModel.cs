@@ -30,37 +30,29 @@ namespace ecommerce_apple_phone.Models
                 return ObjectMapperTo<Product, ProductDTO>(db.Add(prod));
         }
 
-        public List<ProductDTO> GetListAttrDTOs(int productId, bool isAdmin = false) //Customer/Admin
+        public List<ProductDTO> GetListAttrDTOs(int productId) //Customer/Admin
         {
             if (productId <= 0) return null;
             using (ProductDAO db = new ProductDAO(_context))
             {
-                if (!isAdmin)
-                    return LsObjectMapperTo<Product, ProductDTO>(db.GetList(productId));
-                else
-                    return LsObjectMapperTo<Product, ProductDTO>(db.GetList(productId, true));
+                return LsObjectMapperTo<Product, ProductDTO>(db.GetList(productId));
             }
         }
 
-        public List<ProductDTO> GetListDTOs(bool isAdmin = false) //For customer/admin
+        public List<ProductDTO> GetListDTOs() //For customer/admin
         {
             using (ProductDAO db = new ProductDAO(_context))
             {
-                if (!isAdmin)
-                    return LsObjectMapperTo<Product, ProductDTO>(db.GetListUnique());
-                else
-                    return LsObjectMapperTo<Product, ProductDTO>(db.GetListUnique(true));
+                return LsObjectMapperTo<Product, ProductDTO>(db.GetListUnique());
+
             }
         }
 
-        public ProductDTO GetAttrDTO(int attrId, bool isAdmin = false) //For customer/admin
+        public ProductDTO GetAttrDTO(int attrId) //For customer/admin
         {
             using (ProductDAO db = new ProductDAO(_context))
             {
-                if (!isAdmin)
-                    return ObjectMapperTo<Product, ProductDTO>(db.Get(attrId));
-                else
-                    return ObjectMapperTo<Product, ProductDTO>(db.Get(attrId, true));
+                return ObjectMapperTo<Product, ProductDTO>(db.Get(attrId));
             }
         }
 
@@ -74,7 +66,7 @@ namespace ecommerce_apple_phone.Models
 
         public bool UpdateAttrDTO(int attrId, ProductDTO productDTO)
         {
-            string[] ignore = { "productId" };
+            string[] ignore = { "productId", "isShow" };
             if (attrId <= 0) return false;
             PropModified<Product> modified = new PropModified<Product>(productDTO, ignore);
             using (ProductDAO db = new ProductDAO(_context))
@@ -174,7 +166,7 @@ namespace ecommerce_apple_phone.Models
             {
                 if (prom.Discount == null) continue;
                 double discount = (double)prom.Discount;
-                if (prom.CategoryId != null)
+                if (prom.CategoryId != null && prom.CategoryId!=0)
                 {
                     byte cateId = (byte)prom.CategoryId;
                     if (LsCate.ContainsKey(cateId)) LsCate[cateId] = discount;
@@ -200,7 +192,7 @@ namespace ecommerce_apple_phone.Models
                 }
                 if (LsProd.Count > 0)
                 {
-                    int prodId = Int32.Parse(item.Id.Split("-")[1]);
+                    int prodId = Int32.Parse(item.Id.Split("-")[0]);
                     if (LsProd.ContainsKey(prodId)) item.Discount = LsProd[prodId];
                 }
             });

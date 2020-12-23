@@ -120,7 +120,7 @@ interface ImportProduct {
 
 interface ImportDetail {
     importId:number;
-    productId:number;
+    productId:string;
     quantity:number;
     price:number;
 }

@@ -83,7 +83,7 @@ export class CartComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.questForm.invalid) return;
+        if (this.questForm.invalid|| this.quantityVal <=0) return;
         this.isLoadOrder = true;
         window.scroll({ top: 0, behavior: "smooth" });
         let order: Order = this.questForm.getRawValue();
@@ -96,8 +96,9 @@ export class CartComponent implements OnInit {
         });
     }
 
-    onProvinceChange(id) {
-        this.orderService.getListDistrict(id).subscribe((val) => {
+    onProvinceChange(province:string) {
+        let arId = province.split(',');
+        this.orderService.getListDistrict(Number(arId[0])).subscribe((val) => {
             if (!val) this.errService.redirectError("Can't get district");
             else this.listdDistrict = Object.values(val);
         });
@@ -127,17 +128,6 @@ export class CartComponent implements OnInit {
         return obs;
     }
 
-    // private getDataPromPoint(): Observable<any> {
-    //     let obs = new Subject();
-    //     this.promService.getListOfPoint().subscribe((val) => {
-    //         if (!val)
-    //             this.errService.redirectError("Can't get point promotions");
-    //         else this.listPromPoint = val;
-    //         obs.complete();
-    //     });
-    //     return obs;
-    // }
-
     private getDataFee(): Observable<any> {
         let obs = new Subject();
         this.feeService.getList().subscribe((val) => {
@@ -166,6 +156,7 @@ export class CartComponent implements OnInit {
         let obs = new Subject();
         //get ods
         this.listItem = this.cartService.getCart();
+        console.log(this.listItem);
         // if (this.listItem || this.listItem.length == 0) return;
         this.quantityVal = this.cartService.getQuantity();
         //exec

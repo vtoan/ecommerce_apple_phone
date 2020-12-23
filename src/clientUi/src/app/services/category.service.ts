@@ -24,12 +24,9 @@ export class CategoryService {
     getUrlUpload = (): string => this.apiUrl + "/image_seo";
 
     getList(): Observable<Category[]> {
-        return this.http
-            .get<Category[]>(this.apiUrl, this.titleHeader("Get list category"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+        return this.http.get<Category[]>(this.apiUrl).pipe(
+            catchError(() => throwError(null))
+        );
     }
 
     update(id: number, cate: Category): Observable<boolean> {
@@ -40,7 +37,6 @@ export class CategoryService {
                 this.titleHeader("Update category")
             )
             .pipe(
-                retry(3),
                 catchError(() => throwError(false))
             );
     }

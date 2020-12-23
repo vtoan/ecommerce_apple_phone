@@ -28,13 +28,13 @@
                     <table class="table text-right">
                         <tbody >
                             <tr>
-                                <td>TTotal Order</td> 
+                                <td>Total order</td> 
                                 <td>
                                     <paser-value [rawVal]="totalAmountVal"></paser-value>
                                 </td> 
                             </tr>
                             <tr>
-                                <td>Giảm giá Bill</td> 
+                                <td>Bill promotion</td> 
                                 <td>
                                     <paser-value [rawVal]="promtionVal"></paser-value>
                                 </td> 
@@ -46,7 +46,7 @@
                                 </td> 
                             </tr>
                             <tr class="bold">
-                                <td>Thanh Toán</td> 
+                                <td>Payment</td> 
                                 <td class="red text-4">
                                     <paser-value [rawVal]="totalPayVal"></paser-value>
                                 </td> 
@@ -56,32 +56,32 @@
                 </div>
                 <!--Form-->
                 <div class="col-12 col-lg-6 order-lg-0">
-                    <h3 class="mb-4">Thông tin giao hàng</h3>    
+                    <h4 class="mb-4">Shipment Details</h4>    
                     <form [formGroup]="questForm" #formData="ngForm" (ngSubmit)="onSubmit()" >
                         <p>
                             <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Tên người nhận</mat-label>
+                                <mat-label>Quest Name</mat-label>
                                 <input matInput formControlName="questName" placeholder="Placeholder">
                             </mat-form-field>
                         </p>
                         <p>
                             <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Số điện thoại</mat-label>
+                                <mat-label>Phone number</mat-label>
                                 <input matInput formControlName="questPhone" type="tel" placeholder="Placeholder">
                             </mat-form-field>    
                         </p>
                         <p>
                             <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Email</mat-label>
+                                <mat-label>Email address</mat-label>
                                 <input matInput formControlName="questEmail" type="email" placeholder="Placeholder">
                             </mat-form-field>
                         </p>
                         <div class="row">
                             <div class="col-lg-6">
                                 <mat-form-field class="w-100" appearance="outline">
-                                    <mat-label>Chọn Tỉnh/TP</mat-label>
+                                    <mat-label>Select Province/City</mat-label>
                                     <mat-select #input (valueChange)="onProvinceChange(input.value)" formControlName="questProvince" >
-                                        <mat-option *ngFor="let province of listProvince" [value]="province.code">
+                                        <mat-option *ngFor="let province of listProvince" [value]="province.code+','+province.name">
                                             {{province.name}}
                                         </mat-option>
                                     </mat-select>
@@ -89,9 +89,9 @@
                             </div>
                             <div class="col-lg-6">
                                 <mat-form-field class="w-100" appearance="outline">
-                                    <mat-label>Quận/Huyện</mat-label>
+                                    <mat-label>Select District</mat-label>
                                     <mat-select  formControlName="questDistrict" >
-                                        <mat-option *ngFor="let district of listdDistrict" [value]="district.code">
+                                        <mat-option *ngFor="let district of listdDistrict" [value]="district.code+','+district.name">
                                             {{district.name}}
                                         </mat-option>
                                     </mat-select>
@@ -100,7 +100,7 @@
                         </div>
                         <p>
                             <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Số nhà, tên đường (hoặc địa chỉ cụ thể)</mat-label>
+                                <mat-label>House number, street name (or specific address)</mat-label>
                                 <input matInput formControlName="questAddress" placeholder="Placeholder">
                             </mat-form-field>
                         </p>
@@ -114,13 +114,13 @@
                 </div>
             </div>
             <div class="text-center">
-                <button class="btn btn-lg bg-black white border-none" (click)="formData.onSubmit()"> Order </button>
+                <button class="btn btn-lg bg-black white border-none" (click)="formData.onSubmit()"> Confirm </button>
             </div>
         </div>
     </div> 
 </div>
 <!---->
 <div *ngIf="order!=null">
-    <div class="container"><a class="link blue" (click)="onBackToCart()" > Back to cart</a> </div> 
+    <div class="container"><a class="link blue" (click)="onBackToCart()" >Back to cart</a> </div> 
     <app-order-detail [order]="order"></app-order-detail>
 </div>

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, of, throwError } from "rxjs";
-import { catchError, retry } from "rxjs/operators";
+import { Observable, throwError } from "rxjs";
+import { catchError} from "rxjs/operators";
 //models
 import { Product, ProductDetail } from "src/app/models/IModels";
 
@@ -11,9 +11,7 @@ import { Product, ProductDetail } from "src/app/models/IModels";
 export class ProductService {
     private apiUrl = "api/product";
 
-    constructor(
-        private http: HttpClient,
-    ) {}
+    constructor(private http: HttpClient) {}
 
     private titleHeader(title) {
         return {
@@ -21,59 +19,52 @@ export class ProductService {
         };
     }
 
-    getUrlRes = (): string => "products";
+    getUrlRes = (): string => "product";
 
-    getUrlUpload = (): string => this.apiUrl + "/products";
+    getUrlUpload = (): string => this.apiUrl + "/image";
 
     // ============ Method ============
     getList(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.apiUrl).pipe(
-            retry(3),
-            catchError(() => throwError([]))
-        );
+        return this.http
+            .get<Product[]>(this.apiUrl)
+            .pipe(catchError(() => throwError([])));
     }
 
     getListById(ids: string): Observable<Product[]> {
         return this.http.get<Product[]>(this.apiUrl + "/" + ids).pipe(
-            retry(3),
-            catchError(() => of([]))
+            catchError(() => throwError([]))
         );
     }
 
     getListBestSeller(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.apiUrl + "/bests").pipe(
-            retry(3),
-            catchError(() => of([]))
-        );
+        return this.http
+            .get<Product[]>(this.apiUrl + "/bests")
+            .pipe(catchError(() => throwError([])));
     }
 
     getListByCate(idCate: number): Observable<Product[]> {
-        return this.http.get<Product[]>(this.apiUrl + "/cate/" + idCate).pipe(
-            retry(3),
-            catchError(() => of([]))
-        );
+        return this.http
+            .get<Product[]>(this.apiUrl + "/cate/" + idCate)
+            .pipe(catchError(() => throwError([])));
     }
 
     getListDiscount(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.apiUrl + "/promotions").pipe(
-            retry(3),
-            catchError(() => of([]))
-        );
+        return this.http
+            .get<Product[]>(this.apiUrl + "/promotions")
+            .pipe(catchError(() => throwError([])));
     }
 
     search(query: string): Observable<Product[]> {
         if (!query) return throwError("Query is empty");
-        return this.http.get<Product[]>(this.apiUrl + "/search/" + query).pipe(
-            retry(3),
-            catchError(() => of([]))
-        );
+        return this.http
+            .get<Product[]>(this.apiUrl + "/search/" + query)
+            .pipe(catchError(() => throwError([])));
     }
     // product detail
     get(id: string): Observable<ProductDetail> {
-        return this.http.get<ProductDetail>(this.apiUrl + "/" + id).pipe(
-            retry(3),
-            catchError(() => of(null))
-        );
+        return this.http
+            .get<ProductDetail>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(null)));
     }
 
     add(product: ProductDetail): Observable<ProductDetail> {
@@ -83,10 +74,7 @@ export class ProductService {
                 product,
                 this.titleHeader("Add product")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .pipe(catchError(() => throwError(null)));
     }
 
     update(id: string, product: ProductDetail): Observable<boolean> {
@@ -96,92 +84,73 @@ export class ProductService {
                 product,
                 this.titleHeader("Update product")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 
     updateStatus(id: string, status: boolean): Observable<boolean> {
         return this.http
             .put<boolean>(
-                this.apiUrl + "/" + id + "/status",
-                status,
+                this.apiUrl + "/" + id + "/" + status,
                 this.titleHeader("Update product status")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 
     delete(id: number): Observable<boolean> {
-        return this.http.delete<any>(this.apiUrl + "/" + id).pipe(
-            retry(3),
-            catchError(() => throwError(false))
-        );
+        return this.http
+            .delete<any>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(false)));
     }
 
     // product attribute
     getListAttr(id: string): Observable<Product[]> {
-        return this.http.get<Product[]>(this.apiUrl + "/" + id + "/attrs").pipe(
-            retry(3),
-            catchError(() => throwError([]))
-        );
+        return this.http
+            .get<Product[]>(this.apiUrl + "/" + id + "/attrs")
+            .pipe(catchError(() => throwError([])));
     }
 
     getAttr(id: string): Observable<Product> {
-        return this.http.get<Product>(this.apiUrl + "/attrs/" + id).pipe(
-            retry(3),
-            catchError(() => of(null))
-        );
+        console.log(id);
+        return this.http
+            .get<Product>(this.apiUrl + "/attrs/"+id)
+            .pipe(catchError(() => throwError(null)));
     }
 
-    addAttr(product: Product): Observable<Product> {
+    addAttr(detailId: string, product: Product): Observable<Product> {
         return this.http
             .post<Product>(
-                this.apiUrl + "/attrs",
+                this.apiUrl + "/attrs/" + detailId,
                 product,
                 this.titleHeader("Add product attribute")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .pipe(catchError(() => throwError(null)));
     }
 
-    updateAttr(id: number, product: Product): Observable<boolean> {
+    updateAttr(id: string, product: Product): Observable<boolean> {
         return this.http
             .put<boolean>(
                 this.apiUrl + "/attrs/" + id,
                 product,
                 this.titleHeader("Update product attribute")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 
     updateStatusAttr(id: number, status: number): Observable<boolean> {
         return this.http
             .put<boolean>(
-                this.apiUrl + "/attrs/" + id + "/status",
-                status,
+                this.apiUrl + "/attrs/" + id + "/" + status,
                 this.titleHeader("Update product attribute status")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 
-    deleteAttr(id: number): Observable<boolean>  {
+    deleteAttr(id: string): Observable<boolean> {
         return this.http
-            .delete<any>(this.apiUrl + "/attrs/" + id ,this.titleHeader("Delete product attribute"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .delete<any>(
+                this.apiUrl + "/attrs/" + id,
+                this.titleHeader("Delete product attribute")
+            )
+            .pipe(catchError(() => throwError(false)));
     }
 }

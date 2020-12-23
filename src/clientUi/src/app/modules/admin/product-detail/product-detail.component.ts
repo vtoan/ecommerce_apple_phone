@@ -1,5 +1,5 @@
 import { ThrowStmt } from "@angular/compiler";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { concat, of, throwError } from "rxjs";
@@ -19,9 +19,10 @@ import {
     styleUrls: ["./product-detail.component.scss"],
 })
 export class ProductDetailComponent implements OnInit {
+    @Input()itemId:string;
     isLoaded: boolean = false;
     //
-    private itemId: string;
+    // private itemId: string;
     cateSelected;
     prodDetail: ProductDetail;
     listCate: Category[];
@@ -64,7 +65,6 @@ export class ProductDetailComponent implements OnInit {
 
     ngOnInit() {
         concat(
-            of(this.getDataRoute()),
             of(this.getDataProduct()),
             of(this.getDataCate())
         )
@@ -85,11 +85,6 @@ export class ProductDetailComponent implements OnInit {
     }
 
     // =========== usefull ============
-    private getDataRoute() {
-        this.route.params.subscribe((params) => {
-            this.itemId = params["id"];
-        });
-    }
 
     private getDataProduct() {
         if (!this.itemId) {

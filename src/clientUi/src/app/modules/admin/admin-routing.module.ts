@@ -15,6 +15,7 @@ import { PromotionDetailComponent } from "./promotion-detail/promotion-detail.co
 import { ProductTabComponent } from "./product-tab/product-tab.component";
 import { ListUserComponent } from "./list-user/list-user.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
+import { ImportComponent } from './import/import.component';
 //
 const routes: Routes = [
     {
@@ -44,6 +45,10 @@ const routes: Routes = [
                 path: "user-detail/:id",
                 component: UserDetailComponent,
             },
+            {
+                path:"import",
+                component:ImportComponent
+            }
         ],
     },
 ];

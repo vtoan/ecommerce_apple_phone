@@ -2,9 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { concat, Observable, Subject } from "rxjs";
-
 import { finalize } from "rxjs/operators";
-
 //model
 import { Category, Product, PromProduct } from "src/app/models/IModels";
 //service
@@ -25,7 +23,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     container: Container = {
         isLoaded: false,
         isDataEmpty: false,
-        displayText: "Promotion not found",
+        displayText: "Data is't found",
     };
     //
     listProduct: Product[];
@@ -49,7 +47,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         )
             .pipe(
                 finalize(() => {
-                    if (this.listPromotion.length > 0) this.attachProm();
+                    if (this.listPromotion && this.listPromotion.length >0) this.attachProm();
                     this.container.isLoaded = true;
                 })
             )
@@ -61,7 +59,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     onChangeStatus(item: Product) {
-        this.productService.updateStatus(item.id, item.isShow);
+        this.productService.updateStatus(item.id, !item.isShow).subscribe(val =>{
+            item.isShow = !item.isShow
+        });
     }
 
     onChangePromotion(index, item: Product) {
@@ -72,13 +72,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
         //
         let itemId = Number(item.id.split("-")[0]);
         console.log(item);
-        let newPromId = idx==0 ? 0 : this.listPromotion[index -1].id;
+        console.log(index);
+        let newPromId = index== 0 ? 0 : this.listPromotion[index -1].id;
         this.promService.changePromProduct(item.promId, newPromId, itemId).subscribe(val =>{
             item.promId = newPromId;
         });
     }
 
     getImageUrl(item: Product) {
+        if(!item.images) return;
         let imgs = Object.values(JSON.parse(item.images));
         return this.fileService.rootPath + "/" + imgs[0];
     }
@@ -147,7 +149,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     private attachProm() {
-        console.log("arIds");
         for (const prom of this.listPromotion) {
             let arIds: number[] = JSON.parse(prom.productInProms);
             let cateIds: number = prom.categoryId;

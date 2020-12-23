@@ -25,7 +25,7 @@ export class ProductComponent implements OnInit {
     resImage: any[];
     ngOnInit(): void {
         this.promotion = this.item.discount;
-        this.resImage = Object.values(JSON.parse(this.item.images));
+        this.resImage = JSON.parse(this.item.images);
         if(this.item.discount %1!=0)
             this.promotion = this.item.price * (this.item.discount);
     }

@@ -15,7 +15,6 @@ import {
 })
 export class OrderService {
     private apiUrl = "api/order";
-    // private options = { year: "numeric", month: "numeric", day: "numeric" };
 
     constructor(private http: HttpClient) {}
 
@@ -26,46 +25,40 @@ export class OrderService {
     }
 
     getListStatus(): string[] {
-        return ["Chua xac nhan", "Da xac nhan", "Dang giao", "Hoan thanh"];
+        return ["Cancel","Not Confirm", "Confirmed", "Delivering", "Completed"];
     }
 
     get(id: number): Observable<Order> {
         return this.http
-            .get<Order>(this.apiUrl + "/" + id, this.titleHeader("Get order"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .get<Order>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(null)));
     }
 
     getItems(id: number): Observable<OrderDetail[]> {
-        return this.http
-            .get<OrderDetail[]>(this.apiUrl + "items/" + id, this.titleHeader("Get item order"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+        return this.http.get<OrderDetail[]>(this.apiUrl + "items/" + id).pipe(
+            retry(3),
+            catchError(() => throwError(null))
+        );
     }
 
     getList(start: Date, end: Date): Observable<Order[]> {
-        let sDate: string = start.toLocaleDateString();
-        let eDate: string = end.toLocaleDateString();
-       
+        let sDate: string = `${
+            start.getMonth() + 1
+        }-${start.getDate()}-${start.getFullYear()}`;
+        let eDate: string = `${
+            end.getMonth() + 1
+        }-${end.getDate()}-${end.getFullYear()}`;
         return this.http
-            .get<Order[]>(
-                this.apiUrl + "/report?start=" + sDate + "&end=" + eDate,
-                this.titleHeader("Report order")
-            )
-            .pipe(
-                retry(3),
-                catchError(() => of([]))
-            );
+            .get<Order[]>(this.apiUrl + "/report/" + sDate + "/" + eDate)
+            .pipe(catchError(() => throwError([])));
     }
 
     updateStatus(id: number, status: number): Observable<boolean> {
         return this.http
-            .get<boolean>(
-                this.apiUrl + "/",
+            .put<boolean>(
+                this.apiUrl + "/" + id,{
+                    status: status
+                },
                 this.titleHeader("Update status order")
             )
             .pipe(
@@ -76,14 +69,8 @@ export class OrderService {
 
     confirmOrder(order: Order): Observable<Order> {
         return this.http
-            .post<Order>(
-                this.apiUrl + "/confirm",
-                order,
-            )
-            .pipe(
-                retry(3),
-                catchError(() => of(null))
-            );
+            .post<Order>(this.apiUrl + "/confirm", order)
+            .pipe(catchError(() => of(null)));
     }
 
     payment(order: Order, paymentId: number): Observable<boolean> {
@@ -93,10 +80,7 @@ export class OrderService {
                 order,
                 this.titleHeader("Ordered")
             )
-            .pipe(
-                retry(3),
-                catchError(() => of(false))
-            );
+            .pipe(catchError(() => of(false)));
     }
 
     getListProvice(): Observable<any> {
@@ -164,15 +148,9 @@ export class OrderService {
     }
 
     getListMethodPay(): Observable<MethodPay[]> {
-        return of([
-            {
-                id: 1,
-                name: "Paypal",
-            },
-            {
-                id: 2,
-                name: "Cash",
-            },
-        ]);
+        return this.http.get<MethodPay[]>("api/methodpay").pipe(
+            retry(3),
+            catchError(() => throwError([]))
+        );
     }
 }

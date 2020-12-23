@@ -55,9 +55,9 @@ namespace ecommerce_apple_phone.Interfaces {
         bool RemoveDTO (int id);
         bool UpdateStatusDTO (int productId, bool status);
         //Attribute Product
-        List<ProductDTO> GetListDTOs (bool isAdmin =false);
-        List<ProductDTO> GetListAttrDTOs (int productId , bool isAdmin =false);
-        ProductDTO GetAttrDTO (int attrId ,bool isAdmin =false);
+        List<ProductDTO> GetListDTOs ();
+        List<ProductDTO> GetListAttrDTOs (int productId );
+        ProductDTO GetAttrDTO (int attrId);
         ProductDTO AddAttrDTOs (int attrId, ProductDTO productDTO);
         bool UpdateAttrDTO (int attrId, ProductDTO productDTO);
         bool RemoveAttrDTO (int attrId);
@@ -72,7 +72,7 @@ namespace ecommerce_apple_phone.Interfaces {
 
     public interface IOrderModel : IGetDTO<OrderDTO> {
         OrderDTO AddDTO (OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTOs);
-        bool UpdateStatus (int id, int status);
+        bool UpdateStatus (int id, byte status);
         List<OrderDTO> GetListDTOs (DateTime start, DateTime end);
         List<OrderDTO> GetListDTOsByCustomer (int idCustomer);
         List<OrderDTO> Find (string query);
@@ -102,7 +102,7 @@ namespace ecommerce_apple_phone.Interfaces {
         List<PromBillDTO> GetListDTOsPromBill ();
         List<PromPointDTO> GetListDTOsPromPoint ();
         bool ChangePromotion (int PromOld, int PromNew, int ProdId);
-        object GetDetail (int id, int Type);
+        object GetDetail (int id, byte Type);
     }
 
     // public interface IUserModel : IGetDTO<User> {

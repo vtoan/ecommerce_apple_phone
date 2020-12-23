@@ -25,18 +25,12 @@ export class InfoService {
     get(): Observable<Info> {
         return this.http
             .get<Info>(this.infoUrl)
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .pipe(catchError(() => throwError(null)));
     }
 
     update(info: Info): Observable<boolean> {
         return this.http
             .put<boolean>(this.infoUrl, info, this.titleHeader("Update info"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 }

@@ -42,7 +42,6 @@ export class InfoComponent implements OnInit {
         private infoService: InfoService,
         public fileServcie: FileService,
         private message: MessageService,
-        private location: Location
     ) {}
 
     ngOnInit() {
@@ -53,6 +52,7 @@ export class InfoComponent implements OnInit {
 
     // =========== Event ==========
     onSubmit(e) {
+        this.formValidate.markAllAsTouched();
         if (this.formValidate.invalid) return;
         e.preventDefault();
         let rawVal = this.formValidate.value;
@@ -86,7 +86,6 @@ export class InfoComponent implements OnInit {
 
     // =========== Private ===========
     private update(info: Info) {
-        console.log(info);
         this.isLoaded = false;
         this.infoService.update(info).subscribe(
             (resp) => {

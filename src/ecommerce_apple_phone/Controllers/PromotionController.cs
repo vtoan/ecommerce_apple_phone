@@ -56,7 +56,7 @@ namespace ecommerce_apple_phone.Controllers
             if (id <= 0) return BadRequest(new { message = "ID is invalid" });
             var re = _promModel.GetDTO(id);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
-            var detail = _promModel.GetDetail(re.Id, (int)re.Type);
+            var detail = _promModel.GetDetail(re.Id, (byte)re.TypeProm);
             if (detail == null) return Problem(statusCode: 500, detail: "Data not exist");
             re.ItemDetail = DataHelper.ParserObjToJson(detail);
             return re;
@@ -76,7 +76,7 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (!ModelState.IsValid || type <= 0) return BadRequest();
             object detail = null;
-            promotionDTO.Type = (byte?)type;
+            promotionDTO.TypeProm = (byte?)type;
             switch (type)
             {
                 case 1:

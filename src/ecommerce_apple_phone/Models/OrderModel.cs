@@ -46,7 +46,7 @@ namespace ecommerce_apple_phone.Models {
                 return LsObjectMapperTo<OrderDetail, OrderDetailDTO>( db.GetListDetail(id));
         }
 
-        public bool UpdateStatus (int id, int status) {
+        public bool UpdateStatus (int id, byte status) {
             PropModified<Order> modified = new PropModified<Order>(new {Status = status});
             using(var db = new OrderDAO(_context))
                 return db.Update(id, modified);

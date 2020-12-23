@@ -2,12 +2,13 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 //sub - module
 import { AdminRoutingModule } from "./admin-routing.module";
 import { ShareModule } from "../share/share.module";
 import { MaterialModule } from "../material.module";
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
-
 //
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { MainComponent } from "./main/main.component";
@@ -25,6 +26,10 @@ import { OrderDetailAdminComponent } from './order-detail-admin/order-detail-adm
 import { PromotionDetailComponent } from './promotion-detail/promotion-detail.component';
 import { ListUserComponent } from './list-user/list-user.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { ProductAttributeComponent } from './product-attribute/product-attribute.component';
+import { ImportComponent } from './import/import.component';
+import { ImportService } from './services/import.service';
+import { ImportItemComponent } from './import-item/import-item.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +49,9 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
         PromotionDetailComponent,
         ListUserComponent,
         UserDetailComponent,
+        ProductAttributeComponent,
+        ImportComponent,
+        ImportItemComponent,
     ],
     imports: [
         CommonModule,
@@ -54,6 +62,10 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
         FormsModule,
         SatDatepickerModule,
         SatNativeDateModule,
+        BrowserAnimationsModule,
+        // NgxChartsModule,
     ],
+    providers: [ImportService],
+
 })
 export class AdminModule {}

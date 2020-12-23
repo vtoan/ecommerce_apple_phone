@@ -20,7 +20,7 @@ export class PromotionComponent implements OnInit, AfterViewInit {
     container: Container = {
         isLoaded: false,
         isDataEmpty: false,
-        displayText: "Promotion not found",
+        displayText: "Data is'n found",
     };
     //
     listPromotion: Promotion[];

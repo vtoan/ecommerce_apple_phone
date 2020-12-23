@@ -5,6 +5,8 @@ using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+
 namespace ecommerce_apple_phone.Controllers
 {
     [ApiController]
@@ -71,9 +73,9 @@ namespace ecommerce_apple_phone.Controllers
             //Parse list order Item
             List<OrderDetailDTO> orderDetailDTOs = DataHelper.ParserJsonTo<List<OrderDetailDTO>>(orderDTO.OrderItems);
             if (orderDetailDTOs.Count < 0) return Problem(statusCode: 500, detail: "Data invalid");
-            orderDTO.MethodPayId=payId;
+            orderDTO.MethodPayId = payId;
             //Payment
-            if (payId==1)
+            if (payId == 2)
             {
                 var re = await payment.OnPayment((int)orderDTO.MethodPayId, orderDTO);
                 if (re == false) return Problem();
@@ -89,14 +91,14 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (id <= 0) return BadRequest(new { message = "ID is invalid" });
             var re = _orderModel.GetDTO(id);
-            if(re ==null) return NotFound();
+            if (re == null) return NotFound();
             var ordDetials = _orderModel.GetOrderDetailDTOs(id);
-            re.OrderItems=DataHelper.ParserObjToJson(ordDetials);
+            re.OrderItems = DataHelper.ParserObjToJson(ordDetials);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
 
-        [HttpGet("/search")]
+        [HttpGet("search")]
         public ActionResult<List<OrderDTO>> FindOrder(string query)
         {
             if (DataHelper.IsEmptyString(query)) return BadRequest();
@@ -106,18 +108,22 @@ namespace ecommerce_apple_phone.Controllers
             return re;
         }
 
-        [HttpGet("/report")]
+        [HttpGet("report/{start}/{end}")]
         public ActionResult<List<OrderDTO>> GetReport(string start, string end)
         {
             if (DataHelper.IsEmptyString(start) || DataHelper.IsEmptyString(end)) return BadRequest(new { message = "Date is requried" });
-            DateTime startDate;
-            if (!DateTime.TryParse(start, out startDate)) return BadRequest(new { message = "Start date is requried" });
-            DateTime endDate;
-            if (!DateTime.TryParse(end, out endDate)) return BadRequest(new { message = "End date is requried" });
-            //
-            var re = _orderModel.GetListDTOs(startDate, endDate);
-            if (re == null || re.Count == 0) return Problem(statusCode: 500, detail: "Data not exist");
-            return re;
+            try
+            {
+                DateTime startDate = DateTime.Parse(start);
+                DateTime endDate = DateTime.Parse(end);
+                var re = _orderModel.GetListDTOs(startDate, endDate);
+                if (re == null || re.Count == 0) return Problem(statusCode: 500, detail: "Data not exist");
+                return re;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet("customer/orders")]
@@ -131,10 +137,10 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateStatus(int id, [FromForm] int? status)
+        public ActionResult UpdateStatus(int id, UpdateOrderDTO input)
         {
-            if (status == null || id <= 0) return BadRequest();
-            var re = _orderModel.UpdateStatus(id, (int)status);
+            if (!ModelState.IsValid || id<=0) return BadRequest();
+            var re = _orderModel.UpdateStatus(id,(byte)(input.status));
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
             return Ok();
         }
@@ -147,5 +153,10 @@ namespace ecommerce_apple_phone.Controllers
             if (re == null || re.Count == 0) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
+    }
+    public class UpdateOrderDTO{
+        public int orderID { get; set; }
+        [Required]
+        public byte? status { get; set; }
     }
 }

@@ -24,11 +24,7 @@ export class HomeComponent implements OnInit {
     private getSeller() {
         this.productService.getListBestSeller().subscribe(
             (resp) => {
-                if (resp != null || resp) {
-                    this.listSeller = resp;
-                }
-                console.log(this.listSeller);
-
+                this.listSeller = resp;
             },
             (er) => (this.message = er)
         );
@@ -37,10 +33,8 @@ export class HomeComponent implements OnInit {
     private getDiscount() {
         this.productService.getListDiscount().subscribe(
             (resp) => {
-                if (resp != null || resp) {
-                    this.listDiscount = [];
-                    this.listDiscount = resp;
-                }
+                console.log(resp);
+                this.listDiscount = resp;
             },
             (er) => (this.message = er)
         );

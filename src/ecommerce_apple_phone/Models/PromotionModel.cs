@@ -12,7 +12,7 @@ namespace ecommerce_apple_phone.Models
     {
         public PromotionModel(PhoneContext context, IMapper mapper) : base(context, mapper) { }
 
-        public object GetDetail(int id, int type)
+        public object GetDetail(int id, byte type)
         {
             object re = null;
             using (var db = new PromDAO(_context))

@@ -11,7 +11,7 @@
                         <div class="mb-5">
                             <input #itemId type="hidden" formControlName="id" >
                             <p>
-                                <mat-form-field class="w-60" appearance="legacy">
+                  a              <mat-form-field class="w-60" appearance="legacy">
                                     <mat-label>Tên phân loại</mat-label>
                                     <input  formControlName="name"  class="py-1" matInput  type="text" placeholder="Placeholder" required>
                                     <mat-error *ngIf="formValidate.invalid || (ngFrom.submitted && formValidate.get('name').invalid)">
@@ -39,7 +39,7 @@
                                 </mat-form-field>
                             </p>
                             <!--Image input-->
-                            <app-input-image [resRoot]="fileServcie.rootPath" [resImage]="itemSelected?.seoImage" (onUpload)="onChangeFile($event)" (onRemove)="onRemoveFile()" ></app-input-image>
+                            <!-- <app-input-image [resRoot]="fileServcie.rootPath" [resImage]="itemSelected?.seoImage" (onUpload)="onChangeFile($event)" (onRemove)="onRemoveFile()" ></app-input-image> -->
                         </div>      
                         <div >
                             <button  (click)="onSubmit($event)" class="btn btn-sm bg-blue white px-lg-4 mr-3" type="submit"> Lưu </button>

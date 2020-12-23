@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
-import { concat, of } from "rxjs";
+import { concat, of, Subject } from "rxjs";
 import * as dayjs from "dayjs";
 
 // model
@@ -9,6 +9,7 @@ import { MethodPay, Order } from "src/app/models/IModels";
 // service
 import { OrderService } from "src/app/services/order.service";
 import { finalize } from "rxjs/operators";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-order",
@@ -17,13 +18,15 @@ import { finalize } from "rxjs/operators";
 })
 export class OrderComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    container: Container = {
+        isLoaded: false,
+        isDataEmpty: false,
+        displayText: "Data is't found",
+    };
     //
-    isLoaded: boolean = false;
-    //
-
     dateRange = {
-        begin: new Date(),
-        end: dayjs().subtract(30, "day").toDate(),
+        begin:  dayjs().subtract(30, "day").toDate(),
+        end: new Date(),
     };
     //
     listPay: MethodPay[];
@@ -31,16 +34,16 @@ export class OrderComponent implements OnInit, AfterViewInit {
     listStatus: string[] = this.orderService.getListStatus();
     //
     tableData = new MatTableDataSource();
-    constructor(
-        private orderService: OrderService,
-    ) {}
+    constructor(private orderService: OrderService) {}
 
     ngOnInit() {
-        concat(
-            of(this.getDataMethodPay()),
-            of(this.getDataOrder(this.dateRange.begin, this.dateRange.end))
-        )
-            .pipe(finalize(() => (this.isLoaded = true)))
+        this.getDataMethodPay();
+        this.getDataOrder(this.dateRange.begin, this.dateRange.end)
+            .pipe(
+                finalize(() => {
+                    this.container.isLoaded = true;
+                })
+            )
             .subscribe();
     }
 
@@ -51,50 +54,60 @@ export class OrderComponent implements OnInit, AfterViewInit {
     onChangeStaus(index, item: Order) {
         let idx = this.listStatus[index];
         if (!idx) return;
-        this.changeStatus(item.id, index + 1);
+        this.orderService.updateStatus(item.id, index).subscribe();
     }
 
     onChangeDate() {
-        this.isLoaded = false;
+        this.container.isLoaded = false;
         of(this.getDataOrder(this.dateRange.begin, this.dateRange.end))
-            .pipe(finalize(() => (this.isLoaded = true)))
+            .pipe(finalize(() => (this.container.isLoaded = true)))
             .subscribe();
     }
 
     getStatus(item: Order) {
         let itemStt = item.status;
-        if (!itemStt) return "KHong xac dinh";
-        return this.listStatus[itemStt - 1];
+        if (itemStt<0) return "Unknown";
+        return this.listStatus[itemStt];
     }
 
     getMethodPay(item: Order) {
         let payId = item.methodPayId;
-        if (!payId) return "KHong xac dinh";
         let pay = this.listPay.find((s) => s.id == payId);
-        return pay ? pay.name : "Khong xac dinh";
+        return pay ? pay.name : "Unknown";
     }
 
     getUser(item: Order) {
         let userId = item.userId;
-        if (!userId) return "KHong xac dinh";
-        return userId == -1 ? "Khach le" : "KHTT";
+        return !userId ? "Quest" : "Member";
+    }
+
+    getProvince(item: Order){
+        let provin = item.questProvince.split(',');
+        return provin.length > 2 ? provin[1] : "Unknown";
     }
 
     // ======== Use full =========
 
     private getDataOrder(start, end) {
-        this.orderService.getList(start, end).subscribe((val) => {
-            this.listOrder = val;
-            this.tableData.data = this.listOrder;
-            this.tableData._updateChangeSubscription();
-        });
+        let obs = new Subject();
+        this.orderService.getList(start, end).subscribe(
+            (val) => {
+                this.listOrder = val;
+                this.tableData.data = this.listOrder;
+                this.tableData._updateChangeSubscription();
+                obs.complete();
+            },
+            (er) => {
+                this.container.isDataEmpty = true;
+                obs.complete();
+            }
+        );
+        return obs;
     }
 
     private getDataMethodPay() {
-        this.orderService.getListMethodPay().subscribe((val) => (this.listPay = val));
-    }
-
-    private changeStatus(id: number, status: number) {
-        this.orderService.updateStatus(id, status).subscribe();
+        this.orderService
+            .getListMethodPay()
+            .subscribe((val) => (this.listPay = val));
     }
 }

@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { catchError, retry } from 'rxjs/operators';
+import { throwError } from "rxjs/internal/observable/throwError";
+import { catchError, retry } from "rxjs/operators";
 //Post
 import { Feedback } from "src/app/models/IModels";
 //
@@ -21,29 +21,19 @@ export class FeedbackService {
 
     getList(id: string): Observable<Feedback[]> {
         return this.http
-            .get<Feedback[]>(this.apiUrl+"/"+id, this.titleHeader("Get list category"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .get<Feedback[]>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(null)));
     }
 
     add(fee: Feedback): Observable<Feedback> {
         return this.http
             .post<Feedback>(this.apiUrl, fee, this.titleHeader("Add feedback"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .pipe(catchError(() => throwError(null)));
     }
 
     delete(id: number): Observable<boolean> {
         return this.http
-            .delete<any>(this.apiUrl + "/" + id ,this.titleHeader("Delete fee"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .delete<any>(this.apiUrl + "/" + id, this.titleHeader("Delete fee"))
+            .pipe(catchError(() => throwError(false)));
     }
-    
 }

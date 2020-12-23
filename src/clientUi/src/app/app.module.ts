@@ -37,7 +37,8 @@ import { RequestInterceptorService }  from 'src/app/services/request-interceptor
     UserModule,
     ShareModule,
     CookieModule.forRoot(),
-    FacebookModule.forRoot()
+    // FacebookModule.forRoot(),
+    // NgxChartsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService , multi: true },

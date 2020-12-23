@@ -20,7 +20,7 @@ export class ListFeedbackComponent implements OnInit {
         isDataEmpty: false,
         displayText: "No feedback",
     };
-    listFeedback: Feedback[];
+    listFeedback: Feedback[] = [];
 
     constructor(
         private accountSer: AccountService,
@@ -42,7 +42,7 @@ export class ListFeedbackComponent implements OnInit {
                 this.container.isLoaded = true;
             },
             (er) => {
-                this.listFeedback = null;
+                this.listFeedback = er;
                 this.container.isDataEmpty = true;
                 this.container.isLoaded = true;
             }

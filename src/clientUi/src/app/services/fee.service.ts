@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, of, throwError } from "rxjs";
-import { catchError, retry} from "rxjs/operators";
+import { catchError, retry } from "rxjs/operators";
 //models
 import { Fee } from "src/app/models/IModels";
 
@@ -11,9 +11,7 @@ import { Fee } from "src/app/models/IModels";
 export class FeeService {
     private apiUrl = "api/fee";
 
-    constructor(
-        private http: HttpClient,
-    ) {}
+    constructor(private http: HttpClient) {}
 
     private titleHeader(title) {
         return {
@@ -23,34 +21,25 @@ export class FeeService {
 
     get(id: number): Observable<Fee> {
         return this.http
-            .get<Fee>(this.apiUrl + "/" + id,this.titleHeader("Get fee"))
-            .pipe(
-                retry(3),
-                catchError(()=>throwError(null))
-            );
+            .get<Fee>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(null)));
     }
 
     getList(): Observable<Fee[]> {
-         return this.http
-            .get<Fee[]>(this.apiUrl, this.titleHeader("Get list fees"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError([]))
-            );
+        return this.http
+            .get<Fee[]>(this.apiUrl)
+            .pipe(catchError(() => throwError([])));
     }
 
     add(fee: Fee): Observable<Fee> {
         return this.http
             .post<Fee>(this.apiUrl, fee, this.titleHeader("Add fee"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .pipe(catchError(() => throwError(null)));
     }
 
     update(id: number, fee: Fee): Observable<boolean> {
         return this.http
-            .put<any>(this.apiUrl + "/" + id, fee, this.titleHeader("Update fee"))
+            .put<any>(this.apiUrl + "/" + id, this.titleHeader("Update fee"))
             .pipe(
                 retry(3),
                 catchError(() => throwError(false))
@@ -59,10 +48,7 @@ export class FeeService {
 
     delete(id: number): Observable<boolean> {
         return this.http
-            .delete<any>(this.apiUrl + "/" + id ,this.titleHeader("Delete fee"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .delete<any>(this.apiUrl + "/" + id, this.titleHeader("Delete fee"))
+            .pipe(catchError(() => throwError(false)));
     }
 }
