@@ -143,7 +143,7 @@ namespace ecommerce_apple_phone.DTO
     public class ImportDetailDTO
     {
         public int ImportId { get; set; }
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
         public int? Quantity { get; set; }
         public double? Price { get; set; }
     }

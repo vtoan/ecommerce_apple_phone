@@ -10,7 +10,6 @@ namespace ecommerce_apple_phone.Controllers
     [Route("[controller]")]
     public class PromotionController : ControllerBase
     {
-
         private IPromotionModel _promModel;
 
         public PromotionController(IPromotionModel promotionModel)
@@ -118,11 +117,11 @@ namespace ecommerce_apple_phone.Controllers
     public class ChangePromDTO
     {
         [Required]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
         [Required]
         public int PromOldId { get; set; }
         [Required]
-
         public int PromNewId { get; set; }
+
     }
 }

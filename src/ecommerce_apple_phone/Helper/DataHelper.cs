@@ -25,7 +25,7 @@ namespace ecommerce_apple_phone.Helper {
         {
             try
             {
-                int[] itemId = id.Split("-").Select(item => Int32.Parse(item)).ToArray();
+                int[] itemId = id.Split("A").Select(item => Int32.Parse(item)).ToArray();
                 return itemId;
             }catch(Exception ex){
                 System.Console.WriteLine(ex.Data);

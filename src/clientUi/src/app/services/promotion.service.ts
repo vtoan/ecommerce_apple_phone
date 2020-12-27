@@ -26,10 +26,9 @@ export class PromotionService {
     }
 
     get(id: number): Observable<Promotion> {
-        return this.http.get<Promotion>(this.apiUrl + "/" + id).pipe(
-            retry(3),
-            catchError(() => of(null))
-        );
+        return this.http
+            .get<Promotion>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(null)));
     }
 
     add(typeItem: number, prom: Promotion): Observable<Promotion> {
@@ -39,10 +38,7 @@ export class PromotionService {
                 prom,
                 this.titleHeader("Add promotion")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+            .pipe(catchError(() => throwError(null)));
     }
 
     update(id: number, prom: Promotion): Observable<boolean> {
@@ -52,10 +48,7 @@ export class PromotionService {
                 prom,
                 this.titleHeader("Update promotion")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 
     delete(id: number): Observable<boolean> {
@@ -64,44 +57,37 @@ export class PromotionService {
                 this.apiUrl + "/" + id,
                 this.titleHeader("Delete promotion")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+            .pipe(catchError(() => throwError(false)));
     }
 
     getListOfBill(): Observable<PromBill[]> {
-        return this.http.get<PromBill[]>(this.apiUrl).pipe(
-            retry(3),
-            catchError(() => throwError([]))
-        );
+        return this.http
+            .get<PromBill[]>(this.apiUrl)
+            .pipe(catchError(() => throwError([])));
     }
 
     getListOfPoint(): Observable<PromPoint[]> {
-        return this.http.get<PromPoint[]>(this.apiUrl).pipe(
-            retry(3),
-            catchError(() => throwError([]))
-        );
+        return this.http
+            .get<PromPoint[]>(this.apiUrl)
+            .pipe(catchError(() => throwError([])));
     }
 
     getList(): Observable<Promotion[]> {
-        return this.http.get<Promotion[]>(this.apiUrl).pipe(
-            retry(3),
-            catchError(() => throwError([]))
-        );
+        return this.http
+            .get<Promotion[]>(this.apiUrl)
+            .pipe(catchError(() => throwError([])));
     }
 
     getListOfProduct(): Observable<PromProduct[]> {
-        return this.http.get<PromProduct[]>(this.apiUrl + "/product").pipe(
-            retry(3),
-            catchError(() => throwError([]))
-        );
+        return this.http
+            .get<PromProduct[]>(this.apiUrl + "/product")
+            .pipe(catchError(() => throwError([])));
     }
 
     changePromProduct(
         promOld: number,
         promNew: number,
-        prodId: number
+        prodId: string
     ): Observable<boolean> {
         return this.http
             .put<boolean>(

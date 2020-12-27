@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-namespace ecommerce_apple_phone.Controllers {
+namespace ecommerce_apple_phone.Controllers
+{
     [ApiController]
     [Route ("product/[controller]")]
     public class PostController : ControllerBase {
@@ -41,11 +35,10 @@ namespace ecommerce_apple_phone.Controllers {
             return Ok ();
         }
 
-        [HttpPost]
-        public IActionResult Add ([FromServices] IProductModel productModel,[FromForm] PostDTO postDTO) {
-            if (postDTO.Id <= 0 || productModel.GetDetailDTO (postDTO.Id) == null) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
-            var re = _postModel.AddDTO (postDTO);
-            if (re == null) return Problem (statusCode: 500, detail: "Can't add data");
+        [HttpPost("{productId}")]
+        public IActionResult Add ([FromServices] IProductModel productModel, string productId, PostDTO postDTO) {
+            if (postDTO.Id <= 0 || productModel.GetDetailDTO (productId) == null) return BadRequest (new { message = "Add method is invalid, field 'ID' not require" });
+            if (_postModel.AddDTO (postDTO)==null) return Problem (statusCode: 500, detail: "Can't add data");
             return Ok ();
         }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ecommerce_apple_phone.Migrations
 {
-    public partial class init : Migration
+    public partial class editimp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -335,25 +335,6 @@ namespace ecommerce_apple_phone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PromPoints",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    DiscountIn = table.Column<double>(nullable: true),
-                    DiscountOut = table.Column<double>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PromPoints", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PromPoints_Promotions_Id",
-                        column: x => x.Id,
-                        principalTable: "Promotions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PromProducts",
                 columns: table => new
                 {
@@ -419,8 +400,7 @@ namespace ecommerce_apple_phone.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Color = table.Column<string>(maxLength: 25, nullable: true),
                     SaleCount = table.Column<int>(nullable: false, defaultValue: 0),
@@ -446,20 +426,19 @@ namespace ecommerce_apple_phone.Migrations
                 columns: table => new
                 {
                     ImportId = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(nullable: false),
                     Quantity = table.Column<int>(nullable: true),
-                    Price = table.Column<double>(nullable: true),
-                    ImportProductId = table.Column<int>(nullable: true)
+                    Price = table.Column<double>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ImportDetails", x => new { x.ProductId, x.ImportId });
                     table.ForeignKey(
-                        name: "FK_ImportDetails_ImportProducts_ImportProductId",
-                        column: x => x.ImportProductId,
+                        name: "FK_ImportDetails_ImportProducts_ImportId",
+                        column: x => x.ImportId,
                         principalTable: "ImportProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ImportDetails_Products_ProductId",
                         column: x => x.ProductId,
@@ -473,7 +452,7 @@ namespace ecommerce_apple_phone.Migrations
                 columns: table => new
                 {
                     OrderId = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(nullable: false),
                     Quantity = table.Column<byte>(nullable: true),
                     Price = table.Column<int>(nullable: true),
                     Discount = table.Column<double>(nullable: true)
@@ -540,9 +519,9 @@ namespace ecommerce_apple_phone.Migrations
                 column: "ProductDetailId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImportDetails_ImportProductId",
+                name: "IX_ImportDetails_ImportId",
                 table: "ImportDetails",
-                column: "ImportProductId");
+                column: "ImportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ProductId",
@@ -600,9 +579,6 @@ namespace ecommerce_apple_phone.Migrations
 
             migrationBuilder.DropTable(
                 name: "PromBills");
-
-            migrationBuilder.DropTable(
-                name: "PromPoints");
 
             migrationBuilder.DropTable(
                 name: "PromProducts");

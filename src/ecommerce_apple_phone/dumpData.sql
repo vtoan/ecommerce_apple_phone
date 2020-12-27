@@ -177,6 +177,7 @@ VALUES('Ipop',N'Super Retina XDR OLED 6.7” FullHD+ ,16 triệu màu',N'12 MP f
 
 
 INSERT INTO Products (
+    [Id],
     [Price]
       ,[Color]
       ,[SaleCount]
@@ -185,36 +186,37 @@ INSERT INTO Products (
       ,[ProductDetailId]
 )
 VALUES 
-(25000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
-(35000000,'Bule',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
-(27000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
-(32000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 2),
-(33000000,'REad',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 2),
-(36000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 2),
-(21000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 3),
-(22000000,'Black',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 3),
-(23000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 3),
-(17000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 4),
-(12000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 4),
-(15000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 4),
-(22000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,5),
-(26000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,5),
-(21000000,'Gold',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,5),
-(12000000,'GOld',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 6),
-(13000000,'PInk',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 6),
-(14000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 6),
-(6000000,'ORGARN',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 7),
-(5200000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 7),
-(5500000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 7),
-(6000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 8),
-(6000000,'Gold',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 8),
-(6000000,'Pink',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 8),
-(2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 9),
-(2000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 10),
-(3000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 11),
-(2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 12)
+('1A12',25000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
+('1A13',35000000,'Bule',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
+('1A14',27000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 1),
+('2A11',32000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 2),
+('2A12',33000000,'REad',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 2),
+('2A13',36000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 2),
+('3A12',21000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 3),
+('3A11',22000000,'Black',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 3),
+('3A13',23000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 3),
+('4A13',17000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 4),
+('4A12',12000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 4),
+('4A11',15000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 4),
+('5A12',22000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,5),
+('5A11',26000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,5),
+('5A13',21000000,'Gold',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,5),
+('6A11',12000000,'GOld',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 6),
+('6A12',13000000,'PInk',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 6),
+('6A13',14000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 6),
+('7A12',6000000,'ORGARN',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 7),
+('7A11',5200000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 7),
+('7A13',5500000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 7),
+('8A13',6000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 8),
+('8A12',6000000,'Gold',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 8),
+('8A11',6000000,'Pink',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 8),
+('9A13',2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 9),
+('10A11',2000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 10),
+('11A12',3000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 11),
+('12A12',2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 12)
 
 INSERT INTO Products (
+    [Id],
     [Price]
       ,[Color]
       ,[SaleCount]
@@ -223,15 +225,16 @@ INSERT INTO Products (
       ,[ProductDetailId]
 )
 VALUES 
-(25000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 13),
-(36000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 14),
-(22000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 15),
-(15000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 16),
-(26000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,17),
-(12000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 18),
-(5000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 19)
+('13A11',25000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 13),
+('14A11',36000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 14),
+('15A11',22000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 15),
+('16A11',15000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 16),
+('17A11',26000000,'Blue',0,'["product/product1.png","product/product2.png","product/producte.png"]',10,17),
+('18A11',12000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 18),
+('19A11',5000000,'Red',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 19)
 
 INSERT INTO Products (
+    [Id],
     [Price]
       ,[Color]
       ,[SaleCount]
@@ -240,9 +243,9 @@ INSERT INTO Products (
       ,[ProductDetailId]
 )
 VALUES 
-(6000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 20),
-(2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 21),
-(2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 22),
-(3000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 23)
+('20A11',6000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 20),
+('21A11',2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 21),
+('22A11',2000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 22),
+('23A11',3000000,'White',0,'["product/product1.png","product/product2.png","product/producte.png"]',10, 23)
 
 -- Insert rows into table 'TableName' ProductDetails

@@ -47,7 +47,7 @@ namespace ecommerce_apple_phone.Models {
         }
 
         public bool UpdateStatus (int id, byte status) {
-            PropModified<Order> modified = new PropModified<Order>(new {Status = status});
+            PropModified<Order> modified = new PropModified<Order>(new {Status = (status)});
             using(var db = new OrderDAO(_context))
                 return db.Update(id, modified);
         }

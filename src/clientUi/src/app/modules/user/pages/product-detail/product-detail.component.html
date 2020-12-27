@@ -25,24 +25,21 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-7 px-5">
                     <div class="product-text">
-                        <h1 class="normal mb-3 text-2"> {{listAttr[0].name}} - {{productDetail.rom ? productDetail.rom : ""}} </h1>
+                        <h1 class="normal mb-3 text-2"> {{listAttr[0].name}} - {{productDetail ? productDetail.rom :
+                            ""}} </h1>
                         <div class="">
                             <div class="example-button-row">
-                                <button class="mr-3" 
-                                    *ngFor="let item of listAttr"
-                                     mat-stroked-button 
-                                     (click)="onChangeColor(item.id)"
-                                     [ngClass]="item.id == itemActive ? 'bg-black white': '' "
-                                     > {{item.color}}   
+                                <button class="mr-3" *ngFor="let item of listAttr" mat-stroked-button
+                                    (click)="onChangeColor(item.id)"
+                                    [ngClass]="item.id == itemActive ? 'bg-black white': '' "> {{item.color}}
                                 </button>
                             </div>
                         </div>
-                        <div class="text-4  py-4">
-                            <p class="italic bold mb-0 "> Only with: 
+                        <div class="text-4  py-3">
+                            <p class="italic bold mb-0 "> Only with:
                                 <span class="text-4 red bold d-block d-lg-inline-block mb-1 pl-3">
                                     <paser-value [rawVal]="itemPrice - itemDiscount"></paser-value>
                                 </span>
-
                             </p>
                             <p class="italic mb-0" *ngIf="itemDiscount!=0">Price:
                                 <del class="normal text-sub pl-3">
@@ -50,11 +47,13 @@
                                 </del>
                             </p>
                         </div>
+                        <!-- <p class="text-4 italic bold">Remind:<span class="normal"> {{itemQuantity}}</span></p> -->
                         <div>
                             <app-product-promotion></app-product-promotion>
                         </div>
                         <div class="group-btns text-center mb-3">
-                            <a class="buy-now btn btn-lg white bg-red mb-3 w-60" routerLink="/cart" (click)="onBuyNow()">Mua ngay</a>
+                            <a class="buy-now btn btn-lg white bg-red mb-3 w-60" routerLink="/cart"
+                                (click)="onBuyNow()">Mua ngay</a>
                             <button class="to-cart btn btn-lg white bg-black  w-60" (click)="onAddCart()">Thêm vào giỏ
                                 hàng</button>
                         </div>
@@ -134,6 +133,6 @@
         <!--Product Feedback-->
         <app-list-feedback [productId]="itemId"></app-list-feedback>
         <!--Product Other-->
-        <app-products-relate [query]="'ip'" ></app-products-relate>
+        <app-products-relate [query]="'ip'"></app-products-relate>
     </div>
 </div>

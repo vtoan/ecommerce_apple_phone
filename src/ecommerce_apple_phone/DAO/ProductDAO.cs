@@ -10,46 +10,47 @@ namespace ecommerce_apple_phone.DAO
 {
     public class ProductDAO : EntityDAO<Product>
     {
-        public ProductDAO(PhoneContext context) : base(context){}
+        public ProductDAO(PhoneContext context) : base(context) { }
 
-        public Product Get(int id)
+        public Product Get(string id, bool isAdmin = false)
         {
-            if(!CheckConnection()) return null;
+            if (!CheckConnection()) return null;
             //
-            var query =  _context.Products.Where(item => item.Id == id && item.isDel == false);
+            var query = _context.Products.Where(item => item.Id == id && item.isDel == false);
+            if (!isAdmin) query = query.Where(item => item.isShow == true);
             //
             return query.Include(item => item.ProductDetail).FirstOrDefault();
         }
 
-        public List<Product> GetList(int id) // get all attribute of product
+        public List<Product> GetListAttributes(int id, bool isAdmin = false) // get all attribute of product
         {
-            if(!CheckConnection()) return null;
+            if (!CheckConnection()) return null;
             //
-            var  query = _context.Products.Where(item => item.ProductDetailId == id && item.isDel == false);
+            var query = _context.Products.Where(item => item.ProductDetailId == id && item.isDel == false);
+            if (!isAdmin) query = query.Where(item => item.isShow == true);
             //
             var lsProduct = query.Include(item => item.ProductDetail).ToList();
             return lsProduct;
         }
 
-        public List<Product> GetListUnique(bool isAdmin =false) // product take first attribute
+        public List<Product> GetList(bool isAdmin = false) // product take first attribute
         {
-            if(!CheckConnection()) return null;
+            if (!CheckConnection()) return null;
             //
             var query = _context.ProductDetails.Where(item => item.isDel == false);
+            if (!isAdmin) query = query.Where(item => item.isShow == true);
             //
             var lsProduct = query.Include(item => item.Products).ToList();
             List<Product> pds = new List<Product>();
             foreach (var item in lsProduct)
-                if (item.Products.Count > 0) pds.Add(item.Products.First());
+                if (item.Products.Count > 0)
+                {
+                    var queryAttr = item.Products.Where(attr => attr.isDel == false);
+                    if (!isAdmin) queryAttr = queryAttr.Where(attr => attr.isShow == true);
+                    Product attr = queryAttr.FirstOrDefault();
+                    if (attr != null) pds.Add(attr);
+                }
             return pds;
         }
-
-        public bool SubTractQuanity(int itemId, int quantity){
-            var obj = _context.Products.Find(itemId);
-            if(obj==null) return false;
-            int total  = obj.Quantity - quantity;
-            obj.Quantity = total <=0 ? 0 : total;
-            return true;
-        }   
     }
 }

@@ -34,7 +34,7 @@ export class CategoryComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private cateService: CategoryService,
+        public cateService: CategoryService,
         public fileServcie: FileService,
     ) {}
 
@@ -53,12 +53,12 @@ export class CategoryComponent implements OnInit {
         this.formValidate.patchValue(cate);
     }
 
-    onSubmit(e) {
+    onSubmit(e, imgs:any[]) {
         if (this.formValidate.invalid) return;
         e.preventDefault();
         let rawVal = this.formValidate.value;
         let cate: Category = Object.assign({}, rawVal);
-        this.update(cate);
+        this.update(cate, imgs);
         this.isLoaded = false;
     }
 
@@ -68,20 +68,21 @@ export class CategoryComponent implements OnInit {
         this.listFile.length = 0;
     }
 
-    onChangeFile(file: File) {
-        this.formValidate.patchValue({
-            seoImage: this.cateService.getUrlRes() + "/" + file.name,
-        });
-        this.listFile.push(file);
-    }
+    // onChangeFile(file: File) {
+    //     this.formValidate.patchValue({
+    //         seoImage: this.cateService.getUrlRes() + "/" + file.name,
+    //     });
+    //     this.listFile.push(file);
+    // }
 
-    onRemoveFile() {
-        this.formValidate.patchValue({ seoImage: "" });
-        this.listFile.length = 0;
-    }
+    // onRemoveFile() {
+    //     this.formValidate.patchValue({ seoImage: "" });
+    //     this.listFile.length = 0;
+    // }
 
     // =========== Use full ===========
-    private update(cate: Category) {
+    private update(cate: Category, imgs:any[]) {
+        if (imgs.length > 0) cate.seoImage = imgs[0].name;
         this.cateService.update(cate.id, cate).subscribe(
             (resp) => {
                 //
@@ -92,8 +93,8 @@ export class CategoryComponent implements OnInit {
                 this.tableData._updateChangeSubscription();
                 //
                 //
-                if (this.listFile.length > 0) {
-                    let file = this.listFile.pop();
+                if (imgs.length > 0) {
+                    let file =imgs[0].file;
                     this.fileServcie.upload(
                         file,
                         this.cateService.getUrlUpload()

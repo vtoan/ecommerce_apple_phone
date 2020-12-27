@@ -35,6 +35,7 @@ export class ProductDetailComponent implements OnInit {
     listImage: string[] = [];
     itemPrice: number = 0;
     itemDiscount: number = 0;
+    itemQuantity: number =0;
     //
     listProm: PromBill[] = [];
     listProductRelate: Product[];
@@ -120,6 +121,7 @@ export class ProductDetailComponent implements OnInit {
     private productAttrDisplay(idx) {
         let item = this.listAttr[idx];
         console.log(item);
+        this.itemQuantity = item.quantity;
         this.itemPrice = item.price;
         this.itemDiscount =
             item.discount % 1 == 0 ? item.discount : item.price * item.discount;

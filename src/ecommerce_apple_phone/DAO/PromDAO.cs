@@ -10,9 +10,7 @@ namespace ecommerce_apple_phone.DAO
 {
     public class PromDAO : EntityDAO<Promotion>
     {
-        public PromDAO(PhoneContext context) : base(context)
-        {
-        }
+        public PromDAO(PhoneContext context) : base(context){ }
 
         public object GetDetail(int id, int typeItem)
         {
@@ -48,15 +46,15 @@ namespace ecommerce_apple_phone.DAO
                                 .Include(item => item.PromProduct).ToList();
         }
 
-        public List<Promotion> GetListPoint()
-        {
-            if (!CheckConnection()) return null;
-            DateTime date = DateTime.Now;
-            return _context.Promotions.Where(item => item.Type == 3
-                                    && date >= (DateTime)item.FromDate
-                                    && date <= (DateTime)item.ToDate)
-                                .Include(item => item.PromPoint).ToList();
-        }
+        // public List<Promotion> GetListPoint()
+        // {
+        //     if (!CheckConnection()) return null;
+        //     DateTime date = DateTime.Now;
+        //     return _context.Promotions.Where(item => item.Type == 3
+        //                             && date >= (DateTime)item.FromDate
+        //                             && date <= (DateTime)item.ToDate)
+        //                         .Include(item => item.PromPoint).ToList();
+        // }
 
         public bool ChangePromProduct(int PromOld, int PromNew, int ProdId)
         {

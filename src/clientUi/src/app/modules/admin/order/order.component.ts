@@ -26,11 +26,11 @@ export class OrderComponent implements OnInit, AfterViewInit {
     //
     dateRange = {
         begin:  dayjs().subtract(30, "day").toDate(),
-        end: new Date(),
+        end: dayjs().add(1,"day").toDate(),
     };
     //
-    listPay: MethodPay[];
-    listOrder: Order[];
+    listPay: MethodPay[] =[];
+    listOrder: Order[] =[];
     listStatus: string[] = this.orderService.getListStatus();
     //
     tableData = new MatTableDataSource();

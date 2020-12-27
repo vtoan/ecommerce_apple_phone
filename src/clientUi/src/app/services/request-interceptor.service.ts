@@ -28,7 +28,7 @@ export class RequestInterceptorService implements HttpInterceptor {
             catchError((error: any) => {
                 let erMsg = error.error ? error.error.detail : null;
                 if (!erMsg) erMsg = error.statusText + "\n" + error.url;
-                this.message.showFail(error.status + " - " + erMsg, msgTitle);
+                if(msgTitle)  this.message.showFail(error.status + " - " + erMsg, msgTitle);
                 return throwError(error);
             })
         );

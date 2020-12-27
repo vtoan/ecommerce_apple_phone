@@ -35,20 +35,20 @@ namespace ecommerce_apple_phone.Controllers
             //
             double promBill = 0;
             double promMethod = 0;
-            double promPoint = 0;
+            // double promPoint = 0;
             int point = 0;
             //bills
             var bills = _promModel.GetListDTOsPromBill();
             if (bills != null || bills?.Count > 0)
                 promBill = _orderModel.FindPromBill(pramOrder.Item2, pramOrder.Item1, bills);
             //point
-            var points = _promModel.GetListDTOsPromPoint();
-            if (points != null || points?.Count > 0)
-            {
-                if (orderDTO.PointUse != 0)
-                    promPoint = _orderModel.FindPromPoint((int)orderDTO.PointUse, points);
-                point = _orderModel.GetdPoint(pramOrder.Item2, points);
-            }
+            // var points = _promModel.GetListDTOsPromPoint();
+            // if (points != null || points?.Count > 0)
+            // {
+            //     if (orderDTO.PointUse != 0)
+            //         promPoint = _orderModel.FindPromPoint((int)orderDTO.PointUse, points);
+            //     point = _orderModel.GetdPoint(pramOrder.Item2, points);
+            // }
             //Get point
             var fees = feeModel.GetListDTOs();
             if (fees != null || fees.Count > 0)
@@ -58,7 +58,7 @@ namespace ecommerce_apple_phone.Controllers
             {
                 bill = promBill,
                 methodPay = promMethod,
-                promPoint = promPoint
+                // promPoint = promPoint
             });
             return orderDTO;
         }
@@ -82,7 +82,7 @@ namespace ecommerce_apple_phone.Controllers
             }
             var od = _orderModel.AddDTO(orderDTO, orderDetailDTOs);
             if (od == null) Problem(statusCode: 500, detail: "Can't add data");
-            productModel.UpdateForOrder(orderDetailDTOs);
+            // productModel.UpdateForOrder(orderDetailDTOs);
             return Ok();
         }
 

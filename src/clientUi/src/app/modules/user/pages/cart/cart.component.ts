@@ -122,7 +122,8 @@ export class CartComponent implements OnInit {
             this.listPromBill = val;
             obs.complete();
         },er =>{
-            this.errService.redirectError("Can't get bill promotions");
+            // this.errService.redirectError("Can't get bill promotions");
+            this.listPromBill=[];
             obs.complete();
         });
         return obs;

@@ -13,7 +13,7 @@ export class ProductPromotionComponent implements OnInit {
     container: Container = {
         isLoaded: false,
         isDataEmpty: false,
-        // displayText: "No promotion",
+        displayText: "No promotion",
     };
     listProm: PromBill[];
     constructor(

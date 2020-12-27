@@ -35,7 +35,7 @@ namespace ecommerce_apple_phone.Models
             //
             if (detail is PromProduct) obj.PromProduct = (detail);
             else if (detail is PromBill) obj.PromBill = (detail);
-            else if (detail is PromPoint) obj.PromPoint = (detail);
+            // else if (detail is PromPoint) obj.PromPoint = (detail);
             //
             using (var db = new PromDAO(_context))
                 return ObjectMapperTo<Promotion, PromotionDTO>(db.Add(obj));
@@ -49,8 +49,9 @@ namespace ecommerce_apple_phone.Models
 
         public List<PromPointDTO> GetListDTOsPromPoint()
         {
-            using (var db = new PromDAO(_context))
-                return LsObjectMapperTo<Promotion, PromPointDTO>(db.GetListPoint());
+            // using (var db = new PromDAO(_context))
+            //     return LsObjectMapperTo<Promotion, PromPointDTO>(db.GetListPoint());
+            return new List<PromPointDTO>();
         }
 
         public List<PromProductDTO> GetListDTOsPromProduct()
@@ -108,10 +109,11 @@ namespace ecommerce_apple_phone.Models
                 return db.Update(id, modified);
         }
 
-        public bool ChangePromotion(int PromOld, int PromNew, int ProdId)
+        public bool ChangePromotion(int PromOld, int PromNew, string ProdId)
         {
+            int detailId = DataHelper.GetDetailId(ProdId);
             using (var db = new PromDAO(_context))
-                return db.ChangePromProduct(PromOld, PromNew, ProdId);
+                return db.ChangePromProduct(PromOld, PromNew, detailId);
         }
 
         public dynamic CheckPromDetail(object promDetail)
@@ -119,7 +121,7 @@ namespace ecommerce_apple_phone.Models
             if (promDetail == null) return null;
             else if (promDetail is PromProductDTO) return ObjectMapperTo<PromProductDTO, PromProduct>((PromProductDTO)promDetail);
             else if (promDetail is PromBillDTO) return ObjectMapperTo<PromBillDTO, PromBill>((PromBillDTO)promDetail);
-            else if (promDetail is PromPointDTO) return ObjectMapperTo<PromPointDTO, PromPoint>((PromPointDTO)promDetail);
+            // else if (promDetail is PromPointDTO) return ObjectMapperTo<PromPointDTO, PromPoint>((PromPointDTO)promDetail);
             else return null;
         }
     }

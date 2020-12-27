@@ -42,7 +42,7 @@ export class ListFeedbackComponent implements OnInit {
                 this.container.isLoaded = true;
             },
             (er) => {
-                this.listFeedback = er;
+                this.listFeedback = [];
                 this.container.isDataEmpty = true;
                 this.container.isLoaded = true;
             }

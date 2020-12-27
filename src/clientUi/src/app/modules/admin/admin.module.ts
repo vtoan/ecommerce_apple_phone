@@ -30,6 +30,8 @@ import { ProductAttributeComponent } from './product-attribute/product-attribute
 import { ImportComponent } from './import/import.component';
 import { ImportService } from './services/import.service';
 import { ImportItemComponent } from './import-item/import-item.component';
+import { ImportDetailComponent } from './import-detail/import-detail.component';
+import { ImportDetailViewComponent } from './import-detail-view/import-detail-view.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +54,8 @@ import { ImportItemComponent } from './import-item/import-item.component';
         ProductAttributeComponent,
         ImportComponent,
         ImportItemComponent,
+        ImportDetailComponent,
+        ImportDetailViewComponent,
     ],
     imports: [
         CommonModule,

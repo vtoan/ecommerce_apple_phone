@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
@@ -27,7 +26,7 @@ namespace ecommerce_apple_phone.Controllers
             return re;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public ActionResult<FeedbackDTO> Add(
             [FromServices] ICacheHelper cache, [FromServices] IProductModel productModel,
         FeedbackDTO feedbackDTO)

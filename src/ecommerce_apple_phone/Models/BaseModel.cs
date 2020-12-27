@@ -8,12 +8,12 @@ using ecommerce_apple_phone.Interfaces;
 
 namespace ecommerce_apple_phone.Models
 {
-    public abstract class BaseModel<T, V>: DataModel where V : class
+    public abstract class BaseModel<T, V> : DataModel where V : class
     {
 
         protected PhoneContext _context;
 
-        public BaseModel(PhoneContext context, IMapper mapper) :base(mapper)
+        public BaseModel(PhoneContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
         }
@@ -22,9 +22,7 @@ namespace ecommerce_apple_phone.Models
         {
             if (newObj == null) return default(T);
             using (EntityDAO<V> db = new EntityDAO<V>(_context))
-                return ObjectMapperTo<V, T>(
-                    db.Add(ObjectMapperTo<T, V>(newObj))
-                );
+                return ObjectMapperTo<V, T>(db.Add(ObjectMapperTo<T, V>(newObj)));
         }
 
         public T GetDTO(int id)
@@ -46,7 +44,9 @@ namespace ecommerce_apple_phone.Models
             if (id < 0) return false;
             //
             using (EntityDAO<V> db = new EntityDAO<V>(_context))
+            {
                 return db.Remove(id);
+            }
         }
 
         public bool UpdateDTO(int idSrc, T objVM, string[] ignore = null)
@@ -59,8 +59,6 @@ namespace ecommerce_apple_phone.Models
             using (EntityDAO<V> db = new EntityDAO<V>(_context))
                 return db.Update(idSrc, modifieds);
         }
-
-        
     }
 
     public abstract class DataModel

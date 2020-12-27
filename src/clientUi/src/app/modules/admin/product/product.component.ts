@@ -11,6 +11,7 @@ import { PromotionService } from "src/app/services/promotion.service";
 import { CategoryService } from "src/app/services/category.service";
 import { FileService } from "src/app/services/file.service";
 import { Container } from "src/app/models/container";
+import { MessageService } from "src/app/services/message.service";
 
 @Component({
     selector: "app-product",
@@ -36,7 +37,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         private productService: ProductService,
         private promService: PromotionService,
         private categoryService: CategoryService,
-        private fileService: FileService
+        private fileService: FileService,
+        private msgSer: MessageService
     ) {}
 
     ngOnInit() {
@@ -47,7 +49,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         )
             .pipe(
                 finalize(() => {
-                    if (this.listPromotion && this.listPromotion.length >0) this.attachProm();
+                    if (this.listPromotion && this.listPromotion.length > 0)
+                        this.attachProm();
                     this.container.isLoaded = true;
                 })
             )
@@ -59,28 +62,34 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     onChangeStatus(item: Product) {
-        this.productService.updateStatus(item.id, !item.isShow).subscribe(val =>{
-            item.isShow = !item.isShow
-        });
+        this.productService
+            .updateStatus(item.id, !item.isShow)
+            .subscribe((val) => {
+                item.isShow = !item.isShow;
+            });
     }
 
     onChangePromotion(index, item: Product) {
+        if (item.promId < 0) {
+            this.msgSer.showFail("Product belong to promotion of category");
+            return;
+        }
         let idx = this.listPromotion.findIndex(
-            (prom) => prom.id == item.promId
+            (prom) =>
+                prom.id == (item.promId < 0 ? item.promId * -1 : item.promId)
         );
         if (index == idx + 1) return;
         //
-        let itemId = Number(item.id.split("-")[0]);
-        console.log(item);
-        console.log(index);
-        let newPromId = index== 0 ? 0 : this.listPromotion[index -1].id;
-        this.promService.changePromProduct(item.promId, newPromId, itemId).subscribe(val =>{
-            item.promId = newPromId;
-        });
+        let newPromId = index == 0 ? 0 : this.listPromotion[index - 1].id;
+        this.promService
+            .changePromProduct(item.promId, newPromId, item.id)
+            .subscribe((val) => {
+                item.promId = newPromId;
+            });
     }
 
     getImageUrl(item: Product) {
-        if(!item.images) return;
+        if (!item.images) return;
         let imgs = Object.values(JSON.parse(item.images));
         return this.fileService.rootPath + "/" + imgs[0];
     }
@@ -93,7 +102,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     getPromotion(item: Product) {
         if (!this.listPromotion) return "Unknown";
-        let idx = this.listPromotion.find((prom) => prom.id == item.promId);
+        let idx = this.listPromotion.find((prom) => prom.id == (item.promId < 0 ? item.promId * -1 : item.promId));
         return idx ? idx.name : "Not promotion";
     }
 
@@ -116,7 +125,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     private getDataPromotion(): Observable<any> {
-        console.log("object");
         let obs = new Subject();
         this.promService.getListOfProduct().subscribe(
             (resp) => {
@@ -154,15 +162,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
             let cateIds: number = prom.categoryId;
             if (cateIds) {
                 this.listProduct.forEach((product) => {
-                    if (product.categoryId == cateIds) product.promId = prom.id;
-                    else product.promId = 0;
+                    if (product.categoryId == cateIds)
+                        product.promId = -prom.id;
+                    // else product.promId = 0;
                 });
             }
             if (arIds != null)
                 this.listProduct.forEach((product) => {
-                    let itemId = Number(product.id.split("-")[0]);
+                    let itemId = Number(product.id.split("A")[0]);
                     if (arIds.indexOf(itemId) >= 0) product.promId = prom.id;
-                    else product.promId = 0;
+                    // else product.promId = 0;
                 });
         }
     }

@@ -10,8 +10,8 @@ using ecommerce_apple_phone.EF;
 namespace ecommerce_apple_phone.Migrations
 {
     [DbContext(typeof(PhoneContext))]
-    [Migration("20201215043146_init")]
-    partial class init
+    [Migration("20201227140617_editimp")]
+    partial class editimp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -301,13 +301,10 @@ namespace ecommerce_apple_phone.Migrations
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.ImportDetail", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ImportId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ImportProductId")
                         .HasColumnType("int");
 
                     b.Property<double?>("Price")
@@ -318,7 +315,7 @@ namespace ecommerce_apple_phone.Migrations
 
                     b.HasKey("ProductId", "ImportId");
 
-                    b.HasIndex("ImportProductId");
+                    b.HasIndex("ImportId");
 
                     b.ToTable("ImportDetails");
                 });
@@ -487,8 +484,8 @@ namespace ecommerce_apple_phone.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double?>("Discount")
                         .HasColumnType("float");
@@ -533,10 +530,8 @@ namespace ecommerce_apple_phone.Migrations
 
             modelBuilder.Entity("ecommerce_apple_phone.EF.Product", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(25)")
@@ -674,22 +669,6 @@ namespace ecommerce_apple_phone.Migrations
                     b.ToTable("PromBills");
                 });
 
-            modelBuilder.Entity("ecommerce_apple_phone.EF.PromPoint", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("DiscountIn")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("DiscountOut")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PromPoints");
-                });
-
             modelBuilder.Entity("ecommerce_apple_phone.EF.PromProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -804,7 +783,9 @@ namespace ecommerce_apple_phone.Migrations
                 {
                     b.HasOne("ecommerce_apple_phone.EF.ImportProduct", "ImportProduct")
                         .WithMany("ImportDetails")
-                        .HasForeignKey("ImportProductId");
+                        .HasForeignKey("ImportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ecommerce_apple_phone.EF.Product", "Product")
                         .WithMany()
@@ -856,15 +837,6 @@ namespace ecommerce_apple_phone.Migrations
                     b.HasOne("ecommerce_apple_phone.EF.Promotion", "Promotion")
                         .WithOne("PromBill")
                         .HasForeignKey("ecommerce_apple_phone.EF.PromBill", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ecommerce_apple_phone.EF.PromPoint", b =>
-                {
-                    b.HasOne("ecommerce_apple_phone.EF.Promotion", "Promotion")
-                        .WithOne("PromPoint")
-                        .HasForeignKey("ecommerce_apple_phone.EF.PromPoint", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -44,7 +44,9 @@ export class ImportItemComponent implements OnInit {
                 this.isValid = false;
                 return;
             }
-            this.data = val;
+            this.data.price=Number(val.price)
+            this.data.quantity=Number(val.quantity)
+            this.data.productId = val.productId
             this.isValid = true;
         });
     }

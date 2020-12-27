@@ -24,7 +24,6 @@ export class PostService {
         return this.http
             .get<Post>(this.apiUrl + "/" + id)
             .pipe(
-                retry(3),
                 catchError(() => throwError(null))
             );
     }

@@ -1,26 +1,50 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of, Subject } from "rxjs";
+import { Observable, of, Subject, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { ImportDetail, ImportProduct } from "src/app/models/IModels";
 
 @Injectable({
     providedIn: "root",
 })
 export class ImportService {
-    private listImp: ImportDetail[] = [];
+    private apiUrl = "api/import";
 
-    obs = new Subject<ImportDetail[]>();
+    constructor(private http: HttpClient) {}
 
-    constructor() {}
-
-    add(list:ImportDetail[]):Observable<boolean>{
-        return of(null);
+    private titleHeader(title) {
+        return {
+            headers: new HttpHeaders({ Action: title }),
+        };
     }
 
-    getList():Observable<ImportProduct>{
-        return of(null);
+    add(list: ImportDetail[]): Observable<ImportProduct> {
+        return this.http
+            .post<ImportProduct>(
+                this.apiUrl,
+                {
+                    importItems: JSON.stringify(list),
+                },
+                this.titleHeader("Add Import")
+            )
+            .pipe(catchError(() => throwError(null)));
     }
 
-    get(id:number):Observable<ImportProduct>{
-        return of(null);
+    getList(start: Date, end: Date): Observable<ImportProduct[]> {
+        let sDate: string = `${
+            start.getMonth() + 1
+        }-${start.getDate()}-${start.getFullYear()}`;
+        let eDate: string = `${
+            end.getMonth() + 1
+        }-${end.getDate()}-${end.getFullYear()}`;
+        return this.http
+            .get<ImportProduct[]>(this.apiUrl + "/report/" + sDate + "/" + eDate)
+            .pipe(catchError(() => throwError(null)));
+    }
+
+    get(id: number): Observable<ImportDetail[]> {
+        return this.http
+            .get<ImportDetail[]>(this.apiUrl+"/"+id)
+            .pipe(catchError(() => throwError([])));
     }
 }

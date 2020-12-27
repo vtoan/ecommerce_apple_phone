@@ -29,7 +29,6 @@ export class CheckOrderComponent implements OnInit {
         this.isRequest = true;
         this.orderService.get(this.queryOrder.value).subscribe(
             (val) => {
-                console.log(val);
                 this.order = val;
                 this.isRequest = false;
                 this.isRequesed =true;

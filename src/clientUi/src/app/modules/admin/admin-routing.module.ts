@@ -15,7 +15,9 @@ import { PromotionDetailComponent } from "./promotion-detail/promotion-detail.co
 import { ProductTabComponent } from "./product-tab/product-tab.component";
 import { ListUserComponent } from "./list-user/list-user.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
-import { ImportComponent } from './import/import.component';
+import { ImportComponent } from "./import/import.component";
+import { ImportDetailComponent } from "./import-detail/import-detail.component";
+import { ImportDetailViewComponent } from "./import-detail-view/import-detail-view.component";
 //
 const routes: Routes = [
     {
@@ -46,9 +48,17 @@ const routes: Routes = [
                 component: UserDetailComponent,
             },
             {
-                path:"import",
-                component:ImportComponent
-            }
+                path: "import",
+                component: ImportComponent,
+            },
+            {
+                path: "import-detail",
+                component: ImportDetailComponent,
+            },
+            {
+                path: "import-detail-view/:id",
+                component: ImportDetailViewComponent,
+            },
         ],
     },
 ];
