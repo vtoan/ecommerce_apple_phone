@@ -4,6 +4,7 @@ using System.Linq;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 namespace ecommerce_apple_phone.Controllers
@@ -26,8 +27,19 @@ namespace ecommerce_apple_phone.Controllers
         [HttpGet]
         public ActionResult<List<ProductDTO>> GetListProduct()
         {
-            User.IsInRole("admin");
-            var re = GetListProducts();
+            List<ProductDTO> re = new List<ProductDTO>();
+            
+             re = GetListProducts();
+            if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
+            return re;
+        }
+
+        [HttpGet("admin")]
+        [Authorize]
+        public ActionResult<List<ProductDTO>> GetListProductAdmin()
+        {
+            List<ProductDTO> re = new List<ProductDTO>();
+            re = GetListProducts(true);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
@@ -67,19 +79,22 @@ namespace ecommerce_apple_phone.Controllers
             return _productModel.FindByCate(re, cateId);
         }
 
+        [HttpGet("promotions/{items}")]
         [HttpGet("promotions")]
-        public ActionResult<List<ProductDTO>> FindPromotion()
+        public ActionResult<List<ProductDTO>> FindPromotion(int items)
         {
             //Get in cache
             var re = _cache.Get<List<ProductDTO>>(CacheKey.DISCOUNT_PRODUCT);
-            if (re != null || re?.Count > 0) return re;
-            //Get in db
-            var products = GetListProducts();
-            if (products == null) return Problem(statusCode: 500, detail: "Data not exist");
-            re = _productModel.FindPromotion(products);
-            if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
-            _cache.Set(re, CacheKey.DISCOUNT_PRODUCT);
-            return re.Take(4).ToList();
+            if (re == null || re?.Count == 0)
+            {
+                //Get in db
+                var products = GetListProducts();
+                if (products == null) return Problem(statusCode: 500, detail: "Data not exist");
+                re = _productModel.FindPromotion(products);
+                if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
+                _cache.Set(re, CacheKey.DISCOUNT_PRODUCT);
+            }
+            return items <= 0 ? re : re.Take(items).ToList();
         }
 
         [HttpGet("search/{query}")]
@@ -155,6 +170,8 @@ namespace ecommerce_apple_phone.Controllers
             var re = _productModel.UpdateStatusDTO(id, (bool)status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
             _cache.DataUpdated(CacheKey.PRODUCT);
+            _cache.DataUpdated(CacheKey.DISCOUNT_PRODUCT);
+            _cache.DataUpdated(CacheKey.SELLER_PRODUCT);
             return Ok();
         }
 
@@ -242,9 +259,9 @@ namespace ecommerce_apple_phone.Controllers
         private List<ProductDTO> GetListProducts(bool isAdmin = false)
         {
             var re = _cache.Get<List<ProductDTO>>(CacheKey.PRODUCT);
-            if (re == null || re?.Count == 0)
+            if (re == null || re?.Count == 0 || isAdmin == true)
             {
-                re = _productModel.GetListDTOs();
+                re = _productModel.GetListDTOs(isAdmin);
                 if (re != null && re?.Count > 0)
                 {
                     List<PromProductDTO> proms = _promotionModel.GetListDTOsPromProduct();
@@ -253,8 +270,8 @@ namespace ecommerce_apple_phone.Controllers
                     _cache.Set(re, CacheKey.PRODUCT);
                 }
             }
-            // return isAdmin ? re : re.Where(item => item.isShow == true).ToList();
             return re;
+            // return isAdmin ? re : re.Where(item => item.isShow == true).ToList();
         }
     }
 }

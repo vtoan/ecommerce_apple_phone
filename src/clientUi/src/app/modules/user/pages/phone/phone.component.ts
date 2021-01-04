@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ProductService } from "src/app/services/product.service";
 //model
 import { Product } from "src/app/models/IModels";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-phone",
@@ -10,9 +11,11 @@ import { Product } from "src/app/models/IModels";
     styleUrls: ["./phone.component.scss"],
 })
 export class PhoneComponent implements OnInit {
-    isLoaded: boolean = false;
+    ctainer:Container={
+        isLoaded:false,
+        isDataEmpty:false
+    }
     listProducts: Product[];
-    message: string = "Data is empty";
     constructor(private productService: ProductService) {}
 
     ngOnInit() {
@@ -20,9 +23,12 @@ export class PhoneComponent implements OnInit {
         this.productService.getListByCate(1).subscribe(
             (resp) => {
                 if (resp != null || resp) this.listProducts = resp;
+                this.ctainer.isLoaded =true;
             },
-            (er) => (this.message = er),
-            () => (this.isLoaded = true)
+            (er) => {
+                this.ctainer.isDataEmpty =true;
+                this.ctainer.isLoaded=true;
+            },
         );
     }
 }

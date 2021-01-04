@@ -117,7 +117,7 @@ namespace ecommerce_apple_phone.DTO
         public string Promotion { get; set; }
         public string Fees { get; set; }
         public byte? Status { get; set; }
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
         public int? MethodPayId { get; set; }
         public int? PointUse { get; set; }
         public int? Point { get; set; }

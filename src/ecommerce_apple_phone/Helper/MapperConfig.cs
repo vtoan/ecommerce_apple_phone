@@ -65,7 +65,7 @@ namespace ecommerce_apple_phone.Helper
             CreateMap<Promotion, PromBillDTO>()
                 .ForMember(src => src.Discount, act => act.MapFrom(des => des.PromBill.Discount))
                 .ForMember(src => src.ConditionItem, act => act.MapFrom(des => des.PromBill.ConditionItem))
-                .ForMember(src => src.ConditionAmount, act => act.MapFrom(des => des.PromBill.ConditionItem));
+                .ForMember(src => src.ConditionAmount, act => act.MapFrom(des => des.PromBill.ConditionAmount));
             CreateMap<Promotion, PromProductDTO>()
                 .ForMember(src => src.Discount, act => act.MapFrom(des => des.PromProduct.Discount))
                 .ForMember(src => src.ProductInProms, act => act.MapFrom(des => des.PromProduct.ProductInProms))
@@ -82,8 +82,7 @@ namespace ecommerce_apple_phone.Helper
             CreateMap<PromProductDTO, PromProduct>();
             CreateMap<PromProduct, PromProductDTO>();
             //
-            CreateMap<AppUser, InfoModel>()
-                .ForMember(src => src.Phone, act => act.MapFrom(des => des.PhoneNumber));
+            CreateMap<AppUser, InfoModel>();
             //
             CreateMap<ImportProductDTO, ImportProductDTO>();
         }

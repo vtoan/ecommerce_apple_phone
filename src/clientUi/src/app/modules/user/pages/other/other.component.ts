@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ProductService } from "src/app/services/product.service";
 //model
 import { Product } from "src/app/models/IModels";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-other",
@@ -10,9 +11,11 @@ import { Product } from "src/app/models/IModels";
     styleUrls: ["./other.component.scss"],
 })
 export class OtherComponent implements OnInit {
-    isLoaded: boolean = false;
+    ctainer:Container={
+        isLoaded:false,
+        isDataEmpty:false
+    }
     listProducts: Product[];
-    message: string = "";
     constructor(private productService: ProductService) {}
 
     ngOnInit() {
@@ -23,9 +26,12 @@ export class OtherComponent implements OnInit {
             .subscribe(
                 (val) => {
                     if (val) this.listProducts = val;
+                    this.ctainer.isLoaded =true;
                 },
-                (er) => console.log(er),
-                () => (this.isLoaded = true)
+                (er) => {
+                    this.ctainer.isDataEmpty =true;
+                    this.ctainer.isLoaded=true;
+                },
             );
     }
 }

@@ -67,6 +67,7 @@ namespace ecommerce_apple_phone.Controllers
             if (id <= 0 || !ModelState.IsValid) return BadRequest(new { message = "ID is invalid" });
             if (!_promModel.UpdateDTO(id, promotionDTO, promotionDTO.ItemDetail)) return Problem(statusCode: 500, detail: "Can't update data");
             cache.DataUpdated(CacheKey.PRODUCT);
+            cache.DataUpdated(CacheKey.DISCOUNT_PRODUCT);
             return Ok();
         }
 
@@ -91,6 +92,7 @@ namespace ecommerce_apple_phone.Controllers
             var re = _promModel.AddDTO(promotionDTO, detail);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
             cache.DataUpdated(CacheKey.PRODUCT);
+            cache.DataUpdated(CacheKey.DISCOUNT_PRODUCT);
             return re;
         }
 
@@ -100,6 +102,8 @@ namespace ecommerce_apple_phone.Controllers
             if (id <= 0) return NotFound();
             if (!_promModel.RemoveDTO(id)) return Problem(statusCode: 500, detail: "Can't remove data");
             cache.DataUpdated(CacheKey.PRODUCT);
+                        cache.DataUpdated(CacheKey.DISCOUNT_PRODUCT);
+
             return Ok();
         }
 

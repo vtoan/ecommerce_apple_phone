@@ -1,0 +1,46 @@
+<div class="container section">
+    <div class="row" style="padding-top: 5em;">
+        <div class="col-6">
+            <div class="text-center ">
+                <h4 class="mb-3">REGISTER</h4>
+                <span class="red mb-3">{{ textError }}</span>
+                <form>
+                    <p>
+                        <mat-form-field style="width: 300px;">
+                            <mat-label>Name</mat-label>
+                            <input #name matInput type="text" name="name" autocomplete="cc-name" required>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field style="width: 300px;">
+                            <mat-label>Email</mat-label>
+                            <input #email matInput type="email" name="email" autocomplete="email" required>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field style="width: 300px;">
+                            <mat-label>Password</mat-label>
+                            <input #pass matInput type="password" name="password" autocomplete="current-password" required>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field style="width: 300px;">
+                            <mat-label>Re - Password</mat-label>
+                            <input #rePass matInput type="password" name="rePasswrod" autocomplete="new-password" required>
+                        </mat-form-field>
+                    </p>
+                    <div class="my-4">
+                        <button class="btn btn-sm bg-blue white px-lg-4 mr-3" type="submit"
+                            (click)="onRegister(name.value ,email.value, pass.value, rePass.value)"> Register
+                        </button>
+                    </div>
+                    <a class="mb-4" routerLink="/login" routerLinkActive="router-link-active"  >Have account, sign in now</a>
+                </form>
+            </div>
+        </div>
+        <div class="col-6">
+            <div style="width: 100%; height: 400px; background-color: #333;"></div>
+        </div>
+    </div>
+
+</div>

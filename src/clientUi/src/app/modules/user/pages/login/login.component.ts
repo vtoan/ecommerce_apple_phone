@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { param } from "jquery";
 import { AccountService } from "src/app/services/account.service";
 
 @Component({
@@ -32,10 +31,7 @@ export class LoginComponent implements OnInit {
                     if (!this.returnUrl) this.returnUrl = "/";
                     this.router.navigate([this.returnUrl]);
                 },
-                (er) => {
-            this.textError = "Email or password not correct";
-                    // this.accountService.obs.error("Can't login");
-                }
+                (er) => (this.textError = "Email or password not correct")
             );
         }
     }

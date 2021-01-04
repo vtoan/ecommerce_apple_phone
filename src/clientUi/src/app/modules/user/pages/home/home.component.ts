@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ProductService } from "src/app/services/product.service";
 //model
 import { Product } from "src/app/models/IModels";
+import { Container } from "src/app/models/container";
 
 @Component({
     selector: "app-home",
@@ -10,9 +11,18 @@ import { Product } from "src/app/models/IModels";
     styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
+    ctaierSeller: Container = {
+        isLoaded: false,
+        isDataEmpty: false,
+    };
+
+    ctaierDiscount: Container = {
+        isLoaded: false,
+        isDataEmpty: false,
+    };
+
     listSeller: Product[];
     listDiscount: Product[];
-    message: string;
 
     constructor(private productService: ProductService) {}
 
@@ -25,18 +35,24 @@ export class HomeComponent implements OnInit {
         this.productService.getListBestSeller().subscribe(
             (resp) => {
                 this.listSeller = resp;
+                this.ctaierSeller.isLoaded = true;
             },
-            (er) => (this.message = er)
+            (er) => {
+                this.ctaierSeller.isDataEmpty = true;
+                this.ctaierSeller.isLoaded = true;
+            }
         );
     }
 
     private getDiscount() {
         this.productService.getListDiscount().subscribe(
             (resp) => {
-                console.log(resp);
                 this.listDiscount = resp;
+                this.ctaierDiscount.isLoaded = true;
             },
-            (er) => (this.message = er)
-        );
+            (er) => {
+                this.ctaierDiscount.isDataEmpty = true;
+                this.ctaierDiscount.isLoaded = true;
+            }        );
     }
 }

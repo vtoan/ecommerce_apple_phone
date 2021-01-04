@@ -1,0 +1,8 @@
+<a *ngIf="!isSignIned" class="text-right nav-item nav-icon d-block" (click)="onSignIn()" >
+    <i class="icon las la-user"></i></a>
+<div *ngIf="isSignIned" class="d-flex justify-content-end align-items-center pl-4">
+    <a class="nav-item nav-icon" (click)="onShowDetail()" > {{user.name ? user.name : user.email }} </a>
+    <a class="nav-item nav-icon" (click)="onLogout()" >
+        <i class="icon las la-sign-out-alt"></i>
+    </a>
+</div>

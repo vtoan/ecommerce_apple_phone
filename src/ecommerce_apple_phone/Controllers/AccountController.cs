@@ -32,6 +32,40 @@ namespace ecommerce_apple_phone.Controllers
             _roleManager = roleManager;
         }
 
+        [HttpGet("check-login")]
+        public async Task<ActionResult<object>> IsLogined(
+            [FromServices] IMapper mapper
+        )
+        {
+            if (User == null) return NotFound();
+            var name = User.FindFirst(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(name.Value);
+            if(user == null) return Problem();
+            return mapper.Map<InfoModel>(user); 
+
+        }
+
+        public class InputRole{
+            public string RoleName { get; set; }
+        }
+        
+        [HttpPost("check-role")]
+        public async Task<ActionResult> IsRole(
+            InputRole input
+        )
+        {
+            if(!ModelState.IsValid | User == null) return BadRequest();
+            var arRoles = input.RoleName.Split(",");
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null) return NotFound();
+            foreach (var item in arRoles)
+            {
+                var  re = await _userManager.IsInRoleAsync(user, input.RoleName);
+                if(!re) return Forbid();
+            }
+            return Ok();
+        }
+
         [HttpPost("login")]
         public async Task<ActionResult<object>> LoginAsync(
             [FromServices] IMapper mapper,
@@ -51,7 +85,7 @@ namespace ecommerce_apple_phone.Controllers
             InputModel input)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var user = new AppUser { Name = input.Name, UserName = input.Email, Email = input.Email };
+            var user = new AppUser { Name = input.Name, UserName = input.Email, Email = input.Email,};
             var re = await _userManager.CreateAsync(user, input.Password);
             if (re.Succeeded)
             {
@@ -187,15 +221,16 @@ namespace ecommerce_apple_phone.Controllers
             return mapper.Map<InfoModel>(re);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> ChangeInfoAsync(InfoModel input)
+        public async Task<IActionResult> ChangeInfoAsync(string id, InfoModel input)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var user = await _userManager.FindByIdAsync(input.Id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
             user.Address = input.Address;
             user.Name = input.Name;
+            user.PhoneNumber = input.PhoneNumber;
             var re = await _userManager.UpdateAsync(user);
             if (re.Succeeded) return Ok();
             return BadRequest();
@@ -260,13 +295,20 @@ namespace ecommerce_apple_phone.Controllers
             return _roleManager.Roles.Select(item => item.Name).ToArray();
         }
 
-        [HttpPost("init-roles")]
+        [HttpPost("init-user")]
         public async Task<ActionResult> InitRolesAsync()
         {
+            var user = await _userManager.FindByEmailAsync("admin@gmail.com");
+            if (user != null) return Problem();
             await _roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
             await _roleManager.CreateAsync(new IdentityRole() { Name = "Sale" });
             await _roleManager.CreateAsync(new IdentityRole() { Name = "Warehouse" });
             await _roleManager.CreateAsync(new IdentityRole() { Name = "User" });
+            var admin = await _userManager.CreateAsync(new AppUser() {UserName="admin@gmail.com" , Name = "Admin", Email = "admin@gmail.com" }, "123");
+            var ad= await _userManager.FindByEmailAsync("admin@gmail.com");
+            await  _userManager.AddToRoleAsync(ad,"admin");
+            // await _userManager.AddToRoleAsync(sale, "sale");
+            // await _userManager.AddToRoleAsync(stock, "stock");
             return Ok();
         }
 
@@ -298,6 +340,7 @@ namespace ecommerce_apple_phone.Controllers
 
         [Required]
         public string Password { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     public class ConfirmEmailModel
@@ -335,13 +378,13 @@ namespace ecommerce_apple_phone.Controllers
 
     public class InfoModel
     {
-        [Required]
+        // [Required]
         public string Id { get; set; }
         public string Address { get; set; }
         public string Name { get; set; }
         public string Province { get; set; }
         public string District { get; set; }
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string RoleName { get; set; }
         public string DateCreated { get; set; }

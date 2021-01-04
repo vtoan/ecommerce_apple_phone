@@ -74,7 +74,7 @@ namespace ecommerce_apple_phone.Interfaces {
         OrderDTO AddDTO (OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTOs);
         bool UpdateStatus (int id, byte status);
         List<OrderDTO> GetListDTOs (DateTime start, DateTime end);
-        List<OrderDTO> GetListDTOsByCustomer (int idCustomer);
+        List<OrderDTO> GetListDTOsByCustomer (string idCustomer);
         List<OrderDTO> Find (string query);
         List<OrderDetailDTO> GetOrderDetailDTOs (int id);
         //

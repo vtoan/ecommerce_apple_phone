@@ -469,8 +469,8 @@ namespace ecommerce_apple_phone.Migrations
                         .HasColumnType("tinyint")
                         .HasDefaultValue((byte)1);
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

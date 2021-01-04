@@ -48,6 +48,7 @@ namespace ecommerce_apple_phone.DAO
                     var queryAttr = item.Products.Where(attr => attr.isDel == false);
                     if (!isAdmin) queryAttr = queryAttr.Where(attr => attr.isShow == true);
                     Product attr = queryAttr.FirstOrDefault();
+                    attr.isShow = item.isShow;
                     if (attr != null) pds.Add(attr);
                 }
             return pds;

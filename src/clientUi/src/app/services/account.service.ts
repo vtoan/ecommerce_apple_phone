@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable, of, Subject, throwError } from "rxjs";
 import { catchError, retry, tap } from "rxjs/operators";
 import { User } from "../models/IModels";
@@ -8,118 +9,62 @@ import { User } from "../models/IModels";
     providedIn: "root",
 })
 export class AccountService {
-    user:User;
+    user: User;
     obs = new Subject<User>();
+    //   
+    private _apiUrl = "api/account";
 
-    private apiUrl = "api/account";
-
-    constructor(private http: HttpClient) {
-        this.obs.subscribe(val => this.user = val, er => this.user = null);
+    constructor(private router: Router, private http: HttpClient) {
+        this.obs.subscribe((val) => (this.user = val));
+        this.checkLogin();
     }
 
-    private titleHeader(title) {
-        return {
-            headers: new HttpHeaders({ Action: title }),
-        };
+    private _titleHeader(title:string) {
+        return { headers: new HttpHeaders({ Action: title }) };
     }
 
-    getUserCurrent():User{
-        return {
-            id: "abad",
-            name: "abad",
-            phone: "abad",
-            address: "abad",
-            email: "abad",
-            roleName: "abad",
-            dateCreated: new Date(),
-        }
+    getUserCurrent(): User {
+        return this.user;
     }
 
     getList(): Observable<User[]> {
-        // return of([
-        //     {
-        //         id: "abad",
-        //         name: "abad",
-        //         phone: "abad",
-        //         address: "abad",
-        //         email: "abad",
-        //         roleName: "abad",
-        //         dateCreated: new Date(),
-        //     },
-        // ]);
-        return this.http
-            .get<User[]>(this.apiUrl, this.titleHeader("Get list user"))
-            .pipe(
-                retry(3),
-                catchError(() => throwError([]))
-            );
+        return this.http.get<User[]>(this._apiUrl);
     }
 
     get(id: string): Observable<User> {
-        // return of({
-        //     id: "abad",
-        //     name: "abad",
-        //     phone: "abad",
-        //     address: "abad",
-        //     email: "abad",
-        //     roleName: "abad",
-        //     dateCreated: new Date(),
-        // });
-        return this.http
-            .get<User>(this.apiUrl + "/" + id, this.titleHeader("Get user"))
-            .pipe(
-                retry(3),
-                catchError(() => of(null))
-            );
+        return this.http.get<User>(this._apiUrl + "/" + id);
     }
 
+    //role
     changeRole(id: string, roleName: string): Observable<boolean> {
-        return this.http
-            .post<boolean>(
-                this.apiUrl + "/roles",
-                {
-                    userId: id,
-                    roleName: roleName,
-                },
-                this.titleHeader("Change role user")
-            )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+        return this.http.post<boolean>(
+            this._apiUrl + "/roles",
+            {
+                userId: id,
+                roleName: roleName,
+            },
+            this._titleHeader("Change role user")
+        );
     }
 
     update(id: string, user: User): Observable<boolean> {
-        return this.http
-            .put<boolean>(
-                this.apiUrl + "/" + id,
-                user,
-                this.titleHeader("Update user")
-            )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(false))
-            );
+        return this.http.put<boolean>(
+            this._apiUrl + "/" + id,
+            user,
+            this._titleHeader("Update user")
+        );
     }
 
-    add(name:string, email: string, password: string): Observable<User> {
-        return this.http
-            .post<User>(
-                this.apiUrl + "/register",
-                { email: email, password: password },
-                this.titleHeader("Register user")
-            )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+    add(name: string, email: string, password: string): Observable<User> {
+        return this.http.post<User>(
+            this._apiUrl + "/register",
+            { name: name, email: email, password: password },
+            this._titleHeader("Register user")
+        );
     }
 
     remove(id: string): Observable<Boolean> {
-        return this.http.delete<any>(this.apiUrl + "/" + id).pipe(
-            retry(3),
-            catchError(() => throwError(false))
-        );
+        return this.http.delete<any>(this._apiUrl + "/" + id).pipe();
     }
 
     changePassword(
@@ -127,69 +72,78 @@ export class AccountService {
         password: string,
         newPassword: string
     ): Observable<boolean> {
-        console.log(userId +" "+ password +" "+ newPassword);
-        return this.http
-            .post<boolean>(this.apiUrl + "/change-password", {
-                userId:userId,
+        return this.http.post<boolean>(
+            this._apiUrl + "/change-password",
+            {
+                userId: userId,
                 currentPassword: password,
-                newPassword:newPassword
-            }, this.titleHeader("Change Password"))
-            .pipe(
-                retry(3),
-                catchError(() => of(false))
-            );
+                newPassword: newPassword,
+            },
+            this._titleHeader("Change Password")
+        );
     }
 
     logout(): Observable<boolean> {
-        return this.http
-            .post<boolean>(this.apiUrl + "/logout", this.titleHeader("Logout"))
-            .pipe(
-                retry(3),
-                catchError(() => of(false))
-            );
+        let re = this.http.post<boolean>(
+            this._apiUrl + "/logout",
+            this._titleHeader("Logout")
+        );
+        re.subscribe((val) => {
+            this.user = null;
+        });
+        return re;
     }
 
     login(email: string, password: string): Observable<User> {
         let re = this.http
             .post<User>(
-                this.apiUrl + "/login",
+                this._apiUrl + "/login",
                 {
                     Email: email,
                     Password: password,
                 },
+                this._titleHeader("Login")
             )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
-        re.subscribe(val => {
-            // console.log(val);
-            this.obs.next(val)
-        }, er => this.obs.error("Can't login"));
+            .pipe(catchError(() => throwError(null)));
+        re.subscribe(
+            (val) => this.obs.next(val),
+            (er) => this.obs.error("Can't login")
+        );
         return re;
     }
 
     loginExternal(provider: string): Observable<User> {
-        return this.http
-            .post<User>(
-                this.apiUrl + "/login/" + provider,
-                this.titleHeader("Login with " + provider)
-            )
-            .pipe(
-                retry(3),
-                catchError(() => throwError(null))
-            );
+        return this.http.post<User>(
+            this._apiUrl + "/login/" + provider,
+            this._titleHeader("Login with " + provider)
+        );
     }
 
     getListRoles(): Observable<string[]> {
-        return this.http
-            .get<string[]>(
-                this.apiUrl + "/roles",
-                this.titleHeader("Get list roles")
-            )
-            .pipe(
-                retry(3),
-                catchError(() => of([]))
+        return this.http.get<string[]>(this._apiUrl + "/roles");
+    }
+
+    checkLogin(): void {
+        this.http.get<User>(this._apiUrl + "/check-login").subscribe(
+            (val) => {
+                this.user = val;
+                this.obs.next(val);
+            },
+            (er) => (this.user = null)
+        );
+    }
+
+    checkRole(role: string, urlBack: string = null): Observable<boolean> {
+        let obs = new Subject<boolean>();
+        this.http
+            .post(this._apiUrl + "/check-role", {role: role,})
+            .subscribe(
+                () => obs.next(true),
+                () => {
+                    // if (urlBack != null) this.router.navigate(["home"]);
+                    obs.next(true);
+                }
             );
+        return obs;
     }
 }

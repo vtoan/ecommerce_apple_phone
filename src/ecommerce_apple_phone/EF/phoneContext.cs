@@ -54,6 +54,8 @@ namespace ecommerce_apple_phone.EF
             modelBuilder.Entity<Order>().Property(o => o.Status).HasDefaultValue(1);
 
             modelBuilder.Entity<Order>().Property(o => o.DateCreated).HasColumnType("smalldatetime");
+            //
+            
         }
     }
 
@@ -306,7 +308,7 @@ namespace ecommerce_apple_phone.EF
         [StringLength(150)]
         public string Fees { get; set; }
         public byte Status { get; set; }
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
         public int MethodPayId { get; set; }
         public int? PointUse { get; set; }
         public int? Point { get; set; }

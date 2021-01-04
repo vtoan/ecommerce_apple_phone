@@ -1,9 +1,12 @@
+using System.IO;
 using AutoMapper;
 using ecommerce_apple_phone.EF;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,24 +37,25 @@ namespace ecommerce_apple_phone
                 options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             //======== Identity  ========
             services.AddIdenityServices(this.Configuration);
-            //======== SPA  ========
-            // services.AddSpaStaticFiles (configuration => {
-            //     configuration.RootPath = "clientUi/dist";
-            // });
-            // services.AddControllersWithViews ();
+            // //======== SPA  ========
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "clientUi/dist";
+            });
+            services.AddControllersWithViews();
 
             // ======== CORS  ========
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder
-                            .WithOrigins("http://localhost:4200")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-            });
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy(name: MyAllowSpecificOrigins,
+            //         builder =>
+            //         {
+            //             builder
+            //                 .WithOrigins("http://localhost:4200")
+            //                 .AllowAnyHeader()
+            //                 .AllowAnyMethod();
+            //         });
+            // });
 
             //======== Models  ========
             services.AddModels(this.Configuration);
@@ -61,6 +65,7 @@ namespace ecommerce_apple_phone
             services.AddMemoryCache();
             services.AddAutoMapper(typeof(MapperConfig).Assembly);
             services.AddControllers();
+            services.AddScoped<InitUser>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -70,16 +75,23 @@ namespace ecommerce_apple_phone
                 app.UseDeveloperExceptionPage();
             }
 
+
+            var options = new RewriteOptions()
+                .AddRewrite("api/(.*)", "$1", skipRemainingRules: true);
+            app.UseRewriter(options);
+
+
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            // app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -87,17 +99,19 @@ namespace ecommerce_apple_phone
                 endpoints.MapControllers();
             });
 
-            // app.UseSpa (spa => {
-            //     // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //     // see https://go.microsoft.com/fwlink/?linkid=864501
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
 
-            //     spa.Options.SourcePath = "clientUi";
+                spa.Options.SourcePath = "clientUi";
 
-            //     if (env.IsDevelopment ()) {
-            //         spa.UseAngularCliServer (npmScript: "start");
-            //         // spa.UseProxyToSpaDevelopmentServer ("http://localhost:4200");
-            //     }
-            // });
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
+            });
         }
     }
 }

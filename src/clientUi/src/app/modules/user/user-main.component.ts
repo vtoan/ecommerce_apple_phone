@@ -48,16 +48,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
             );
         });
         //
-        // this.accountService.obs.subscribe(val =>{
-        //     this.isSignIned = true;
-        //     this.user = val;
-        //     console.log("User login");
-        // },
-        // er => {
-        //     this.isSignIned = false;
-        //     this.user = null;
-        //     console.log("User logout");
-        // });
+        this.router.navigate(["home"])
     }
 
     search(e, query) {
@@ -67,17 +58,6 @@ export class UserMainComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.cartService.saveCart();
     }
-
-    // onSignIn(){
-    //     this.router.navigate(["login",this.router.url]);
-    // }
-
-
-    // onLogout() {
-    //     this.accountService.logout().subscribe(val =>{
-    //         if(val) this.router.navigate([""]);
-    //     })
-    // }
 
     // // ========= use full ======
     // private initFacebookService(): void {

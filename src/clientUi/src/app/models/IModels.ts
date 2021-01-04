@@ -161,7 +161,7 @@ interface PromPoint{
 interface User{
     id:string;
     name:string;
-    phone:string;
+    phoneNumber:string;
     address:string;
     email:string;
     roleName:string;

@@ -36,7 +36,7 @@ namespace ecommerce_apple_phone.Models {
                 return LsObjectMapperTo<Order, OrderDTO>( db.GetList(start, end));
         }
 
-        public List<OrderDTO> GetListDTOsByCustomer (int idCustomer) {
+        public List<OrderDTO> GetListDTOsByCustomer (string idCustomer) {
              using(var db  =  new OrderDAO(_context))
                 return LsObjectMapperTo<Order, OrderDTO>( db.GetList(idCustomer));
         }
@@ -48,8 +48,10 @@ namespace ecommerce_apple_phone.Models {
 
         public bool UpdateStatus (int id, byte status) {
             PropModified<Order> modified = new PropModified<Order>(new {Status = (status)});
-            using(var db = new OrderDAO(_context))
-                return db.Update(id, modified);
+            using(var db = new OrderDAO(_context)){
+                if(status==0) db.RestoreQuantity(id);
+                return db.Update(id, modified);  
+            }
         }
 
         // ============== Usefull ===============

@@ -40,7 +40,7 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ImportProductDTO> Add([FromServices] IProductModel productModel, ImportProductDTO importProductDTO)
+        public ActionResult<ImportProductDTO> Add([FromServices] IProductModel productModel, [FromServices] ICacheHelper cache, ImportProductDTO importProductDTO)
         {
             if (importProductDTO.ImportItems == null || importProductDTO.ImportItems == "") return BadRequest();
             //Parse list order Item
@@ -49,6 +49,7 @@ namespace ecommerce_apple_phone.Controllers
             if (importDetailDTOs.Count == 0) return BadRequest(new { message = "Add method is invalid, field 'ID' not require" });
             var re = _importModel.AddDTO(importProductDTO, importDetailDTOs);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
+            cache.DataUpdated(CacheKey.PRODUCT);
             return re;
         }
 

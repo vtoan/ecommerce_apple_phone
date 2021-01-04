@@ -3,8 +3,6 @@ import { MatDialog } from "@angular/material";
 import { Router } from "@angular/router";
 import { User } from "src/app/models/IModels";
 import { AccountService } from "src/app/services/account.service";
-import { CookieService } from "ngx-cookie";
-
 
 @Component({
     selector: "app-user-action",
@@ -13,7 +11,6 @@ import { CookieService } from "ngx-cookie";
 })
 export class UserActionComponent implements OnInit {
     @Input() urlDetail: string;
-    // @Output() onUserDetail = new EventEmitter<User>();
     isSignIned: boolean = false;
     returnUrl: string = "/";
     user: User;
@@ -21,23 +18,23 @@ export class UserActionComponent implements OnInit {
     constructor(
         public dialog: MatDialog,
         private router: Router,
-        private accountService: AccountService,
-        private cookie :CookieService
+        private accountService: AccountService
     ) {}
 
     ngOnInit() {
+        console.log("object");
+        this.user = this.accountService.user;
+        if (this.user) this.isSignIned = true;
         this.accountService.obs.subscribe(
             (val) => {
                 this.isSignIned = true;
                 this.user = val;
-                console.log(val);
             },
             (er) => {
                 this.isSignIned = false;
                 this.user = null;
             }
         );
-        let s = this.accountService.user;
     }
 
     onSignIn() {
@@ -46,11 +43,16 @@ export class UserActionComponent implements OnInit {
     }
 
     onLogout() {
-        this.accountService.logout().subscribe((val) => {
-            if (val) this.router.navigate([""]);
-        },er => this.accountService.obs.error("Can't login"));
+        this.accountService.logout().subscribe(
+            (val) => {
+                this.user = null;
+                this.router.navigate([""]);
+            },
+            (er) => this.accountService.obs.error("Can't login")
+        );
     }
     onShowDetail() {
         this.router.navigate([this.urlDetail]);
+        // location.assign(this.urlDetail+"/"+this.user.id);
     }
 }

@@ -1,0 +1,121 @@
+<div class="w-100">
+    <div *ngIf="order==null" class="container text-center py-5"> {{ message }}</div>
+    <div *ngIf="order!=null" class="container pt-5">
+        <div *ngIf="isRequest" style="padding:16em 0">
+            <app-loader></app-loader>
+        </div>
+        <div *ngIf="!isRequest" class="cart contents">
+            <div *ngIf="isShowDetail" class="row mb-3">
+                <div class="col-3">
+                    <p><span class="bold">OrderID:</span> {{order?.id}}</p>
+                </div>
+                <div class="col-3">
+                    <p> <span class="bold">Date Ordered:</span> {{order?.dateCreated | date:"dd-MM-yyyy, HH:mm"}}</p>
+                </div>
+                <div class="col-6 text-right">
+                    <p> <span class="bold">Status: </span> {{ listStatus[order.status]}}</p>
+                </div>
+            </div>
+            <div *ngIf="isShowDetail" class="mb-3" style="height: 1px; background-color: #111;"></div>
+            <!-- Bill Info-->
+            <div id="bill" class="section">
+                <div class="row">
+                    <div class="col-12 col-lg-6 order-lg-1 section">
+                        <!-- Cart - Shopping -->
+                        <div class="section">
+                            <!--Cart - Header List-->
+                            <div class="d-flex align-items-center">
+                                <p class="ml-auto"> <span> {{quantityVal}} </span> total items
+                                <p>
+                            </div>
+                            <!--Cart - List Item-->
+                            <div id="cart-container">
+                                <app-loader *ngIf="!isLoaded"></app-loader>
+                                <p class="text-center py-5" *ngIf="isLoaded && listItem?.length == 0">Not item in cart</p>
+                                <div *ngIf="isLoaded && listItem?.length > 0">
+                                    <app-cart-item *ngFor="let item of listItem" [itemId]="item.productId"
+                                        [orderDetail]="item" [isChange]="false"></app-cart-item>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table text-right">
+                            <tbody>
+                                <tr>
+                                    <td>Total order</td>
+                                    <td>
+                                        <paser-value [rawVal]="totalAmountVal"></paser-value>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bill promotion</td>
+                                    <td>
+                                        <paser-value [rawVal]="promtionVal"></paser-value>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let item of listFees">
+                                    <td>{{item.name}}</td>
+                                    <td>
+                                        <paser-value [rawVal]="item.cost"></paser-value>
+                                    </td>
+                                </tr>
+                                <tr class="bold">
+                                    <td>Payment</td>
+                                    <td class="red text-4">
+                                        <paser-value [rawVal]="totalPayVal"></paser-value>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--Form-->
+                    <div class="col-12 col-lg-6 order-lg-0">
+                        <h4 class="mb-4">Shipment details</h4>
+                        <div class="row">
+                            <p class="col-4 bold">Name</p>
+                            <p class="col-8">{{order?.questName ? order.questName :"Empty" }}</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4 bold">Phone</p>
+                            <p class="col-8">{{order?.questPhone ? order.questPhone :"Empty" }}</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4 bold">Email</p>
+                            <p class="col-8">{{order?.questEmail ? order.questEmail : "Empty"}}</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4 bold">Province</p>
+                            <p class="col-8">{{order?.questProvince ? order.questProvince.split(',')[1] : "Empty"}}</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4 bold">District</p>
+                            <p class="col-8">{{order?.questDistrict ? order.questDistrict.split(',')[1] : "Empty"}}</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4 bold">Address</p>
+                            <p class="col-8">{{order?.questAddress ? order.questAddress : "Empty"}}</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4 bold">Note</p>
+                            <p class="col-8">{{order?.note ? order.note : "Empty"}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3" style="height: 1px; background-color: #111;"></div>
+                <!-- Method Pay-->
+                <div class="mb-4">
+                    <h4 class="mb-3">Method Payment</h4>
+                    <mat-radio-group [(ngModel)]="selectedPay">
+                        <mat-radio-button class="d-block mb-3" [disabled]="isShowDetail"
+                            *ngFor="let method of listMethodPays" [value]="method.id">
+                            {{method.name}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="text-center">
+                    <button *ngIf="!isShowDetail"  class="btn btn-lg bg-black white border-none" (click)="onSubmit()"> Continute </button>
+                    <button *ngIf="isCancel"  class="btn btn-lg bg-black white border-none" (click)="onCancel()"> Cancel Order </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

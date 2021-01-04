@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+using ecommerce_apple_phone.EF;
 
 namespace ecommerce_apple_phone.Controllers
 {
@@ -67,6 +70,8 @@ namespace ecommerce_apple_phone.Controllers
         public async System.Threading.Tasks.Task<IActionResult> AddAsync(
             [FromServices] IProductModel productModel,
             [FromServices] IPaymentService payment,
+            [FromServices] UserManager<AppUser> userManager,
+            [FromServices] ICacheHelper cache,
             OrderDTO orderDTO, int payId)
         {
             if (orderDTO.OrderItems == null || orderDTO.OrderItems == "" || payId <= 0) return BadRequest();
@@ -80,9 +85,16 @@ namespace ecommerce_apple_phone.Controllers
                 var re = await payment.OnPayment((int)orderDTO.MethodPayId, orderDTO);
                 if (re == false) return Problem();
             }
+            if (User != null)
+            {
+                var email = User.FindFirst(ClaimTypes.NameIdentifier);
+               
+                orderDTO.UserId = email.Value;
+            }
             var od = _orderModel.AddDTO(orderDTO, orderDetailDTOs);
             if (od == null) Problem(statusCode: 500, detail: "Can't add data");
             // productModel.UpdateForOrder(orderDetailDTOs);
+            cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
@@ -127,9 +139,9 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpGet("customer/orders")]
-        public ActionResult<List<OrderDTO>> GetForCustomer(int userId)
+        public ActionResult<List<OrderDTO>> GetForCustomer(string userId)
         {
-            if (userId == 0) return BadRequest(new { message = "Date is requried" });
+            if (DataHelper.IsEmptyString(userId)) return BadRequest(new { message = "Date is requried" });
             //
             var re = _orderModel.GetListDTOsByCustomer(userId);
             if (re == null || re.Count == 0) return Problem(statusCode: 500, detail: "Data not exist");
@@ -137,11 +149,13 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateStatus(int id, UpdateOrderDTO input)
+        public ActionResult UpdateStatus([FromServices] ICacheHelper cache, int id, UpdateOrderDTO input)
         {
-            if (!ModelState.IsValid || id<=0) return BadRequest();
-            var re = _orderModel.UpdateStatus(id,(byte)(input.status));
+            if (!ModelState.IsValid || id <= 0) return BadRequest();
+            var re = _orderModel.UpdateStatus(id, (byte)(input.status));
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
+            if(input.status==0) cache.DataUpdated(CacheKey.PRODUCT);
+
             return Ok();
         }
 
@@ -154,7 +168,8 @@ namespace ecommerce_apple_phone.Controllers
             return re;
         }
     }
-    public class UpdateOrderDTO{
+    public class UpdateOrderDTO
+    {
         public int orderID { get; set; }
         [Required]
         public byte? status { get; set; }

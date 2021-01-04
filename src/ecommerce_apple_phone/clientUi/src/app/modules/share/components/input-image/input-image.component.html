@@ -1,0 +1,19 @@
+<div>
+    <div class="d-flex py-3">
+        <input #inputImage (change)="onChangeFile(inputImage)" class="py-1 border-none" type="file"
+            placeholder="Placeholder">
+        <button type="button" class="mr-3" mat-stroked-button (click)="inputImage.click()">Upload Image</button>
+    </div>
+    <div class="d-flex flex-wrap" >
+        <ng-container *ngFor="let i of listImageUrl; trackBy: trackItem;">
+            <div class="pr-3 pb-3" [ngStyle]="{'width':widthImg+'px'}">
+                <div class="img-content" [ngClass]="!isProduct ? 'img-sm' :''">
+                    <div class="img">
+                        <img [src]="dom.bypassSecurityTrustUrl(i.src)">
+                    </div>
+                </div>
+                <button type="button" mat-stroked-button color="warn" (click)="onRemoveFile(i.name)">Delete</button>
+            </div>
+        </ng-container>
+    </div>
+</div>
