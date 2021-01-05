@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Send Feedback</h1>
+<div mat-dialog-content>
+    <p>Name: {{userName}}</p>
+    <p>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Feedback</mat-label>
+            <textarea #inputValue matInput required rows="5"> </textarea>
+        </mat-form-field>
+    </p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button disabled="{{inputValue.value==''}}" (click)="onSubmit(inputValue.value)" mat-button>Ok</button>
+</div>

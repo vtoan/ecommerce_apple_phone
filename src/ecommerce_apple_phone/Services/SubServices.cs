@@ -9,7 +9,7 @@ namespace ecommerce_apple_phone.Services
     public static class SubServices
     {
         public static IServiceCollection AddSubServices(
-            this IServiceCollection services, IConfiguration config){ //
+            this IServiceCollection services, IConfiguration config){
             services.AddSingleton<ICacheHelper, CacheHelper>();
             services.AddScoped<IUploadService, Upload>();
             services.AddScoped<IMailSenderService, EmailSender>();

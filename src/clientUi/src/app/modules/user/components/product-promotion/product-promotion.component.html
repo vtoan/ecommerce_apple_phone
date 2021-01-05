@@ -1,0 +1,18 @@
+<div class="product-policy mb-4 ">
+    <p class="italic bold mb-0 text-4">Promotion</p>
+        <app-container [config]="container">
+            <div class="policy-container border-black">
+            <ng-container *ngFor="let item of listProm">
+                <div class="policy-item">
+                    <span class="policy-icon">
+                        <img src="{{fileService.rootPath}}/icon/sale.svg" width="30px" height="30px" />
+                    </span>
+                    <div class="policy-text">
+                        <p class="mb-0">{{item.name}}</p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        </app-container>
+</div>

@@ -1,0 +1,91 @@
+<!--Fee-->
+<div class="card">
+    <div class="card-header">
+        <h3 class="mb-4">Promotion Detail</h3>
+    </div>
+    <div class="card-content">
+        <app-container [config]="container">
+            <form>
+                <div>
+                    <input-val [fmGroup]="promValidate" [fmControlName]="'name'" [isRequired]="true">Promotion Name
+                    </input-val>
+                    <div class="d-flex w-60">
+                        <p class="flex-grow-1">
+                            <mat-form-field [formGroup]="promValidate" class="w-80 " appearance="legacy">
+                                <mat-label>Choose a date</mat-label>
+                                <input readonly matInput [matDatepicker]="picker" formControlName="fromDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </p>
+                        <p class="flex-grow-1 text-right">
+                            <mat-form-field [formGroup]="promValidate" class="w-80 " appearance="legacy">
+                                <mat-label>Choose a date</mat-label>
+                                <input readonly matInput [matDatepicker]="picker2" formControlName="toDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </p>
+                    </div>
+                </div>
+            </form>
+            <!--Product-->
+            <form *ngIf="itemType==1">
+                <div class="mb-5 ">
+                    <div class="d-flex w-60 align-items-center">
+                        <div class="flex-grow-1">
+                            <input-val [fmGroup]="productValidate" [fmControlName]="'discount'" [inputType]="'number'"
+                                [isRequired]="true">Discount</input-val>
+                        </div>
+                        <div class="flex-grow-2">
+                            <p [formGroup]="productValidate">
+                                <mat-radio-group class="pr-3" formControlName="suffix" required>
+                                    <mat-radio-button class="pr-3" value="currency"> VNĐ </mat-radio-button>
+                                    <mat-radio-button value="precent"> %</mat-radio-button>
+                                </mat-radio-group>
+                            </p>
+                        </div>
+                    </div>
+                    <p>
+                        <mat-form-field [formGroup]="productValidate" class="w-60" appearance="legacy">
+                            <mat-label>Category</mat-label>
+                            <mat-select formControlName="categoryId">
+                                <mat-option *ngFor="let cate of listCate" [value]="cate.id">
+                                    {{cate.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </p>
+                </div>
+            </form>
+            <!--Bill-->
+            <form *ngIf="itemType==2">
+                <div class="mb-5 ">
+                    <div class="d-flex w-60 align-items-center">
+                        <div class="flex-grow-1">
+                            <input-val [fmGroup]="billValidate" [fmControlName]="'discount'" [inputType]="'number'"
+                                [isRequired]="true">Discount</input-val>
+                        </div>
+                        <div class="flex-grow-2">
+                            <p [formGroup]="billValidate">
+                                <mat-radio-group class="pr-3" formControlName="suffix" required>
+                                    <mat-radio-button class="pr-3" value="currency"> VNĐ </mat-radio-button>
+                                    <mat-radio-button value="precent"> %</mat-radio-button>
+                                </mat-radio-group>
+                            </p>
+                        </div>
+                    </div>
+                    <input-val [fmGroup]="billValidate" [fmControlName]="'conditionItem'" [inputType]="'number'">
+                        Condition Item</input-val>
+                    <input-val [fmGroup]="billValidate" [fmControlName]="'conditionAmount'" [inputType]="'number'">
+                        Condition Amount</input-val>
+                </div>
+            </form>
+            <div>
+                <button (click)="onSave($event)" class="btn btn-sm bg-blue white px-lg-4 mr-3">
+                    {{ itemId ? "Save" : "Add"}} </button>
+                <button class="btn btn-sm bg-red white px-lg-4" type="button" (click)="onReset()">Cancel</button>
+            </div>
+        </app-container>
+    </div>
+</div>

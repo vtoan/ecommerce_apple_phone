@@ -42,7 +42,7 @@ interface Product {
     color:string;
     quantity:number;
     isShow:boolean;
-    promotion:string;
+    promId:number;
 }
 
 
@@ -72,8 +72,10 @@ interface Post {
 }
 
 interface Feedback {
-    productId:number;
-    userId:number;
+    id?:number;
+    productId:string;
+    userId:string;
+    userName:string;
     feedbackContent:string;
 }
 
@@ -118,7 +120,7 @@ interface ImportProduct {
 
 interface ImportDetail {
     importId:number;
-    productId:number;
+    productId:string;
     quantity:number;
     price:number;
 }
@@ -129,7 +131,7 @@ interface Promotion {
     fromDate:Date;
     toDate:Date;
     status:boolean
-    type:number;
+    typeProm:number;
     itemDetail:string;
 }
 
@@ -159,7 +161,7 @@ interface PromPoint{
 interface User{
     id:string;
     name:string;
-    phone:string;
+    phoneNumber:string;
     address:string;
     email:string;
     roleName:string;

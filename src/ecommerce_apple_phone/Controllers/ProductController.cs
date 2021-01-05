@@ -4,6 +4,7 @@ using System.Linq;
 using ecommerce_apple_phone.DTO;
 using ecommerce_apple_phone.Helper;
 using ecommerce_apple_phone.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 namespace ecommerce_apple_phone.Controllers
@@ -26,7 +27,19 @@ namespace ecommerce_apple_phone.Controllers
         [HttpGet]
         public ActionResult<List<ProductDTO>> GetListProduct()
         {
-            var re = GetListProducts();
+            List<ProductDTO> re = new List<ProductDTO>();
+            
+             re = GetListProducts();
+            if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
+            return re;
+        }
+
+        [HttpGet("admin")]
+        [Authorize]
+        public ActionResult<List<ProductDTO>> GetListProductAdmin()
+        {
+            List<ProductDTO> re = new List<ProductDTO>();
+            re = GetListProducts(true);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
@@ -66,19 +79,22 @@ namespace ecommerce_apple_phone.Controllers
             return _productModel.FindByCate(re, cateId);
         }
 
+        [HttpGet("promotions/{items}")]
         [HttpGet("promotions")]
-        public ActionResult<List<ProductDTO>> FindPromotion()
+        public ActionResult<List<ProductDTO>> FindPromotion(int items)
         {
             //Get in cache
             var re = _cache.Get<List<ProductDTO>>(CacheKey.DISCOUNT_PRODUCT);
-            if (re != null || re?.Count > 0) return re;
-            //Get in db
-            var products = GetListProducts();
-            if (products == null) return Problem(statusCode: 500, detail: "Data not exist");
-            re = _productModel.FindPromotion(products);
-            if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
-            _cache.Set(re, CacheKey.DISCOUNT_PRODUCT);
-            return re;
+            if (re == null || re?.Count == 0)
+            {
+                //Get in db
+                var products = GetListProducts();
+                if (products == null) return Problem(statusCode: 500, detail: "Data not exist");
+                re = _productModel.FindPromotion(products);
+                if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
+                _cache.Set(re, CacheKey.DISCOUNT_PRODUCT);
+            }
+            return items <= 0 ? re : re.Take(items).ToList();
         }
 
         [HttpGet("search/{query}")]
@@ -96,9 +112,14 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = DataHelper.GetDetailId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.GetListAttrDTOs(itemId);
+            var re = _productModel.GetListAttrDTOs(id);
+            var product = GetListProducts().Find(item => item.Id == id);
+            if (product != null && product.Discount != 0)
+            {
+                double disc = product.Discount;
+                re.ForEach(item => item.Discount = disc);
+
+            }
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
@@ -112,15 +133,13 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = DataHelper.GetDetailId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.GetDetailDTO(itemId);
+            var re = _productModel.GetDetailDTO(id);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
 
         [HttpPost("{cateId}")]
-        public ActionResult AddProductDetail(int cateId,[FromForm] ProductDetailDTO productDetailDTO)
+        public ActionResult AddProductDetail(int cateId, ProductDetailDTO productDetailDTO)
         {
             if (!ModelState.IsValid) return BadRequest();
             //
@@ -128,30 +147,31 @@ namespace ecommerce_apple_phone.Controllers
             if (!modified.isChanged || cateId <= 0) return BadRequest();
             var re = _productModel.AddDTOs(cateId, productDetailDTO);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateProductDetail(int id,[FromForm] ProductDetailDTO productDetailDTO)
+        public ActionResult UpdateProductDetail(string id, ProductDetailDTO productDetailDTO)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid || DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var modified = new PropModified<ProductDetailDTO>(productDetailDTO);
-            if (!modified.isChanged || id <= 0) return BadRequest();
             var re = _productModel.UpdateDTO(id, productDetailDTO);
             if (!re) return Problem(statusCode: 500, detail: "Can't update data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
-        [HttpPut("{id}/status")]
-        public ActionResult UpdateStatusDetail(string id,[FromForm(Name="status")] bool? status)
+        [HttpPut("{id}/{status}")]
+        public ActionResult UpdateStatusDetail(string id, bool? status)
         {
             if (DataHelper.IsEmptyString(id) || status == null) return BadRequest();
             //
-            var itemId = DataHelper.GetDetailId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.UpdateStatusDTO(itemId,(bool)status);
+            var re = _productModel.UpdateStatusDTO(id, (bool)status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
+            _cache.DataUpdated(CacheKey.DISCOUNT_PRODUCT);
+            _cache.DataUpdated(CacheKey.SELLER_PRODUCT);
             return Ok();
         }
 
@@ -160,10 +180,9 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = DataHelper.GetDetailId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.RemoveDTO(itemId);
+            var re = _productModel.RemoveDTO(id);
             if (!re) return Problem(statusCode: 500, detail: "Can't remove data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
         #endregion
@@ -174,48 +193,44 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = DataHelper.GetAttrlId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.GetAttrDTO(itemId);
+            var re = _productModel.GetAttrDTO(id);
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
+            var productDetail = GetListProducts().Find(item => item.Id == id);
+            if (productDetail != null)
+                re.Discount = productDetail.Discount;
             return re;
         }
 
-        [HttpPost("attrs/{id}")]
-        public ActionResult AddAttr(int productDetailId,[FromForm] ProductDTO ProductAttrDTO)
+        [HttpPost("attrs/{detailId}")]
+        public ActionResult<ProductDTO> AddAttr(string detailId, ProductDTO ProductAttrDTO)
         {
-            if (productDetailId <= 0 || !ModelState.IsValid) return BadRequest();
+            if (DataHelper.IsEmptyString(detailId) || !ModelState.IsValid) return BadRequest();
             //
-            var modified = new PropModified<ProductDTO>(ProductAttrDTO);
-            if (!modified.isChanged || productDetailId <= 0) return BadRequest();
-            var re = _productModel.AddAttrDTOs(productDetailId, ProductAttrDTO);
+            var re = _productModel.AddAttrDTOs(detailId, ProductAttrDTO);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
-            return Ok();
+            _cache.DataUpdated(CacheKey.PRODUCT);
+            return re;
         }
 
         [HttpPut("attrs/{id}")]
-        public ActionResult UpdateAttr(string id,[FromForm] ProductDTO productAttrDTO)
+        public ActionResult UpdateAttr(string id, ProductDTO productAttrDTO)
         {
             if (DataHelper.IsEmptyString(id) || !ModelState.IsValid) return BadRequest();
             //
-            var itemId = DataHelper.GetAttrlId(id);
-            if (itemId == 0) return BadRequest();
-            var modified = new PropModified<ProductDTO>(productAttrDTO);
-            if (!modified.isChanged) return BadRequest();
-            var re = _productModel.UpdateAttrDTO(itemId, productAttrDTO);
+            var re = _productModel.UpdateAttrDTO(id, productAttrDTO);
             if (!re) return Problem(statusCode: 500, detail: "Can't update data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
-        [HttpPut("attrs/status/{id}")]
-        public ActionResult UpdateStatusAttr(string id,[FromForm(Name="status")] bool? status)
+        [HttpPut("attrs/{id}/{status}")]
+        public ActionResult UpdateStatusAttr(string id, bool? status)
         {
-            if (DataHelper.IsEmptyString(id)||status==null) return BadRequest();
+            if (DataHelper.IsEmptyString(id) || status == null) return BadRequest();
             //
-            var itemId = DataHelper.GetDetailId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.UpdateStatusAttrDTO(itemId,(bool) status);
+            var re = _productModel.UpdateStatusAttrDTO(id, (bool)status);
             if (!re) return Problem(statusCode: 500, detail: "Can't update status data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
@@ -224,10 +239,9 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (DataHelper.IsEmptyString(id)) return BadRequest();
             //
-            var itemId = DataHelper.GetDetailId(id);
-            if (itemId == 0) return BadRequest();
-            var re = _productModel.RemoveAttrDTO(itemId);
+            var re = _productModel.RemoveAttrDTO(id);
             if (!re) return Problem(statusCode: 500, detail: "Can't remove data");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
         #endregion
@@ -236,24 +250,28 @@ namespace ecommerce_apple_phone.Controllers
         public ActionResult UpdateImageSEO([FromServices] IUploadService upload, IFormFile file)
         {
             if (file == null) return BadRequest();
-            if (!upload.UploadFile(file, "products")) return Problem(statusCode: 500, detail: "Can't upload file");
+            if (!upload.UploadFile(file, "product")) return Problem(statusCode: 500, detail: "Can't upload file");
+            _cache.DataUpdated(CacheKey.PRODUCT);
             return Ok();
         }
 
         [NonAction]
-        private List<ProductDTO> GetListProducts()
+        private List<ProductDTO> GetListProducts(bool isAdmin = false)
         {
             var re = _cache.Get<List<ProductDTO>>(CacheKey.PRODUCT);
-            if (re != null || re?.Count > 0) return re;
-            re = _productModel.GetListDTOs();
-            if (re != null && re?.Count > 0)
+            if (re == null || re?.Count == 0 || isAdmin == true)
             {
-                List<PromProductDTO> proms = _promotionModel.GetListDTOsPromProduct();
-                if (proms != null || proms?.Count > 0)
-                    _productModel.AttachDiscount(ref re, proms);
-                _cache.Set(re, CacheKey.PRODUCT);
+                re = _productModel.GetListDTOs(isAdmin);
+                if (re != null && re?.Count > 0)
+                {
+                    List<PromProductDTO> proms = _promotionModel.GetListDTOsPromProduct();
+                    if (proms != null || proms?.Count > 0)
+                        _productModel.AttachDiscount(ref re, proms);
+                    _cache.Set(re, CacheKey.PRODUCT);
+                }
             }
             return re;
+            // return isAdmin ? re : re.Where(item => item.isShow == true).ToList();
         }
     }
 }

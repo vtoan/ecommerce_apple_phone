@@ -40,8 +40,8 @@ namespace ecommerce_apple_phone.Interfaces {
         IUpdateDTO<InfoDTO> { }
 
     public interface IProductModel {
-        bool UpdateForOrder (List<OrderDetailDTO> orderDetailDTOs);
-        bool UpdateForImport (List<ImportDetailDTO> importDetailDTOs);
+        // bool UpdateForOrder (List<OrderDetailDTO> orderDetailDTOs);
+        // bool UpdateForImport (List<ImportDetailDTO> importDetailDTOs);
         void AttachDiscount (ref List<ProductDTO> productDTOs, List<PromProductDTO> promProductDTOs);
         List<ProductDTO> FindByString (List<ProductDTO> productDTOs, string query);
         List<ProductDTO> FindByIds (List<ProductDTO> productDTOs, string[] arIds);
@@ -49,19 +49,19 @@ namespace ecommerce_apple_phone.Interfaces {
         List<ProductDTO> FindByCate (List<ProductDTO> productDTOs, int cateId);
         List<ProductDTO> FindPromotion (List<ProductDTO> productDTOs);
         //Product
-        ProductDetailDTO GetDetailDTO (int id);
+        ProductDetailDTO GetDetailDTO (string id);
         ProductDetailDTO AddDTOs (int cateId, ProductDetailDTO productDetailDTO);
-        bool UpdateDTO (int productId, ProductDetailDTO productDetailDTO);
-        bool RemoveDTO (int id);
-        bool UpdateStatusDTO (int productId, bool status);
+        bool UpdateDTO (string productId, ProductDetailDTO productDetailDTO);
+        bool RemoveDTO (string id);
+        bool UpdateStatusDTO (string productId, bool status);
         //Attribute Product
         List<ProductDTO> GetListDTOs (bool isAdmin =false);
-        List<ProductDTO> GetListAttrDTOs (int productId , bool isAdmin =false);
-        ProductDTO GetAttrDTO (int attrId ,bool isAdmin =false);
-        ProductDTO AddAttrDTOs (int attrId, ProductDTO productDTO);
-        bool UpdateAttrDTO (int attrId, ProductDTO productDTO);
-        bool RemoveAttrDTO (int attrId);
-        bool UpdateStatusAttrDTO (int attrId, bool status);
+        List<ProductDTO> GetListAttrDTOs (string productId ,bool isAdmin =false);
+        ProductDTO GetAttrDTO (string productId, bool isAdmin =false);
+        ProductDTO AddAttrDTOs (string productId, ProductDTO productDTO);
+        bool UpdateAttrDTO (string productId, ProductDTO productDTO);
+        bool RemoveAttrDTO (string productId);
+        bool UpdateStatusAttrDTO (string productId, bool status);
     }
 
     public interface IPostModel : IGetDTO<PostDTO>, IAddDTO<PostDTO>, IUpdateDTO<PostDTO>, IRemoveDTO { }
@@ -72,9 +72,9 @@ namespace ecommerce_apple_phone.Interfaces {
 
     public interface IOrderModel : IGetDTO<OrderDTO> {
         OrderDTO AddDTO (OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTOs);
-        bool UpdateStatus (int id, int status);
+        bool UpdateStatus (int id, byte status);
         List<OrderDTO> GetListDTOs (DateTime start, DateTime end);
-        List<OrderDTO> GetListDTOsByCustomer (int idCustomer);
+        List<OrderDTO> GetListDTOsByCustomer (string idCustomer);
         List<OrderDTO> Find (string query);
         List<OrderDetailDTO> GetOrderDetailDTOs (int id);
         //
@@ -97,16 +97,17 @@ namespace ecommerce_apple_phone.Interfaces {
     public interface IPromotionModel : IGetDTO<PromotionDTO>, IGetListDTOs<PromotionDTO>, IRemoveDTO {
 
         PromotionDTO AddDTO (PromotionDTO promotionDTO, object promDetail);
-        bool UpdateDTO (int id, PromotionDTO promotionDTO, object promDetail);
+        bool UpdateDTO (int id, PromotionDTO promotionDTO, string promDetail);
         List<PromProductDTO> GetListDTOsPromProduct ();
         List<PromBillDTO> GetListDTOsPromBill ();
         List<PromPointDTO> GetListDTOsPromPoint ();
-        bool ChangePromotion (int PromOld, int PromNew, int ProdId);
+        bool ChangePromotion (int PromOld, int PromNew, string ProdId);
+        object GetDetail (int id, byte Type);
     }
 
-    public interface IUserModel : IGetDTO<User> {
-        bool UpdatePoint (int id, int point);
-    }
+    // public interface IUserModel : IGetDTO<User> {
+    //     bool UpdatePoint (int id, int point);
+    // }
 
     #endregion
 

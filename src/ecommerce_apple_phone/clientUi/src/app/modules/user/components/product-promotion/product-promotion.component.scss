@@ -1,0 +1,30 @@
+/*============= policy =============*/
+.policy-item {
+    padding: 1em 1.5em;
+    display: flex;
+    align-items: center;
+}
+
+.policy .policy-item {
+    border-radius: 10px;
+    max-height: 80px;
+    margin: 0 auto;
+}
+
+.policy-item > .policy-icon {
+    max-width: 40px;
+    padding-right: 2em;
+    box-sizing: content-box;
+}
+
+@media only screen and (min-width: 62em) {
+    .policy-item {
+        max-width: 80%;
+    }
+}
+
+.policy-container{
+    min-width: 200px;
+    border-radius: 10px;
+    border: 1px solid gray;
+}

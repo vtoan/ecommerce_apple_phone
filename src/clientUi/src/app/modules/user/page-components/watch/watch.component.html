@@ -1,7 +1,0 @@
-<div class="section" style="height: 300px; background-color: #333;"></div>
-<app-breadcrumb></app-breadcrumb>
-
-<app-loader style="height: 350px;" *ngIf="!isLoaded"></app-loader>
-<p *ngIf=" isLoaded && listProducts.length==0" class="text-center" style="line-height: 25;"> {{ message}} </p>
-<app-list-product *ngIf="isLoaded && listProducts.length >0" [products]="listProducts" ></app-list-product>
-

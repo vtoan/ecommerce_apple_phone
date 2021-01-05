@@ -1,0 +1,7 @@
+<div class="section">
+    <h3 class="mb-4 mb-lg-5">Product Relate</h3>
+    <app-container [config]="container">
+        <app-list-product *ngIf="listProduct" [products]="listProduct" [isPage]="false"
+                [isFilter]="false"></app-list-product>
+    </app-container>
+</div>

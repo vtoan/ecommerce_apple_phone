@@ -1,0 +1,9 @@
+<app-banner [titlePage]="'Search Result'"></app-banner>
+<app-breadcrumb></app-breadcrumb>
+<div class="container">
+    <p class="mb-3">Result for key search: "{{queryString}}"</p>
+</div>
+<app-loader style="height: 350px;" *ngIf="!isLoaded"></app-loader>
+<p *ngIf=" isLoaded && listProducts.length==0" class="text-center" style="line-height: 25;"> {{ message}} "{{queryString}}" </p>
+<app-list-product #lsProduct *ngIf="isLoaded && listProducts.length >0" [products]="listProducts" ></app-list-product>
+

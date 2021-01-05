@@ -10,7 +10,6 @@ namespace ecommerce_apple_phone.DAO
 {
     public class EntityDAO<T> : IDisposable where T : class
     {
-
         protected PhoneContext _context;
 
         public EntityDAO(PhoneContext context)
@@ -26,9 +25,9 @@ namespace ecommerce_apple_phone.DAO
             return _context.Set<T>().ToList();
         }
 
-        public virtual T Get(int id)
+        public virtual T Get(object id)
         {
-            if (!CheckConnection()) return default(T);
+            if (!CheckConnection() || id == null) return default(T);
             return _context.Find<T>(id);
         }
 
@@ -36,17 +35,17 @@ namespace ecommerce_apple_phone.DAO
         {
             if (!CheckConnection()) return default(T);
             _context.Add<T>(newObj);
-            _context.SaveChanges();
+            _context.SaveChangesAsync().Wait();
             return newObj;
         }
 
-        public virtual bool Update(int id, PropModified<T> modified)
+        public virtual bool Update(object id, PropModified<T> modified)
         {
-            if (!CheckConnection()) return false;
+            if (!CheckConnection() || id == null) return false;
             T obj = _context.Find<T>(id);
             if (obj == null) return false;
             modified.UpdateFor(ref obj);
-            _context.SaveChanges();
+            _context.SaveChangesAsync().Wait();
             return true;
         }
 
@@ -56,7 +55,7 @@ namespace ecommerce_apple_phone.DAO
             T obj = _context.Find<T>(id);
             if (obj == null) return false;
             _context.Remove<T>(obj);
-            _context.SaveChanges();
+            _context.SaveChangesAsync().Wait();
             return true;
         }
 

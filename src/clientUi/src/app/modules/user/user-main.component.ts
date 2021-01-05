@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 
 //models
-import { Info } from "src/app/models/IModels";
+import { Info, User } from "src/app/models/IModels";
 //services
 import { InfoService } from "src/app/services/info.service";
 import { CartService } from "src/app/modules/user/services/cart.service";
+import { AccountService } from 'src/app/services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: "app-user-main",
@@ -12,28 +14,18 @@ import { CartService } from "src/app/modules/user/services/cart.service";
     styleUrls: ["./user-main.component.scss"],
 })
 export class UserMainComponent implements OnInit, OnDestroy {
+    isSignIned:boolean =false;
+    user:User;
     // ===== prop ======
     isShowMenu: boolean;
     isShowSearch: boolean;
     countItemCart: number = 0;
-    info: Info = {
-        nameStore: "none",
-        logo: "none",
-        email: "none",
-        facebook: "none",
-        messenger: "none",
-        instargram: "none",
-        phone: "none",
-        address: "none",
-        workTime: "none",
-        seoImage: "none",
-        seoTitle: "none",
-        seoDescription: "none",
-    };
-
+    info: Info;
     constructor(
         private infoService: InfoService,
         private cartService: CartService,
+        private accountService: AccountService,
+        private router: Router
     ) {}
 
     // ===== method ======
@@ -55,10 +47,12 @@ export class UserMainComponent implements OnInit, OnDestroy {
                 0
             );
         });
+        //
+        this.router.navigate(["home"])
     }
 
     search(e, query) {
-        if (e.keyCode == 13) location.assign("search/" + query);
+        if (e.keyCode == 13) this.router.navigate(["search", query]);
     }
 
     ngOnDestroy(): void {

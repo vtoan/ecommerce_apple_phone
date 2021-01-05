@@ -9,7 +9,6 @@ namespace ecommerce_apple_phone.Controllers
     [Route("product/[controller]")]
     public class FeedbackController : ControllerBase
     {
-
         private IFeedbackModel _fbModel;
         public FeedbackController(IFeedbackModel feedbackModel)
         {
@@ -28,20 +27,14 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(
-            [FromServices] ICacheHelper cache, [FromServices] IProductModel productModel, [FromServices] IUserModel userModel,
-            [FromForm] FeedbackDTO feedbackDTO)
+        public ActionResult<FeedbackDTO> Add(
+            [FromServices] ICacheHelper cache, [FromServices] IProductModel productModel,
+        FeedbackDTO feedbackDTO)
         {
-            if(!ModelState.IsValid) return BadRequest();
-            if (feedbackDTO.ProductDetailId <= 0 || productModel.GetDetailDTO(feedbackDTO.ProductDetailId) == null)
-                return BadRequest(new { message = "Product not exist" });
-            if (feedbackDTO.UserId <= 0 || userModel.GetDTO((int)feedbackDTO.UserId) == null)
-                return BadRequest(new { message = "User not exist" });
-            if (feedbackDTO.FeedbackContent == null || feedbackDTO.FeedbackContent == "")
-                return BadRequest(new { message = "Content is empty" });
+            if (!ModelState.IsValid) return BadRequest();
             var re = _fbModel.AddDTO(feedbackDTO);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
-            return Ok();
+            return re;
         }
 
         [HttpDelete("{id}")]

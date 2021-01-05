@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-header">
+        <h3>OVERVIEW</h3>
+    </div>
+    <div class="card-content">
+        <div class="row m-4">
+            <div class="col-3 ">
+                <div class="total-item bg-blue white">Total Order <span class="pl-3 text-1">{{totalOrder}}</span> </div>
+            </div>
+            <div class="col-3">
+                <div class="total-item bg-red white">Not Confirm Order <span class="pl-3 text-1">{{totalNotConfirm}}</span></div>
+            </div>
+            <div class="col-3">
+                <div class="total-item white" style="background-color: #52c41a;">Delivering Order - <span class="pl-3 text-1">{{totalDelivering}}</span></div>
+            </div>
+            <div class="col-3">
+                <div class="total-item white" style="background-color: #722ed1;">Completed Order  <span class="pl-3 text-1">{{totalComplete}}</span></div>
+            </div>
+        </div>
+        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    </div>
+</div>

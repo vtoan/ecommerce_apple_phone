@@ -1,144 +1,156 @@
-import { Injectable } from '@angular/core';
-import { HttpClient }  from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError,retry } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { catchError} from "rxjs/operators";
 //models
-import { Product,ProductDetail } from 'src/app/models/IModels';
-import { HttpInterceptorService } from '../services/http-interceptor.service';
+import { Product, ProductDetail } from "src/app/models/IModels";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class ProductService {
+    private apiUrl = "api/product";
 
-    private apiUrl ="api/product";
+    constructor(private http: HttpClient) {}
 
-    constructor(
-        private http:HttpClient,
-        private interceptor: HttpInterceptorService
-    ) { }
-    
-    getUrlContent = () =>  this.apiUrl +"/products";
+    private titleHeader(title) {
+        return {
+            headers: new HttpHeaders({ Action: title }),
+        };
+    }
+
+    getUrlRes = (): string => "product";
+
+    getUrlUpload = (): string => this.apiUrl + "/image";
 
     // ============ Method ============
-    getList(): Observable<Product[]>{
-        let obs = this.http
-        .get<Product[]>(this.apiUrl)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list data',[]))
-        )
-        return obs;
+    getList(): Observable<Product[]> {
+        return this.http
+            .get<Product[]>(this.apiUrl)
+            .pipe(catchError(() => throwError([])));
     }
 
-    getListById(ids:string): Observable<Product[]>{
-        return this.http
-        .get<Product[]>(this.apiUrl+"/"+ids)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list by id',[]))
-        )
+    getListById(ids: string): Observable<Product[]> {
+        return this.http.get<Product[]>(this.apiUrl + "/" + ids).pipe(
+            catchError(() => throwError([]))
+        );
     }
 
-    getListBestSeller(): Observable<Product[]>{
+    getListBestSeller(): Observable<Product[]> {
         return this.http
-        .get<Product[]>(this.apiUrl+"/bests")
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list best seller',[]))
-        )
+            .get<Product[]>(this.apiUrl + "/bests")
+            .pipe(catchError(() => throwError([])));
     }
 
-    getListByCate(idCate:number): Observable<Product[]>{
-        if(!idCate) return throwError("Category Id is invalid");
+    getListByCate(idCate: number): Observable<Product[]> {
         return this.http
-        .get<Product[]>(this.apiUrl+"/cate/"+idCate)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list by category',[]))
-        )
+            .get<Product[]>(this.apiUrl + "/cate/" + idCate)
+            .pipe(catchError(() => throwError([])));
     }
 
-    getListDiscount(): Observable<Product[]>{
+    getListDiscount(): Observable<Product[]> {
         return this.http
-        .get<Product[]>(this.apiUrl+"/promotions")
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list promotion',[]))
-        )
+            .get<Product[]>(this.apiUrl + "/promotions")
+            .pipe(catchError(() => throwError([])));
     }
 
-    search(query:string): Observable<Product[]>{
-        if(!query) return throwError("Query is empty");
+    search(query: string): Observable<Product[]> {
+        if (!query) return throwError("Query is empty");
         return this.http
-        .get<Product[]>(this.apiUrl+"/search/"+query)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list by query',[]))
-        )
+            .get<Product[]>(this.apiUrl + "/search/" + query)
+            .pipe(catchError(() => throwError([])));
     }
     // product detail
-
-    get(id:string): Observable<ProductDetail>{
-        if(!id && id =="") return throwError("Id is invalid");
+    get(id: string): Observable<ProductDetail> {
         return this.http
-        .get<ProductDetail>(this.apiUrl+"/"+id)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<ProductDetail>('Get product detail '+id))
-        )
+            .get<ProductDetail>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(null)));
     }
 
-    add(product:ProductDetail): Observable<number>{
-        return of(1);
+    add(product: ProductDetail): Observable<ProductDetail> {
+        return this.http
+            .post<ProductDetail>(
+                this.apiUrl,
+                product,
+                this.titleHeader("Add product")
+            )
+            .pipe(catchError(() => throwError(null)));
     }
 
-    update(id:string, product:ProductDetail): Observable<ProductDetail>{
-        return of(null)
+    update(id: string, product: ProductDetail): Observable<boolean> {
+        return this.http
+            .put<boolean>(
+                this.apiUrl + "/" + id,
+                product,
+                this.titleHeader("Update product")
+            )
+            .pipe(catchError(() => throwError(false)));
     }
 
-    updateStatus(id:string, status:boolean): Observable<boolean>{
-        return of(true)
+    updateStatus(id: string, status: boolean): Observable<boolean> {
+        return this.http
+            .put<boolean>(
+                this.apiUrl + "/" + id + "/" + status,
+                this.titleHeader("Update product status")
+            )
+            .pipe(catchError(() => throwError(false)));
     }
 
-    remove(id:number): boolean{
-        return
+    delete(id: number): Observable<boolean> {
+        return this.http
+            .delete<any>(this.apiUrl + "/" + id)
+            .pipe(catchError(() => throwError(false)));
     }
 
     // product attribute
-    getListAttr(id:string): Observable<Product[]>{
+    getListAttr(id: string): Observable<Product[]> {
         return this.http
-        .get<Product[]>(this.apiUrl+"/"+id+"/attrs")
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product[]>('Get list attr',[]))
-        )
+            .get<Product[]>(this.apiUrl + "/" + id + "/attrs")
+            .pipe(catchError(() => throwError([])));
     }
 
-    getAttr(id:string): Observable<Product>{
-        console.log("Get "+id);
-        if(!id) return throwError("Query is empty");
+    getAttr(id: string): Observable<Product> {
+        console.log(id);
         return this.http
-        .get<Product>(this.apiUrl+"/attrs/"+id)
-        .pipe(
-            retry(3),
-            catchError(this.interceptor.handleError<Product>('Get item attribute',[]))
-        )
+            .get<Product>(this.apiUrl + "/attrs/"+id)
+            .pipe(catchError(() => throwError(null)));
     }
 
-    addAttr(idCate:number, product:ProductDetail): Observable<ProductDetail>{
-        return
+    addAttr(detailId: string, product: Product): Observable<Product> {
+        return this.http
+            .post<Product>(
+                this.apiUrl + "/attrs/" + detailId,
+                product,
+                this.titleHeader("Add product attribute")
+            )
+            .pipe(catchError(() => throwError(null)));
     }
 
-    updateAttr(id:number, product:ProductDetail): Observable<ProductDetail>{
-        return
+    updateAttr(id: string, product: Product): Observable<boolean> {
+        return this.http
+            .put<boolean>(
+                this.apiUrl + "/attrs/" + id,
+                product,
+                this.titleHeader("Update product attribute")
+            )
+            .pipe(catchError(() => throwError(false)));
     }
 
-    updateStatusAttr(id:number, status:number): boolean{
-        return
+    updateStatusAttr(id: number, status: number): Observable<boolean> {
+        return this.http
+            .put<boolean>(
+                this.apiUrl + "/attrs/" + id + "/" + status,
+                this.titleHeader("Update product attribute status")
+            )
+            .pipe(catchError(() => throwError(false)));
     }
 
-    removeAttr(id:number): boolean{
-        return
+    deleteAttr(id: string): Observable<boolean> {
+        return this.http
+            .delete<any>(
+                this.apiUrl + "/attrs/" + id,
+                this.titleHeader("Delete product attribute")
+            )
+            .pipe(catchError(() => throwError(false)));
     }
 }

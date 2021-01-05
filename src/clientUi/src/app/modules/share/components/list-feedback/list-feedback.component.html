@@ -1,0 +1,17 @@
+<div class="section">
+    <div *ngIf="!editable" class="d-flex justify-content-between align-items-center">
+        <h3>Feedback</h3>
+        <a class="btn btn-sm white bg-black" (click)="onAdd()">Send Feedback</a>
+    </div>
+    <app-container [config]="container">
+        <div class="d-flex justify-content-between my-3" *ngFor="let item of listFeedback">
+            <div>
+                <p class="blue bold" >Name: {{item.userName ? item.userName : "Unknown"}}</p>
+                <p> - {{item.feedbackContent}}</p>
+            </div>
+            <div *ngIf="editable">
+                <a class="btn btn-sm white bg-red" (click)="onDelete(item.id)"> delete</a>
+            </div>
+        </div>
+    </app-container>
+</div>

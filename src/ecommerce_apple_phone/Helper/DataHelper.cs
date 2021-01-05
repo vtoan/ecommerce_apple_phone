@@ -25,7 +25,7 @@ namespace ecommerce_apple_phone.Helper {
         {
             try
             {
-                int[] itemId = id.Split("-").Select(item => Int32.Parse(item)).ToArray();
+                int[] itemId = id.Split("A").Select(item => Int32.Parse(item)).ToArray();
                 return itemId;
             }catch(Exception ex){
                 System.Console.WriteLine(ex.Data);
@@ -43,7 +43,8 @@ namespace ecommerce_apple_phone.Helper {
         public  static int GetAttrlId(string id)
         {
             var itemId = ParserProdId(id);
-            if (itemId == null  ||itemId?.Length < 2) return 0;
+            if (itemId == null ) return 0;
+            if(itemId.Length==1) return itemId[0];
             return itemId[1];
         }
     }

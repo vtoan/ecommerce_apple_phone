@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h3>Import Detail</h3>
+            <a class="btn btn-sm bg-blue white" (click)="onSubmit()"> Save </a>
+        </div>
+    </div>
+    <div class="card-content">
+        <div  *ngFor="let item of lsImport;index as idx;trackBy: trackItem">
+            <app-import-item #impItem [lsProducts]="lsProducts" [impItem]="item" (onDelete)="onDelete(idx)"></app-import-item>
+        </div>
+        <a class="btn btn-sm bg-black white" (click)="onAddItem()" >Add new item import</a>
+    </div>
+</div>
