@@ -1,29 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj": {}
+    "C:\\Users\\toan\\Sources\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj": {}
   },
   "projects": {
-    "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj": {
+    "C:\\Users\\toan\\Sources\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj",
+        "projectUniqueName": "C:\\Users\\toan\\Sources\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj",
         "projectName": "ecommerce_apple_phone",
-        "projectPath": "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/ecommerce_apple_phone.csproj",
-        "packagesPath": "/home/toan/.nuget/packages/",
-        "outputPath": "/home/toan/Documents/srouce/ecommerce_apple_phone/src/ecommerce_apple_phone/obj/",
+        "projectPath": "C:\\Users\\toan\\Sources\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\ecommerce_apple_phone.csproj",
+        "packagesPath": "C:\\Users\\toan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\toan\\Sources\\ecommerce_apple_phone\\src\\ecommerce_apple_phone\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/toan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\toan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -35,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -107,7 +111,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.404/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

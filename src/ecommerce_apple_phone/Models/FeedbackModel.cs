@@ -16,7 +16,14 @@ namespace ecommerce_apple_phone.Models
         {
             using (FeedbackDAO db = new FeedbackDAO(_context))
             {
-                return LsObjectMapperTo<Feedback, FeedbackDTO>(db.GetList(productId));
+                var listFback = LsObjectMapperTo<Feedback, FeedbackDTO>(db.GetList(productId));
+                if (listFback == null) return listFback;
+                listFback.ForEach(item =>
+                {
+                    var UserName = _context.Users.Find(item.UserId)?.Name;
+                    item.UserName = UserName;
+                });
+                return listFback;
             }
         }
     }

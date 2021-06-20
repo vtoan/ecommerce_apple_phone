@@ -16,16 +16,17 @@ export class AccountService {
 
     constructor(private router: Router, private http: HttpClient) {
         this.obsUser.subscribe((val) => (this.user = val));
-        // this.checkLogin();
+        this.checkLogin();
     }
 
     private _titleHeader(title: string) {
         return {
-            headers: new HttpHeaders({ Action: title,}),
+            headers: new HttpHeaders({ Action: title }),
         };
     }
 
     getUserCurrent(): User {
+        console.log(this.user);
         return this.user;
     }
 
@@ -150,13 +151,15 @@ export class AccountService {
 
     checkRole(role: string, urlBack: string = null): Observable<boolean> {
         let obs = new Subject<boolean>();
-        this.http.post(this._apiUrl + "/check-role", {roleName: role}).subscribe(
-            () => obs.next(true),
-            () => {
-                if (urlBack != null) this.router.navigate(["home"]);
-                obs.next(false);
-            }
-        );
+        this.http
+            .post(this._apiUrl + "/check-role", { roleName: role })
+            .subscribe(
+                () => obs.next(true),
+                () => {
+                    if (urlBack != null) this.router.navigate(["home"]);
+                    obs.next(false);
+                }
+            );
         return obs;
     }
 }

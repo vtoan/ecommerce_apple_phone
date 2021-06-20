@@ -1,4 +1,11 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, OnChanges } from "@angular/core";
+import {
+    Component,
+    Input,
+    ViewChild,
+    ElementRef,
+    OnInit,
+    OnChanges,
+} from "@angular/core";
 import { FileService } from "src/app/services/file.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
@@ -25,7 +32,7 @@ export class InputImageComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.showData();
     }
-    ngOnChanges(){
+    ngOnChanges() {
         this.showData();
     }
 
@@ -42,14 +49,24 @@ export class InputImageComponent implements OnInit, OnChanges {
             this.listImageUrl.push({
                 src: newFile,
                 name: this.resStored + "/" + file.name,
+                // name: this._checkSegment(file.name, "product"),
                 file: file,
             });
         else
             this.listImageUrl[0] = {
                 src: newFile,
                 name: this.resStored + "/" + file.name,
+                // name: this._checkSegment(file.name, "product"),
                 file: file,
             };
+        console.log(this.listImageUrl);
+    }
+
+    private _checkSegment(pathName: string, targetCheck): string {
+        let segments = pathName.split("/");
+        console.log(segments);
+        if (segments.find(targetCheck)) return pathName;
+        return targetCheck + "/" + pathName;
     }
 
     trackItem(index: number, item: any) {
@@ -59,20 +76,22 @@ export class InputImageComponent implements OnInit, OnChanges {
     showData(): void {
         if (!this.resImage) return;
         this.rootUrl = this.fileSer.rootPath;
+        console.log(this.resImage);
         if (Array.isArray(this.resImage))
-            this.listImageUrl = this.resImage.map((item) =>
-                Object.create({
-                    src: this.rootUrl + "/" + item,
-                    file: null,
-                    name:this.resStored+"/"+ item,
-                })
-            );
+            this.listImageUrl = this.resImage.map((item) => ({
+                src: this.rootUrl + "/" + item,
+                file: null,
+                // name: this._checkSegment(item, "product"),
+                // name: this.resStored + "/" + item,
+                name: item,
+            }));
         else
             this.listImageUrl[0] = {
                 src: this.rootUrl + "/" + this.resImage,
                 file: null,
-                name: this.resStored+"/" + this.resImage,
+                name: this.resStored + "/" + this.resImage,
             };
+        console.log(this.listImageUrl);
     }
 }
 export interface ImgObject {

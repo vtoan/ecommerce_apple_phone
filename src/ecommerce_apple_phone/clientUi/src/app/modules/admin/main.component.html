@@ -2,8 +2,12 @@
     <div class="row align-items-center">
         <!--Nav Mobile-->
         <div class="col-3 d-lg-none">
-            <a id="menu-admin" (click)="isShowMenuAdmin= !isShowMenuAdmin" class="nav-item"><i
-                    class="icon las la-bars"></i></a>
+            <a
+                id="menu-admin"
+                (click)="isShowMenuAdmin = !isShowMenuAdmin"
+                class="nav-item"
+                ><i class="icon las la-bars"></i
+            ></a>
         </div>
         <!--Title-->
         <div class="col-lg-2 text-center text-lg-left d-none d-lg-block pl-0">
@@ -11,14 +15,17 @@
         </div>
         <!--Cart shopping-->
         <div class="col-9 col-lg-10 d-lg-block text-right">
-            <div class="d-inline-block ">
+            <div class="d-inline-block">
                 <app-user-action></app-user-action>
             </div>
         </div>
     </div>
 </header>
 <!--Side Menu mobile-->
-<div class="nav-mobile d-lg-none" [ngClass]="isShowMenuAdmin ? 'show-item' : 'hide-item'">
+<div
+    class="nav-mobile d-lg-none"
+    ([ngClass])="(isShowMenuAdmin ? 'show-item' : 'hide-item')"
+>
     <nav class="nav-container flex-column bg-white">
         <h3 class="nav-item py-3">admin page</h3>
         <a class="nav-item my-2 middle-inline" routerLink="dashboard">
@@ -35,7 +42,8 @@
         </a>
         <a class="nav-item my-2 middle-inline" routerLink="promotion">
             <i class="icon las la-percent pr-2"></i>
-            <span>Promotions</span></a>
+            <span>Promotions</span></a
+        >
         <a class="nav-item my-2 middle-inline" routerLink="import">
             <i class="icon las la-box pr-2"></i>
             <span>Import</span>
@@ -46,16 +54,25 @@
         </a>
         <a class="nav-item my-2 middle-inline" routerLink="fee">
             <i class="icon las la-balance-scale pr-2"></i>
-            <span>Fees</span></a>
+            <span>Fees</span></a
+        >
         <a class="nav-item my-2 middle-inline" routerLink="user">
             <i class="icon las la-percent pr-2"></i>
-            <span>Accounts</span></a>
+            <span>Accounts</span></a
+        >
         <a class="nav-item my-2 middle-inline" routerLink="info">
             <i class="icon las la-store pr-2"></i>
-            <span>Store</span></a>
-        <i class="btn-classic red big-icon icon las la-times" (click)="isShowMenuAdmin= !isShowMenuAdmin"></i>
+            <span>Store</span></a
+        >
+        <i
+            class="btn-classic red big-icon icon las la-times"
+            (click)="isShowMenuAdmin = !isShowMenuAdmin"
+        ></i>
     </nav>
-    <span class="overlay bg-black" (click)="isShowMenuAdmin= !isShowMenuAdmin"></span>
+    <span
+        class="overlay bg-black"
+        (click)="isShowMenuAdmin = !isShowMenuAdmin"
+    ></span>
 </div>
 <div class="container-fluid">
     <div id="admin-container" class="row">
@@ -63,10 +80,10 @@
         <div class="col-2 d-none d-lg-block">
             <div class="admin-nav-container d-none d-lg-block">
                 <nav class="d-flex flex-column">
-                    <a class="nav-item my-2 middle-inline" routerLink="dashboard">
+                    <!-- <a class="nav-item my-2 middle-inline" routerLink="dashboard">
                         <i class="icon las la-chart-pie pr-2"></i>
                         <span>Overview</span>
-                    </a>
+                    </a> -->
                     <a class="nav-item my-2 middle-inline" routerLink="order">
                         <i class="icon las la-file-alt pr-2"></i>
                         <span>Orders</span>
@@ -75,27 +92,45 @@
                         <i class="icon las la-box pr-2"></i>
                         <span>Products</span>
                     </a>
-                    <a class="nav-item my-2 middle-inline" routerLink="promotion">
+                    <a
+                        class="nav-item my-2 middle-inline"
+                        routerLink="promotion"
+                    >
                         <i class="icon las la-percent pr-2"></i>
-                        <span>Promotions</span></a>
+                        <span>Promotions</span></a
+                    >
                     <a class="nav-item my-2 middle-inline" routerLink="import">
                         <i class="icon las la-box pr-2"></i>
                         <span>Import</span>
                     </a>
-                    <a class="nav-item my-2 middle-inline" routerLink="category">
+                    <a
+                        class="nav-item my-2 middle-inline"
+                        routerLink="category"
+                    >
                         <i class="icon las la-stream pr-2"></i>
                         <span>Categories</span>
                     </a>
                     <a class="nav-item my-2 middle-inline" routerLink="fee">
                         <i class="icon las la-balance-scale pr-2"></i>
-                        <span>Fees</span></a>
+                        <span>Fees</span></a
+                    >
                     <a class="nav-item my-2 middle-inline" routerLink="user">
                         <i class="icon las la-percent pr-2"></i>
-                        <span>Accounts</span></a>
+                        <span>Accounts</span></a
+                    >
                     <a class="nav-item my-2 middle-inline" routerLink="info">
                         <i class="icon las la-store pr-2"></i>
-                        <span>Store</span></a>
-                    <p class="text-center text-sub mb-0 p-4 bg-white pos-fixed-bottom">
+                        <span>Store</span></a
+                    >
+                    <p
+                        class="
+                            text-center text-sub
+                            mb-0
+                            p-4
+                            bg-white
+                            pos-fixed-bottom
+                        "
+                    >
                         &copy; Watch Shop, design by vtoan 2020
                     </p>
                 </nav>

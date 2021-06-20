@@ -28,7 +28,8 @@ const routes: Routes = [
         path: "admin",
         component: MainComponent,
         children: [
-            { path: "dashboard", component: DashboardComponent },
+            // { path: "dashboard", component: DashboardComponent },
+            { path: "order", component: OrderComponent },
             { path: "fee", component: FeeComponent },
             { path: "category", component: CategoryComponent },
             { path: "info", component: InfoComponent },
@@ -71,6 +72,6 @@ const routes: Routes = [
     declarations: [],
     imports: [CommonModule, RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers:[SaleAuthService,StockAuthService]
+    providers: [SaleAuthService, StockAuthService],
 })
 export class AdminRoutingModule {}

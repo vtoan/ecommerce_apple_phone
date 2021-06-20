@@ -102,11 +102,37 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     getPromotion(item: Product) {
         if (!this.listPromotion) return "Unknown";
-        let idx = this.listPromotion.find((prom) => prom.id == (item.promId < 0 ? item.promId * -1 : item.promId));
+        let idx = this.listPromotion.find(
+            (prom) =>
+                prom.id == (item.promId < 0 ? item.promId * -1 : item.promId)
+        );
         return idx ? idx.name : "Not promotion";
     }
 
+    public searchProduct(e, query): Observable<any> {
+        if (e.keyCode !== 13) return;
+        if (query == "") {
+            this.getDataProduct();
+            return;
+        }
+        let obs = new Subject();
+        this.productService.search(query).subscribe(
+            (resp) => {
+                this.listProduct = resp;
+                this.tableData.data = this.listProduct;
+                this.tableData._updateChangeSubscription();
+                obs.complete();
+            },
+            (erVal) => {
+                this.container.isDataEmpty = true;
+                obs.complete();
+            }
+        );
+        return obs;
+    }
+
     // ============= method ===============
+
     private getDataProduct(): Observable<any> {
         let obs = new Subject();
         this.productService.getListAdmin().subscribe(

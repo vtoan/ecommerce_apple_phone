@@ -33,7 +33,10 @@ export class FeedbackService {
 
     delete(id: number): Observable<boolean> {
         return this.http
-            .delete<any>(this.apiUrl + "/" + id, this.titleHeader("Delete fee"))
+            .delete<any>(
+                this.apiUrl + "/" + id,
+                this.titleHeader("Delete feedback")
+            )
             .pipe(catchError(() => throwError(false)));
     }
 }

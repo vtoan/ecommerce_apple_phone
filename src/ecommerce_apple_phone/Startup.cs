@@ -63,7 +63,7 @@ namespace ecommerce_apple_phone
             services.AddSubServices(this.Configuration);
             //======== Other  ========
             services.AddMemoryCache();
-            services.AddAutoMapper(typeof(MapperConfig).Assembly);
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddScoped<InitUser>();
         }

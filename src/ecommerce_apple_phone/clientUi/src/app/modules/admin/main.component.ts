@@ -9,11 +9,8 @@ import { Router } from "@angular/router";
 })
 export class MainComponent implements OnInit {
     isShowMenuAdmin: boolean = false;
-    constructor(
-        public dialog: MatDialog,
-        public router: Router
-    ) {
-        this.router.navigate(["admin/dashboard"]);
+    constructor(public dialog: MatDialog, public router: Router) {
+        this.router.navigate(["admin/product"]);
     }
     ngOnInit() {}
 }

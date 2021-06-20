@@ -39,29 +39,30 @@ namespace ecommerce_apple_phone.Controllers
         {
             if (User == null) return NotFound();
             var name = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (name == null) return Problem();
             var user = await _userManager.FindByIdAsync(name.Value);
-            if(user == null) return Problem();
-            return mapper.Map<InfoModel>(user); 
-
+            if (user == null) return Problem();
+            return mapper.Map<InfoModel>(user);
         }
 
-        public class InputRole{
+        public class InputRole
+        {
             public string RoleName { get; set; }
         }
-        
+
         [HttpPost("check-role")]
         public async Task<ActionResult> IsRole(
             InputRole input
         )
         {
-            if(!ModelState.IsValid | User == null) return BadRequest();
+            if (!ModelState.IsValid | User == null) return BadRequest();
             var arRoles = input.RoleName.Split(",");
             var user = await _userManager.GetUserAsync(User);
-            if(user == null) return NotFound();
+            if (user == null) return NotFound();
             foreach (var item in arRoles)
             {
-                var  re = await _userManager.IsInRoleAsync(user, input.RoleName);
-                if(!re) return Forbid();
+                var re = await _userManager.IsInRoleAsync(user, input.RoleName);
+                if (!re) return Forbid();
             }
             return Ok();
         }
@@ -85,7 +86,7 @@ namespace ecommerce_apple_phone.Controllers
             InputModel input)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var user = new AppUser { Name = input.Name, UserName = input.Email, Email = input.Email,};
+            var user = new AppUser { Name = input.Name, UserName = input.Email, Email = input.Email, };
             var re = await _userManager.CreateAsync(user, input.Password);
             if (re.Succeeded)
             {
@@ -295,22 +296,22 @@ namespace ecommerce_apple_phone.Controllers
             return _roleManager.Roles.Select(item => item.Name).ToArray();
         }
 
-        [HttpPost("init-user")]
-        public async Task<ActionResult> InitRolesAsync()
-        {
-            var user = await _userManager.FindByEmailAsync("admin@gmail.com");
-            if (user != null) return Problem();
-            await _roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
-            await _roleManager.CreateAsync(new IdentityRole() { Name = "Sale" });
-            await _roleManager.CreateAsync(new IdentityRole() { Name = "Warehouse" });
-            await _roleManager.CreateAsync(new IdentityRole() { Name = "User" });
-            var admin = await _userManager.CreateAsync(new AppUser() {UserName="admin@gmail.com" , Name = "Admin", Email = "admin@gmail.com" }, "123");
-            var ad= await _userManager.FindByEmailAsync("admin@gmail.com");
-            await  _userManager.AddToRoleAsync(ad,"admin");
-            // await _userManager.AddToRoleAsync(sale, "sale");
-            // await _userManager.AddToRoleAsync(stock, "stock");
-            return Ok();
-        }
+        // [HttpPost("init-user")]
+        // public async Task<ActionResult> InitRolesAsync()
+        // {
+        //     var user = await _userManager.FindByEmailAsync("admin@gmail.com");
+        //     if (user != null) return Problem();
+        //     await _roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
+        //     await _roleManager.CreateAsync(new IdentityRole() { Name = "Sale" });
+        //     await _roleManager.CreateAsync(new IdentityRole() { Name = "Warehouse" });
+        //     await _roleManager.CreateAsync(new IdentityRole() { Name = "User" });
+        //     var admin = await _userManager.CreateAsync(new AppUser() { UserName = "admin@gmail.com", Name = "Admin", Email = "admin@gmail.com" }, "123");
+        //     var ad = await _userManager.FindByEmailAsync("admin@gmail.com");
+        //     await _userManager.AddToRoleAsync(ad, "admin");
+        //     // await _userManager.AddToRoleAsync(sale, "sale");
+        //     // await _userManager.AddToRoleAsync(stock, "stock");
+        //     return Ok();
+        // }
 
         // =============== NON ACTION ===============
         [NonAction]
