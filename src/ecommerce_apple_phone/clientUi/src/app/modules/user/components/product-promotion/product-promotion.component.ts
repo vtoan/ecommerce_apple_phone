@@ -17,8 +17,8 @@ export class ProductPromotionComponent implements OnInit {
     };
     listProm: PromBill[];
     constructor(
-        public fileService:FileService,
-        private promSer:PromotionService
+        public fileService: FileService,
+        private promSer: PromotionService
     ) {}
 
     ngOnInit() {

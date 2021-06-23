@@ -58,6 +58,7 @@ namespace ecommerce_apple_phone.DTO
     public class ProductDetailDTO
     {
         public string Id { get; set; }
+        public string Name { get; set; }
         public string Screen { get; set; }
         public string FontCamera { get; set; }
         public string RearCamera { get; set; }

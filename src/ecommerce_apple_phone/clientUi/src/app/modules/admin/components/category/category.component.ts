@@ -29,13 +29,13 @@ export class CategoryComponent implements OnInit {
         name: ["", Validators.required],
         seoTitle: ["", Validators.required],
         seoDescription: ["", Validators.required],
-        seoImage: ["", Validators.required],
+        // seoImage: ["", Validators.required],
     });
 
     constructor(
         private fb: FormBuilder,
         public cateService: CategoryService,
-        public fileServcie: FileService,
+        public fileServcie: FileService
     ) {}
 
     ngOnInit() {
@@ -53,7 +53,7 @@ export class CategoryComponent implements OnInit {
         this.formValidate.patchValue(cate);
     }
 
-    onSubmit(e, imgs:any[]) {
+    onSubmit(e, imgs: any[]) {
         if (this.formValidate.invalid) return;
         e.preventDefault();
         let rawVal = this.formValidate.value;
@@ -81,8 +81,8 @@ export class CategoryComponent implements OnInit {
     // }
 
     // =========== Use full ===========
-    private update(cate: Category, imgs:any[]) {
-        if (imgs.length > 0) cate.seoImage = imgs[0].name;
+    private update(cate: Category, imgs: any[]) {
+        // if (imgs.length > 0) cate.seoImage = imgs[0].name;
         this.cateService.update(cate.id, cate).subscribe(
             (resp) => {
                 //
@@ -93,13 +93,13 @@ export class CategoryComponent implements OnInit {
                 this.tableData._updateChangeSubscription();
                 //
                 //
-                if (imgs.length > 0) {
-                    let file =imgs[0].file;
-                    this.fileServcie.upload(
-                        file,
-                        this.cateService.getUrlUpload()
-                    );
-                }
+                // if (imgs.length > 0) {
+                //     let file =imgs[0].file;
+                //     this.fileServcie.upload(
+                //         file,
+                //         this.cateService.getUrlUpload()
+                //     );
+                // }
                 this.onReset();
             },
             (er) => console.log(er),

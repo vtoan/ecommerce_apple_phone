@@ -25,6 +25,7 @@ export class ProductDetailComponent implements OnInit {
     listCate: Category[];
     //
     listPropertys: PropInput[] = [
+        { label: "Ten San Pham", name: "name" },
         { label: "Man hinh", name: "screen" },
         { label: "Camera chinh", name: "fontCamera" },
         { label: "Camera phu", name: "rearCamera" },
@@ -37,6 +38,7 @@ export class ProductDetailComponent implements OnInit {
         { label: "Pin", name: "battery" },
     ];
     formValidate = this.fb.group({
+        name: [""],
         screen: [""],
         fontCamera: [""],
         rearCamera: [""],
@@ -50,6 +52,7 @@ export class ProductDetailComponent implements OnInit {
         battery: [""],
         functionOther: [""],
         categoryId: ["", Validators.required],
+        id: [""],
     });
 
     constructor(
@@ -83,6 +86,7 @@ export class ProductDetailComponent implements OnInit {
     private getDataProduct() {
         if (!this.itemId) {
             this.prodDetail = {
+                name: "",
                 screen: "",
                 fontCamera: "",
                 rearCamera: "",

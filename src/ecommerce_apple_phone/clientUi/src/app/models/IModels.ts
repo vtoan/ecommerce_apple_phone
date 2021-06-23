@@ -45,7 +45,7 @@ interface Product {
 }
 
 interface ProductDetail {
-    id?: string;
+    name: string;
     screen: string;
     fontCamera: string;
     rearCamera: string;

@@ -1,7 +1,13 @@
 <ng-container>
-    <div *ngIf="!config.isLoaded" class="py-5" >
-        <app-loader ></app-loader>
+    <div *ngIf="!config.isLoaded" class="py-5">
+        <app-loader></app-loader>
     </div>
-    <p *ngIf="config.isLoaded && config.isDataEmpty" style="min-height: 350px;" class="text-center py-5 empty">{{config.displayText ? config.displayText : "Data is'n found !"}}</p>
-    <ng-content  *ngIf="config.isLoaded && !config.isDataEmpty"></ng-content>
+    <!-- <p *ngIf="config.isLoaded && config.isDataEmpty" style="min-height: 350px;" class="text-center py-5 empty">{{config.displayText ? config.displayText : "Data is'n found !"}}</p> -->
+    <p
+        *ngIf="config.isLoaded && config.isDataEmpty"
+        class="text-center py-5 empty"
+    >
+        {{ config.displayText ? config.displayText : "Data is'n found !" }}
+    </p>
+    <ng-content *ngIf="config.isLoaded && !config.isDataEmpty"></ng-content>
 </ng-container>
