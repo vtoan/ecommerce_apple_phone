@@ -1,171 +1,170 @@
-interface Fee{
-    id:number;
-    name:string;
-    cost:number;
+interface Fee {
+    id: number;
+    name: string;
+    cost: number;
 }
 
-
 interface Category {
-    id:number;
-    name:string;
+    id: number;
+    name: string;
     //SEO
-    seoImage:string;
-    seoTitle:string;
-    seoDescription:string;
+    seoImage: string;
+    seoTitle: string;
+    seoDescription: string;
 }
 
 interface Info {
-    nameStore:string
-    logo:string;
-    email:string;
-    facebook:string;
-    messenger:string;
-    instargram :string;
-    phone:string;
-    address:string;
-    workTime:string;
-   //SEO
-    seoImage:string;
-    seoTitle:string;
-    seoDescription:string;
+    nameStore: string;
+    logo: string;
+    email: string;
+    facebook: string;
+    messenger: string;
+    instargram: string;
+    phone: string;
+    address: string;
+    workTime: string;
+    //SEO
+    seoImage: string;
+    seoTitle: string;
+    seoDescription: string;
 }
 
 interface Product {
-    id:string;
-    name:string;
-    rom:string;
-    images:string;
-    categoryId:number;
-    price:number;
-    saleCount:number;
-    discount:number;
-    color:string;
-    quantity:number;
-    isShow:boolean;
-    promId:number;
+    id: string;
+    name: string;
+    rom: string;
+    images: string;
+    categoryId: number;
+    price: number;
+    saleCount: number;
+    discount: number;
+    color: string;
+    quantity: number;
+    isShow: boolean;
+    promId: number;
 }
 
-
 interface ProductDetail {
-    screen:string;
-    fontCamera:string;
-    rearCamera:string;
-    operationSystem:string;
-    chipset:string;
-    rom:string;
-    ram:string;
-    connector:string;
-    parameter:string;
-    weight:string;
-    battery:string;
-    functionOther:string;
+    id?: string;
+    screen: string;
+    fontCamera: string;
+    rearCamera: string;
+    operationSystem: string;
+    chipset: string;
+    rom: string;
+    ram: string;
+    connector: string;
+    parameter: string;
+    weight: string;
+    battery: string;
+    functionOther: string;
     categoryId: number;
 }
 
 interface Post {
-    id:number;
-    postContent:string;
+    id: number;
+    postContent: string;
     //SEO
-    seoImage:string;
-    seoTitle:string;
-    seoDescription:string;
+    seoImage: string;
+    seoTitle: string;
+    seoDescription: string;
 }
 
 interface Feedback {
-    id?:number;
-    productId:string;
-    userId:string;
-    userName:string;
-    feedbackContent:string;
+    id?: number;
+    productId: string;
+    userId: string;
+    userName: string;
+    feedbackContent: string;
 }
 
 interface MethodPay {
-    id:number;
-    name:string;
+    id: number;
+    name: string;
 }
 
 interface Order {
-    id:number;
-    dateCreated:string
-    questName:string;
-    questPhone:string;
-    questProvince:string;
-    questDistrict:string;
-    questEmail:string;
-    questAddress:string;
-    note:string;
-    promotion:string;
-    fees:string;
-    status:number;
-    userId:string;
-    methodPayId:number;
-    pointUse:number;
-    point:number;
-    orderItems:string;
+    id: number;
+    dateCreated: string;
+    questName: string;
+    questPhone: string;
+    questProvince: string;
+    questDistrict: string;
+    questEmail: string;
+    questAddress: string;
+    note: string;
+    promotion: string;
+    fees: string;
+    status: number;
+    userId: string;
+    methodPayId: number;
+    pointUse: number;
+    point: number;
+    orderItems: string;
 }
 
 interface OrderDetail {
-    orderId:number;
-    productId:string;
-    quantity:number;
-    price:number;
-    discount:number;
+    orderId: number;
+    productId: string;
+    quantity: number;
+    price: number;
+    discount: number;
 }
 
 interface ImportProduct {
-    id:number;
-    dateCreated:Date;
-    importItems:string;
+    id: number;
+    dateCreated: Date;
+    importItems: string;
 }
 
 interface ImportDetail {
-    importId:number;
-    productId:string;
-    quantity:number;
-    price:number;
+    importId: number;
+    productId: string;
+    quantity: number;
+    price: number;
 }
 
 interface Promotion {
-    id:number;
-    name:string;
-    fromDate:Date;
-    toDate:Date;
-    status:boolean
-    typeProm:number;
-    itemDetail:string;
+    id: number;
+    name: string;
+    fromDate: Date;
+    toDate: Date;
+    status: boolean;
+    typeProm: number;
+    itemDetail: string;
 }
 
 interface PromBill {
-    id:number;
-    name:string;
-    discount:number;
-    conditionItem:number;
-    conditionAmount:number;
+    id: number;
+    name: string;
+    discount: number;
+    conditionItem: number;
+    conditionAmount: number;
 }
 
 interface PromProduct {
-    id:number;
-    name:string;
-    discount:number;
-    productInProms:string;
-    categoryId:number;
+    id: number;
+    name: string;
+    discount: number;
+    productInProms: string;
+    categoryId: number;
 }
 
-interface PromPoint{
-    id:number;
-    name:string;
-    discountIn:number;
-    discountOut:number;
+interface PromPoint {
+    id: number;
+    name: string;
+    discountIn: number;
+    discountOut: number;
 }
 
-interface User{
-    id:string;
-    name:string;
-    phoneNumber:string;
-    address:string;
-    email:string;
-    roleName:string;
-    dateCreated:Date;
+interface User {
+    id: string;
+    name: string;
+    phoneNumber: string;
+    address: string;
+    email: string;
+    roleName: string;
+    dateCreated: Date;
 }
 
 export {
@@ -186,4 +185,4 @@ export {
     ImportProduct,
     ImportDetail,
     User,
-} 
+};

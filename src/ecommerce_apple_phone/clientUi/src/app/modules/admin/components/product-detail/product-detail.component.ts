@@ -8,10 +8,7 @@ import { Category, ProductDetail } from "src/app/models/IModels";
 //service
 import { ProductService } from "src/app/services/product.service";
 import { CategoryService } from "src/app/services/category.service";
-import {
-    catchError,
-    finalize,
-} from "rxjs/operators";
+import { catchError, finalize } from "rxjs/operators";
 
 @Component({
     selector: "app-product-detail",
@@ -19,7 +16,7 @@ import {
     styleUrls: ["./product-detail.component.scss"],
 })
 export class ProductDetailComponent implements OnInit {
-    @Input()itemId:string;
+    @Input() itemId: string;
     isLoaded: boolean = false;
     //
     // private itemId: string;
@@ -64,10 +61,7 @@ export class ProductDetailComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        concat(
-            of(this.getDataProduct()),
-            of(this.getDataCate())
-        )
+        concat(of(this.getDataProduct()), of(this.getDataCate()))
             .pipe(finalize(() => (this.isLoaded = true)))
             .subscribe();
     }
@@ -137,7 +131,8 @@ export class ProductDetailComponent implements OnInit {
     private add(prod: ProductDetail) {
         this.productService.add(prod).subscribe(
             (val) => {
-                this.router.navigate(["admin/product-detail", 1]);
+                console.log(val);
+                this.router.navigate(["admin/product-detail", val]);
             },
             (er) => (this.prodDetail = null),
             () => (this.isLoaded = true)

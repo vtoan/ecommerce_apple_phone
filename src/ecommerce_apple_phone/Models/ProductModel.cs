@@ -25,9 +25,10 @@ namespace ecommerce_apple_phone.Models
         {
             Product prod = ObjectMapperTo<ProductDTO, Product>(productDTO);
             if (prod == null) return null;
-            var detailId =DataHelper.GetDetailId(productId);
+            var detailId = DataHelper.GetDetailId(productId);
             prod.ProductDetailId = detailId;
-            prod.Id=detailId +"A"+DateTime.Now.ToOADate();
+            prod.Id = detailId + "A" + DateTime.Now.Second;
+            prod.isShow = true;
             using (ProductDAO db = new ProductDAO(_context))
                 return ObjectMapperTo<Product, ProductDTO>(db.Add(prod));
         }
@@ -97,7 +98,12 @@ namespace ecommerce_apple_phone.Models
             var prod = ObjectMapperTo<ProductDetailDTO, ProductDetail>(productDetailDTO);
             prod.CategoryId = cateId;
             using (EntityDAO<ProductDetail> db = new EntityDAO<ProductDetail>(_context))
-                return ObjectMapperTo<ProductDetail, ProductDetailDTO>(db.Add(prod));
+            {
+                var result = ObjectMapperTo<ProductDetail, ProductDetailDTO>(db.Add(prod));
+                if (result == null) return null;
+                this.AddAttrDTOs(result.Id, new ProductDTO { Name = "Unknown", Color = "N/A", Images = "[]" });
+                return result;
+            }
         }
 
         public ProductDetailDTO GetDetailDTO(string productId)

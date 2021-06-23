@@ -28,8 +28,8 @@ namespace ecommerce_apple_phone.Controllers
         public ActionResult<List<ProductDTO>> GetListProduct()
         {
             List<ProductDTO> re = new List<ProductDTO>();
-            
-             re = GetListProducts();
+
+            re = GetListProducts();
             if (re == null) return Problem(statusCode: 500, detail: "Data not exist");
             return re;
         }
@@ -139,7 +139,7 @@ namespace ecommerce_apple_phone.Controllers
         }
 
         [HttpPost("{cateId}")]
-        public ActionResult AddProductDetail(int cateId, ProductDetailDTO productDetailDTO)
+        public ActionResult<String> AddProductDetail(int cateId, ProductDetailDTO productDetailDTO)
         {
             if (!ModelState.IsValid) return BadRequest();
             //
@@ -148,7 +148,7 @@ namespace ecommerce_apple_phone.Controllers
             var re = _productModel.AddDTOs(cateId, productDetailDTO);
             if (re == null) return Problem(statusCode: 500, detail: "Can't add data");
             _cache.DataUpdated(CacheKey.PRODUCT);
-            return Ok();
+            return Ok(re.Id);
         }
 
         [HttpPut("{id}")]

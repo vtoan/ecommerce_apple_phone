@@ -57,6 +57,7 @@ namespace ecommerce_apple_phone.DTO
 
     public class ProductDetailDTO
     {
+        public string Id { get; set; }
         public string Screen { get; set; }
         public string FontCamera { get; set; }
         public string RearCamera { get; set; }
@@ -155,7 +156,7 @@ namespace ecommerce_apple_phone.DTO
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public bool? Status { get; set; }
-        [BindProperty(Name="typeProm", SupportsGet=true)]
+        [BindProperty(Name = "typeProm", SupportsGet = true)]
         public byte? TypeProm { get; set; }
         public string ItemDetail { get; set; }
     }

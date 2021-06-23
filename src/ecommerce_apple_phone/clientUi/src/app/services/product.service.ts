@@ -32,7 +32,7 @@ export class ProductService {
 
     getListAdmin(): Observable<Product[]> {
         return this.http
-            .get<Product[]>(this.apiUrl+"/admin")
+            .get<Product[]>(this.apiUrl + "/admin")
             .pipe(catchError(() => throwError([])));
     }
 
@@ -54,9 +54,9 @@ export class ProductService {
             .pipe(catchError(() => throwError([])));
     }
 
-    getListDiscount(items: number=0): Observable<Product[]> {
+    getListDiscount(items: number = 0): Observable<Product[]> {
         return this.http
-            .get<Product[]>(this.apiUrl + "/promotions/"+items)
+            .get<Product[]>(this.apiUrl + "/promotions/" + items)
             .pipe(catchError(() => throwError([])));
     }
 
@@ -76,7 +76,7 @@ export class ProductService {
     add(product: ProductDetail): Observable<ProductDetail> {
         return this.http
             .post<ProductDetail>(
-                this.apiUrl,
+                this.apiUrl + "/" + product.categoryId,
                 product,
                 this.titleHeader("Add product")
             )
